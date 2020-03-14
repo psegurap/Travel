@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="{{asset('/css/magnific-popup.css')}}">
     <link rel="stylesheet" href="{{asset('/css/font-awesome.min.css')}}">
     <link rel="stylesheet" href="{{asset('/css/themify-icons.css')}}">
-    <link rel="stylesheet" href="{{asset('/css/nice-select.css')}}">
+    {{-- <link rel="stylesheet" href="{{asset('/css/nice-select.css')}}"> --}}
     <link rel="stylesheet" href="{{asset('/css/flaticon.css')}}">
     <link rel="stylesheet" href="{{asset('/css/gijgo.css')}}">
     <link rel="stylesheet" href="{{asset('/css/animate.css')}}">
@@ -26,14 +26,14 @@
     <link rel="stylesheet" href="{{asset('/css/tippy.css')}}">
     <link rel="stylesheet" href="{{asset('/css/summernote.min.css')}}">
     <link rel="stylesheet" href="{{asset('/plugins/dist/dropzone.css')}}">
-    <link rel="stylesheet" href="{{asset('/css/bootstrap-select.css')}}">
     <link rel="stylesheet" href="{{asset('/css/dataTables.bootstrap4.min.css')}}">
     <link rel="stylesheet" href="{{asset('/css/jquery.toast.css')}}">
     <link rel="stylesheet" href="{{asset('/css/summernote.min.css')}}">
     <link rel="stylesheet" href="{{asset('/css/sweetalert2.css')}}">
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css">
-
+    
     <link rel="stylesheet" href="{{asset('/css/style.css')}}">
+    <link rel="stylesheet" href="{{asset('/css/bootstrap-select.css')}}">
     <!-- <link rel="stylesheet" href="css/responsive.css"> -->
     @yield('styles')
 </head>
@@ -71,7 +71,7 @@
                                             <li><a href="#">{{__('Blog')}} <i class="ti-angle-down"></i></a>
                                                 <ul class="submenu">
                                                     <li><a href="/admin/blog/create">{{__('New Post')}}</a></li>
-                                                    <li><a href="#">{{__('All Posts')}}</a></li>
+                                                    <li><a href="/admin/blog/all">{{__('All Posts')}}</a></li>
                                                     <li><a href="#">{{__('Dropdown')}} <i class="ti-angle-down"></i></a>
                                                         <ul class="submenu">
                                                             <li><a href="#">{{__('Option #1')}}</a></li>
@@ -331,7 +331,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
     <script src="{{asset('/js/scrollIt.js')}}"></script>
     <script src="{{asset('/js/jquery.scrollUp.min.js')}}"></script>
     <script src="{{asset('/js/wow.min.js')}}"></script>
-    <script src="{{asset('/js/nice-select.min.js')}}"></script>
+    {{-- <script src="{{asset('/js/nice-select.min.js')}}"></script> --}}
     <script src="{{asset('/js/jquery.slicknav.min.js')}}"></script>
     <script src="{{asset('/js/jquery.magnific-popup.min.js')}}"></script>
     <script src="{{asset('/js/plugins.js')}} "></script>
@@ -342,11 +342,11 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
     <script src="{{asset('/plugins/dist/dropzone.js')}}"></script>
     
     <script src="{{asset('/js/vue.js')}}"></script>
-    <script src="{{asset('/js/bootstrap-select.js')}}"></script>
     <script src="{{asset('/js/jquery.dataTables.min.js')}}"></script>
     <script src="{{asset('/js/dataTables.bootstrap4.min.js')}}"></script>
     <script src="{{asset('/js/moment.js')}}"></script>
     <script src="{{asset('/js/vee-validate.js')}}"></script>
+    <script src="{{asset('/js/bootstrap-select.js')}}"></script>
     <script src="{{asset('/js/axios.js')}}"></script>
     <script src="{{asset('/js/jquery.toast.js')}}"></script>
     <script src="{{asset('/js/sweetalert2@9.js')}}"></script>
@@ -358,7 +358,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
     <script src="{{asset('/js/jquery.form.js')}}"></script>
     <script src="{{asset('/js/jquery.validate.min.js')}}"></script>
     <script src="{{asset('/js/mail-script.js')}}"></script>
-    <script src="{{asset('/js/main.js')}}"></script>
+    {{-- <script src="{{asset('/js/main.js')}}"></script> --}}
     <script>
         $('#datepicker').datepicker({
             iconsLibrary: 'fontawesome',
@@ -366,6 +366,8 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
              rightIcon: '<span class="fa fa-caret-down"></span>'
          }
         });
+
+        $.fn.selectpicker.Constructor.BootstrapVersion = '4';
 
         var homepath = "{{url('/')}}";
         var lang = "{{App::getlocale()}}";

@@ -65,38 +65,38 @@
         
                 <div class="row">
                     <div class="col-12">
-                        <h2 class="contact-title">Get in Touch</h2>
+                        <h2 class="contact-title">{{__('Get in Touch')}}</h2>
                     </div>
                     <div class="col-lg-8">
                         <section class="form-contact contact_form">
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-group">
-                                        <textarea v-validate="'required'" v-model="email_details.message" class="form-control w-100" name="message" cols="30" rows="9" placeholder="Enter Message"></textarea>
+                                        <textarea v-validate="'required'" v-model="email_details.message" class="form-control w-100" name="message" cols="30" rows="9" placeholder="{{__('Enter Message')}}"></textarea>
                                         <span class="text-danger" style="font-size: 12px;" v-show="errors.has('message')">* @{{ errors.first('message') }}</span>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <input v-validate="'required'" v-model="email_details.name" class="form-control valid" name="name" type="text" placeholder="Enter your name">
+                                        <input v-validate="'required'" v-model="email_details.name" class="form-control valid" name="name" type="text" placeholder="{{__('Enter your name')}}">
                                         <span class="text-danger" style="font-size: 12px;" v-show="errors.has('name')">* @{{ errors.first('name') }}</span>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <input v-validate="'required|email'" v-model="email_details.email" class="form-control valid" name="email" type="email" placeholder="Email">
+                                        <input v-validate="'required|email'" v-model="email_details.email" class="form-control valid" name="email" type="email" placeholder="{{__('Email')}}">
                                         <span class="text-danger" style="font-size: 12px;" v-show="errors.has('email')">* @{{ errors.first('email') }}</span>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group">
-                                        <input v-validate="'required'" v-model="email_details.subject" class="form-control" name="subject" type="text" placeholder="Enter Subject">
+                                        <input v-validate="'required'" v-model="email_details.subject" class="form-control" name="subject" type="text" placeholder="{{__('Enter Subject')}}">
                                         <span class="text-danger" style="font-size: 12px;" v-show="errors.has('subject')">* @{{ errors.first('subject') }}</span>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group mt-3">
-                                <button @click="validate(sendMessage)" class="button button-contactForm boxed-btn">Send</button>
+                                <button @click="validate(sendMessage)" class="button button-contactForm boxed-btn">{{__('Send')}}</button>
                             </div>
                         </section>
                     </div>
@@ -152,7 +152,7 @@
                         $(".contact-section").LoadingOverlay("hide");
                         Swal.fire({
                              icon: 'success',
-                                title: 'Your message was sent!',
+                                title: "{{__('Your message was sent')}}!",
                                 showConfirmButton: false,
                                 timer: 2500
                         }).then(function(){

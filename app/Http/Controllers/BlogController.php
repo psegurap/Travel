@@ -66,6 +66,12 @@ class BlogController extends Controller
         return response()->json("Post Saved", 200);
     }
 
+
+    public function all_posts(){
+        $posts = Post::orderBy('created_at', 'desc')->get();
+        return view('admin.blog.all_posts', compact('posts'));
+    }
+
     /**
      * Display the specified resource.
      *
@@ -85,7 +91,11 @@ class BlogController extends Controller
      */
     public function edit($id)
     {
-        //
+        $post = Post::with('categories')->find($id);
+        $post['attachments'] =  $this->GetAttachments($post['picture_path']); 
+
+        $categories = Category::all();
+        return view('admin.blog.edit', compact('post', 'categories'));
     }
 
     /**
@@ -95,9 +105,29 @@ class BlogController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $data = [
+            'img_thumbnail' => $request->post_info['img_thumbnail'],
+        ];
+
+        if($request->lang == 'es'){
+            $data['title_es'] = $request->post_info['title'];
+            $data['content_es'] = $request->post_info['content'];
+            $data['short_description_es'] = $request->post_info['short_description'];
+        }else{
+            $data['title_en'] = $request->post_info['title'];
+            $data['content_en'] = $request->post_info['content'];
+            $data['short_description_en'] = $request->post_info['short_description'];
+        }
+
+        Post::find($request->post_info['id'])->update($data);
+        Post::find($request->post_info['id'])->categories()->detach();
+
+        $categories = Category::find($request->post_info['categories']);
+        Post::find($request->post_info['id'])->categories()->attach($categories);
+
+        return $request;
     }
 
     /**

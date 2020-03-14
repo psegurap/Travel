@@ -64,15 +64,15 @@ class HomeController extends Controller
 
     public function single_blog($id)
     {
-        $post = Trip::with('categories')->find($id);
+        $post = Post::with('categories')->find($id);
         $post['attachments'] =  $this->GetAttachmentsBlog($post['picture_path']); 
 
         // dd($post);
-        $recent_posts = Trip::orderBy('created_at', 'desc')->where('id', '!=', $id)->take(4)->get();
+        $recent_posts = Post::orderBy('created_at', 'desc')->where('id', '!=', $id)->take(4)->get();
         $categories = Category::with('posts')->take(6)->get();
 
-        $previous_post = Trip::where('id', '<', $post['id'])->orderBy('id', 'desc')->first();
-        $next_post = Trip::where('id', '>', $post['id'])->orderBy('id')->first();
+        $previous_post = Post::where('id', '<', $post['id'])->orderBy('id', 'desc')->first();
+        $next_post = Post::where('id', '>', $post['id'])->orderBy('id')->first();
 
         // dd($previous_trip, $next_trip);
 

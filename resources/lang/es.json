@@ -55,6 +55,22 @@
     "Logout" : "Salir",
     "Trip Price" : "Precio Viaje",
     "New Trip" : "Nuevo Viaje",
-    "Modified" : "Modificado"
-
+    "Modified" : "Modificado",
+    "Prices" : "Precios",
+    "Other Trips" : "Otros Viajes",
+    "Adults" : "Adultos",
+    "Kids" : "Niños",
+    "Tags" : "Etiquetas",
+    "Get in Touch" : "Escribenos",
+    "Enter Message" : "Colocar Mensaje",
+    "Email": "Correo",
+    "Enter Subject" : "Colocar Asunto",
+    "Send" : "Enviar",
+    "Your message was sent" : "Tu mensaje fue enviado",
+    "You need to fix the errors" : "Necesitas revisar los errores",
+    "New Post" : "Nueva Publicación",
+    "All Posts" : "Publicaciones",
+    "Prev Post" : "Publicación Anterior",
+    "Next Post" : "Publicación Siguiente",
+    "Recent Post" : "Recientes"
 }

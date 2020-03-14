@@ -103,7 +103,7 @@
                              <div class="col-lg-6 col-md-6 col-12 nav-left flex-row d-flex justify-content-start align-items-center">
                                 <div class="d-flex" v-if="previous_post != null">
                                    <div class="detials">
-                                      <p>Prev Post</p>
+                                      <p>{{__('Prev Post')}}</p>
                                       <a :href="homepath + '/blog/' + previous_post.id">
                                        @if (App::getLocale() == 'es')
                                            <h4>@{{previous_post.title_es}}</h4>
@@ -117,7 +117,7 @@
                              <div class="col-lg-6 col-md-6 col-12 nav-right flex-row d-flex justify-content-end align-items-center">
                                 <div class="d-flex" v-if="next_post != null">
                                    <div class="detials">
-                                      <p>Next Post</p>
+                                      <p>{{__('Next Post')}}</p>
                                       <a :href="homepath + '/blog/' + next_post.id">
                                          @if (App::getLocale() == 'es')
                                              <h4>@{{next_post.title_es}}</h4>
@@ -274,7 +274,7 @@
                           </form>
                        </aside>
                        <aside class="single_sidebar_widget post_category_widget">
-                          <h4 class="widget_title">Categories</h4>
+                          <h4 class="widget_title">{{__('Categories')}}</h4>
                           <ul class="list cat-list">
                              <li v-for="category in categories">
                                 <a href="#" class="d-flex">
@@ -289,7 +289,7 @@
                           </ul>
                        </aside>
                        <aside class="single_sidebar_widget popular_post_widget">
-                          <h3 class="widget_title">Recent Post</h3>
+                          <h3 class="widget_title">{{__('Recent Post')}}</h3>
                           <div class="media post_item" v-for="post in recent_posts">
                              <div class="row">
                                 <div class="col-4 px-1">

@@ -80,11 +80,11 @@ Route::group(['prefix' => 'cojefavsomostodos'], function(){
         });
 
         Route::group(['prefix' => 'blog'], function(){
-            // Route::get('all', 'BlogController@all_trips');
+            Route::get('all', 'BlogController@all_posts');
             Route::get('create', 'BlogController@create');
             Route::post('store', 'BlogController@store');
-            // Route::get('edit/{id}', BlogControllerr@edit');
-            // Route::post('update', 'BlogController@update');
+            Route::get('edit/{id}', 'BlogController@edit');
+            Route::post('update', 'BlogController@update');
             Route::post('file/default', 'BlogController@StoreDefault');
             Route::post('file/galery', 'BlogController@StoreGalery');
             // Route::post('file/DeletePicture', 'BlogController@DeletePicture');
