@@ -62,13 +62,13 @@
                                     <nav>
                                         <ul id="navigation">
                                             <li><a class="active" href="{{route('admin')}}">{{__('Home')}}</a></li>
-                                            <li><a href="#">{{__('Trips')}} <i class="ti-angle-down"></i></a>
+                                            <li><a href="javascript:void(0)">{{__('Trips')}} <i class="ti-angle-down"></i></a>
                                                 <ul class="submenu">
                                                     <li><a href="/admin/trips/create">{{__('Add New')}}</a></li>
                                                     <li><a href="/admin/trips/all">{{__('All Trips')}}</a></li>
                                                 </ul>
                                             </li>
-                                            <li><a href="#">{{__('Blog')}} <i class="ti-angle-down"></i></a>
+                                            <li><a href="javascript:void(0)">{{__('Blog')}} <i class="ti-angle-down"></i></a>
                                                 <ul class="submenu">
                                                     <li><a href="/admin/blog/create">{{__('New Post')}}</a></li>
                                                     <li><a href="/admin/blog/all">{{__('All Posts')}}</a></li>
@@ -80,19 +80,19 @@
                                                     </li>
                                                 </ul>
                                             </li>
-                                            <li><a href="#">{{__('Dropdown')}} <i class="ti-angle-down"></i></a>
+                                            <li><a href="javascript:void(0)">{{__('Dropdown')}} <i class="ti-angle-down"></i></a>
                                                 <ul class="submenu">
                                                     <li><a href="#">{{__('Option #1')}}</a></li>
                                                     <li><a href="#">{{__('Option #2')}}</a></li>
                                                 </ul>
                                             </li>
-                                            <li><a href="#">{{__('Dropdown')}} <i class="ti-angle-down"></i></a>
+                                            <li><a href="javascript:void(0)">{{__('Dropdown')}} <i class="ti-angle-down"></i></a>
                                                 <ul class="submenu">
                                                     <li><a href="#">{{__('Option #1')}}</a></li>
                                                     <li><a href="#">{{__('Option #2')}}</a></li>
                                                 </ul>
                                             </li>
-                                            <li><a href="#">{{__('Others')}} <i class="ti-angle-down"></i></a>
+                                            <li><a href="javascript:void(0)">{{__('Others')}} <i class="ti-angle-down"></i></a>
                                                 <ul class="submenu">
                                                     <li><a href="/admin/maintenance/categories">{{__('Categories')}}</a></li>
                                                     <li><a href="#">{{__('Option #2')}}</a></li>

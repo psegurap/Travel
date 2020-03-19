@@ -4,7 +4,7 @@
 
     <main>
         <!-- bradcam_area  -->
-        <div class="bradcam_area bradcam_bg_2">
+        <div class="bradcam_area">
             <div class="container">
                 <div class="row">
                     <div class="col-xl-12">
@@ -263,15 +263,18 @@
 @endsection
 
 @section('scripts')
-    <script>
-        var trips = {!! json_encode($trips) !!}
+<script>
+    var trips = {!! json_encode($trips) !!}
 
-        var main = new Vue({
-            el : 'main',
-            data : {
-                trips : trips,
-            }
-        });
+    let current_background = homepath + "/tripsImages/" + trips[0].picture_path + "/" + trips[0].img_thumbnail;
+    $(".bradcam_area").css('background-image', 'url("' + current_background + '")');
 
-    </script>
+    var main = new Vue({
+        el : 'main',
+        data : {
+            trips : trips,
+        }
+    });
+
+</script>
 @endsection

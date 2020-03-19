@@ -26,7 +26,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('index');
+        $some_trips = Trip::inRandomOrder()->take(3)->get();
+        return view('index', compact('some_trips'));
     }
 
     public function about()
@@ -48,7 +49,7 @@ class HomeController extends Controller
         $trip = Trip::with('categories')->find($id);
         $trip['attachments'] =  $this->GetAttachments($trip['picture_path']); 
         
-        $some_trips = Trip::inRandomOrder(4)->where('id', '!=', $id)->get();
+        $some_trips = Trip::inRandomOrder()->where('id', '!=', $id)->take(4)->get();
 
         return view('destination_details', compact('trip', 'some_trips'));
     }

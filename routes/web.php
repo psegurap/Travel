@@ -97,6 +97,10 @@ Route::group(['prefix' => 'cojefavsomostodos'], function(){
                 Route::post('/update/{id}', 'CategoriesController@update');
                 Route::post('/delete/{id}', 'CategoriesController@delete');
             });
+
+            Route::group(['prefix' => 'subscriber'], function(){
+                Route::post('/new', 'SubscriberController@store');
+            });
         });
     });
 

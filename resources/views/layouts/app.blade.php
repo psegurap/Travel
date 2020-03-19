@@ -24,6 +24,7 @@
     <link rel="stylesheet" href="{{asset('/css/slick.css')}}">
     <link rel="stylesheet" href="{{asset('/css/slicknav.css')}}">
     <link rel="stylesheet" href="{{asset('/css/tippy.css')}}">
+    <link rel="stylesheet" href="{{asset('/css/jquery.toast.css')}}">
     <link rel="stylesheet" href="{{asset('/css/summernote.min.css')}}">
     <link rel="stylesheet" href="{{asset('/css/bootstrap-select.css')}}">
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css">
@@ -59,7 +60,7 @@
                                             <li><a class="active" href="{{route('index')}}">{{__('Home')}}</a></li>
                                             <li><a href="{{route('about')}}">{{__('About')}}</a></li>
                                             <li><a class="" href="{{route('destinations')}}">{{__('Destination')}}</a></li>
-                                            <li><a href="#">{{__('Pages')}} <i class="ti-angle-down"></i></a>
+                                            <li><a href="javascript:void(0)">{{__('Pages')}} <i class="ti-angle-down"></i></a>
                                                 <ul class="submenu">
                                                         <li><a href="/destinations/2">{{__('Destinations Details')}}</a></li>
                                                         {{-- <li><a href="elements.html">elements</a></li> --}}
