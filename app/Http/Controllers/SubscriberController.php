@@ -14,7 +14,9 @@ class SubscriberController extends Controller
      */
     public function index()
     {
-        //
+        $subscribers = Subscriber::all();
+        // dd($subscribers);
+        return view('admin.maintenance.subscribers', compact('subscribers'));
     }
 
     /**
@@ -35,7 +37,7 @@ class SubscriberController extends Controller
      */
     public function store(Request $request)
     {
-        $data = ['email_address' => $request->email, 'status' => 1];
+        $data = ['email_address' => $request->email, 'status' => 1, 'language' => $request->lang];
         Subscriber::create($data);
         $result = Subscriber::all();
         return $result;
@@ -70,9 +72,16 @@ class SubscriberController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update($id)
     {
-        //
+        $subscriber = Subscriber::find($id);
+        if($subscriber->status == 1){
+            Subscriber::find($id)->update(['status' => 0]);
+        }else{
+            Subscriber::find($id)->update(['status' => 1]);
+        }
+        $subscribers = Subscriber::all();
+        return response()->json($subscribers, 200);
     }
 
     /**
@@ -85,4 +94,9 @@ class SubscriberController extends Controller
     {
         //
     }
+
+    public function broadcast_message(){
+        return view('admin.maintenance.broadcast_message');
+    }
+
 }

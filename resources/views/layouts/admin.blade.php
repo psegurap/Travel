@@ -95,6 +95,7 @@
                                             <li><a href="javascript:void(0)">{{__('Others')}} <i class="ti-angle-down"></i></a>
                                                 <ul class="submenu">
                                                     <li><a href="/admin/maintenance/categories">{{__('Categories')}}</a></li>
+                                                    <li><a href="/admin/maintenance/subscribers">{{__('Subscribers')}}</a></li>
                                                     <li><a href="#">{{__('Option #2')}}</a></li>
                                                 </ul>
                                             </li>

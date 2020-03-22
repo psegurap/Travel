@@ -585,7 +585,7 @@
                 StoreSubscriber: function(){
                     $(".mail_form").LoadingOverlay("show");
                     var _this = this;
-                    axios.post(homepath + "/admin/maintenance/subscriber/new", {email : this.email_account}).then(function(response){
+                    axios.post(homepath + "/admin/maintenance/subscribers/new", {email : this.email_account, lang : lang}).then(function(response){
                         _this.email_account = ""
                         $(".mail_form").LoadingOverlay("hide");
                         Swal.fire({

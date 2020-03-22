@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App;
 use Illuminate\Http\Request;
 use App\Mail\ContactMail;
+use App\Mail\SubscriberMail;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
+use App\Subscriber;
 
 class MailController extends Controller
 {
@@ -24,5 +27,26 @@ class MailController extends Controller
 
         Mail::to('psegurap01@gmail.com')->send(new ContactMail($message_object));
 
+    }
+
+    public function send_broadcast(Request $request){
+        $broadcast_details = $request->broadcast_info;
+        $date = Carbon::now();
+        
+        $broadcast_object = new \stdClass;
+        $broadcast_object->message = $broadcast_details['message'];
+        $broadcast_object->subject = $broadcast_details['subject'];
+        $broadcast_object->year = $date->year;
+
+        if(App::getLocale() == 'es'){
+            $subscribers = Subscriber::where('status', 1)->where('language', 'es')->get();
+        }else{
+            $subscribers = Subscriber::where('status', 1)->where('language', 'en')->get();
+        }
+        foreach ($subscribers as $subscriber) {
+            $broadcast_object->email_address = $subscriber->email_address;
+            Mail::to($subscriber->email_address)->send(new SubscriberMail($broadcast_object));
+        }
+        return "DONE";
     }
 }

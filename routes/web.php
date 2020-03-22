@@ -98,8 +98,12 @@ Route::group(['prefix' => 'cojefavsomostodos'], function(){
                 Route::post('/delete/{id}', 'CategoriesController@delete');
             });
 
-            Route::group(['prefix' => 'subscriber'], function(){
+            Route::group(['prefix' => 'subscribers'], function(){
+                Route::get('/', 'SubscriberController@index');
                 Route::post('/new', 'SubscriberController@store');
+                Route::post('/update/{id}', 'SubscriberController@update');
+                Route::get('/broadcast_message', 'SubscriberController@broadcast_message');
+                Route::post('/send_broadcast', 'MailController@send_broadcast');
             });
         });
     });
