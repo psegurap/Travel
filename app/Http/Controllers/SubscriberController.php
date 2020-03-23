@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\MailController;
 use App\Subscriber;
 
 class SubscriberController extends Controller
@@ -39,8 +40,8 @@ class SubscriberController extends Controller
     {
         $data = ['email_address' => $request->email, 'status' => 1, 'language' => $request->lang];
         Subscriber::create($data);
+        $mailcontroller = MailController::new_subscriber_notification($request->email);
         $result = Subscriber::all();
-        return $result;
     }
 
     /**
