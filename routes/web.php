@@ -104,6 +104,10 @@ Route::group(['prefix' => 'cojefavsomostodos'], function(){
                 Route::post('/update/{id}', 'SubscriberController@update');
                 Route::get('/broadcast_message', 'SubscriberController@broadcast_message');
                 Route::post('/send_broadcast', 'MailController@send_broadcast');
+
+                Route::group(['prefix' => 'file'], function(){
+                    Route::post('/broadcast_attachments', 'SubscriberController@broadcast_attachments');
+                });
             });
         });
     });

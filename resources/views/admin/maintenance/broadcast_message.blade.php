@@ -35,9 +35,9 @@
               <div class="col-lg-4">
                  <div class="blog_right_sidebar">
                     <aside class="single_sidebar_widget search_widget mb-0">
-                        <button @click="validate(sendBroadcast)" class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn">{{__('Send Broadcast')}}</button>
-                       </aside>
-                     <aside class="single_sidebar_widget post_category_widget pt-2" style="background:none;">
+                        <button @click="validate(PrepareBroadcast)" class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn">{{__('Send Broadcast')}}</button>
+                     </aside>
+                     <aside class="single_sidebar_widget post_category_widget mb-0 pt-2" style="background:none;">
                         <span class="d-block my-2">{{__('Language')}}:</span>
                         <div class="switch-wrap d-flex justify-content-start align-items-center">
                            <p class="mx-2">ES</p>
@@ -48,21 +48,23 @@
                            <p class="mx-2">EN</p>
                         </div>
                      </aside>
-                     <!--  -->
-                     {{-- <aside class="single_sidebar_widget post_category_widget">
-                        <h4 class="widget_title mb-2">{{__('Categories')}}</h4>
-                        <select v-validate="'required'" v-model="post.categories" name="category" class="selectpicker form-control" multiple>
-                           <option v-for="category in categories" :value="category.id">
-                              @if(App::getlocale() == 'es')
-                                 @{{category.category_name_es}}
-                              @else
-                                 @{{category.category_name_en}}
-                              @endif
-                           </option>
-                        </select>
-                        <span class="text-danger" style="font-size: 12px;" v-show="errors.has('category')">* @{{ errors.first('category') }}</span>
-                     </aside> --}}
-                    
+                     <aside class="single_sidebar_widget search_widget mb-0">
+                        <div class="blog_right_sidebar">
+                           <aside class="single_sidebar_widget tag_cloud_widget p-0 mb-0">
+                               <ul class="list">
+                                  <li >
+                                       <a href="javascript:void(0)" @click="add_attachment = !add_attachment" class="mb-0" href="#">{{__('Include attachments')}}</a>
+                                  </li>
+                               </ul>
+                            </aside>
+                       </div>
+                        <div v-show="add_attachment" class="dropzone-container border rounded text-center">
+                           <form  class="dropzone dz-clickable " id="dropzone">
+                            @csrf
+                            <input type="hidden" name="attach_reference" v-model="attach_reference">
+                           </form>
+                        </div>
+                     </aside>
                  </div>
               </div>
            </div>
@@ -86,13 +88,15 @@
                broadcast : {
                    subject : null,
                    message : null,
-               }
+               },
+               dropzone : null,
+               attach_reference : null,
+               add_attachment : false,
             },
             mounted: function(){
 
                this.initSummernote();
-            //    this.initDropzoneGalery();
-            //    this.initDefaultDropzone();
+               this.initDropzone();
 
                $( "#confirm-switch" ).change(function() {
                   if(lang == 'es'){
@@ -102,21 +106,22 @@
                   }
                });
 
+               this.attach_reference = this.randomString();
             },
             watch : {
                
             },
             methods: {
-                // randomString: function(){
-                //     var result = '';
-                //     var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-                //     var charactersLength = characters.length;
-                //     for ( var i = 0; i < 30; i++ ) {
-                //         result += characters.charAt(Math.floor(Math.random() * charactersLength));
-                //     }
-                //     return result;
-                // },
-                sendBroadcast(){
+                randomString: function(){
+                    var result = '';
+                    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                    var charactersLength = characters.length;
+                    for ( var i = 0; i < 30; i++ ) {
+                        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+                    }
+                    return result;
+                },
+                PrepareBroadcast: function(){
                     var _this = this;
                     var go_to_go = true;
                     if(this.summernote.summernote('code').length < 20){
@@ -143,32 +148,40 @@
                         }).then(function(result) {
                             var _this_ = _this;
                             if (result.value) {
+                              if(_this_.dropzone[0].dropzone.files.length > 0){
                                 $(".broadcast_area").LoadingOverlay("show");
-                                _this_.broadcast.message = _this_.summernote.summernote('code');
-                                axios.post(homepath + '/admin/maintenance/subscribers/send_broadcast', {broadcast_info : _this_.broadcast, lang : lang}).then(function(response){
-                                    $(".broadcast_area").LoadingOverlay("hide");
-                                    Swal.fire({
-                                        icon: 'success',
-                                            title: "{{__('Your broadcast was sent')}}!",
-                                            showConfirmButton: false,
-                                            timer: 2500
-                                    }).then(function(){
-                                        window.location.reload();
-                                    })
-                                }).catch(function(error){
-                                    $(".broadcast_area").LoadingOverlay("hide");
-                                    $.toast({
-                                        heading: 'Error',
-                                        text: '{{__("There was an error sending the broadcast")}}',
-                                        showHideTransition: 'fade',
-                                        icon: 'error',
-                                        position : 'top-right'
-                                    })
-                                    console.log(error);
-                                });
+                                 main.dropzone[0].dropzone.processQueue();
+                              }else{
+                                 $(".broadcast_area").LoadingOverlay("show");
+                                 _this_.SendBroadcast();
+                              }
                             }
                         })
                     }
+                },
+                SendBroadcast: function(){
+                     this.broadcast.message = this.summernote.summernote('code');
+                     axios.post(homepath + '/admin/maintenance/subscribers/send_broadcast', {broadcast_info : this.broadcast, attach_reference : this.attach_reference, lang : lang}).then(function(response){
+                        $(".broadcast_area").LoadingOverlay("hide");
+                        Swal.fire({
+                              icon: 'success',
+                                 title: "{{__('Your broadcast was sent')}}!",
+                                 showConfirmButton: false,
+                                 timer: 2500
+                        }).then(function(){
+                              window.location.reload();
+                        })
+                     }).catch(function(error){
+                        $(".broadcast_area").LoadingOverlay("hide");
+                        $.toast({
+                              heading: 'Error',
+                              text: '{{__("There was an error sending the broadcast")}}',
+                              showHideTransition: 'fade',
+                              icon: 'error',
+                              position : 'top-right'
+                        })
+                        console.log(error);
+                     });
                 },
                 initSummernote: function(){
                     var HightlightButton = function(context) {
@@ -201,70 +214,38 @@
                             ['para', ['ul', 'ol', 'paragraph']],
                             ['view', ['fullscreen', 'codeview']],
                             ['insert', ['link']],
-
                         ],
                         buttons: {
                             highlight: HightlightButton
                         }
                     });
                 },
-                // initDropzoneGalery:  function(){
-                //     this.dropzone_galery = $("#galeryDropzone").dropzone({ 
-                //         url: "/admin/blog/file/galery",
-                //         uploadMultiple: true,
-                //         paramName: "file",
-                //         parallelUploads: 10,
-                //         acceptedFiles: "image/*",
-                //         autoProcessQueue: false,
-                //         addRemoveLinks: true,
-                //         dictDefaultMessage: `<i class="fa fa-hand-o-up mb-2" aria-hidden="true" style="font-size: 1.5em"></i><br/>
-                //                             <span style="font-size: 1em">{{__('Drop or click here to upload your galery')}}</span>`,
-                //         init : function(){
-                //             var _this = this;
-                //             this.on('error', function(file, error){
-                //             _this.removeFile(file)
-                //             //   toastr["error"](error, "Error");
-                //             });
-                //             this.on("successmultiple", function(file, response) {
-                //             if(file){
-                //                 console.log(file);
-                //                 main.dropzone_galery[0].dropzone.removeAllFiles()
-                //                 main.dropzone_default[0].dropzone.processQueue();
-                //             }
-                //             });
-                //         }, 
-                //     });
-                // },
-                // initDefaultDropzone: function(){
-                //     var _this = this;
-                //     this.dropzone_default = $("#defaultDropzone").dropzone({ 
-                //         url: "/admin/blog/file/default",
-                //         uploadMultiple: true,
-                //         maxFiles:1,
-                //         paramName: "file",
-                //         // parallelUploads: 10,
-                //         acceptedFiles: "image/*",
-                //         autoProcessQueue: false,
-                //         addRemoveLinks: true,
-                //         dictDefaultMessage: `<i class="fa fa-hand-o-up mb-2" aria-hidden="true" style="font-size: 1.5em"></i><br/>
-                //                             <span style="font-size: 1em">{{__('Drop or click here to upload your custom image')}}</span>`,
-                //         init : function(){
-                //             var _this_ = _this;
-                //             this.on('error', function(file, error){
-                //             _this.removeFile(file)
-                //             //   toastr["error"](error, "Error");
-                //             });
-                //             this.on("success", function(file, response) {
-                //             if(file){
-                //                 main.dropzone_default[0].dropzone.removeAllFiles();
-                //                 $(".single-post-area").LoadingOverlay("hide");
-                //                 //response bring the ID of just created trip
-                //                 window.location.href = homepath + "/blog/" + response;
-                //             }
-                //             });
-                //         },
-                //     });
-                // },
+                initDropzone:  function(){
+                    this.dropzone = $("#dropzone").dropzone({ 
+                        url: "/admin/maintenance/subscribers/file/broadcast_attachments",
+                        uploadMultiple: true,
+                        paramName: "file",
+                        parallelUploads: 10,
+                        acceptedFiles: "image/*",
+                        autoProcessQueue: false,
+                        addRemoveLinks: true,
+                        dictDefaultMessage: `<i class="fa fa-hand-o-up mb-2" aria-hidden="true" style="font-size: 1.5em"></i><br/>
+                                            <span style="font-size: 1em">{{__('Drop or click here to upload your attachments')}}</span>`,
+                        init : function(){
+                            var _this = this;
+                            this.on('error', function(file, error){
+                            _this.removeFile(file)
+                            //   toastr["error"](error, "Error");
+                            });
+                            this.on("successmultiple", function(file, response) {
+                              if(file){
+                                 main.dropzone[0].dropzone.removeAllFiles()
+                                 main.SendBroadcast();
+                              }
+                            });
+                        }, 
+                    });
+                },
                 validate: function(callback){
                     var _this = this;
                     this.$validator.validateAll().then(function(result){

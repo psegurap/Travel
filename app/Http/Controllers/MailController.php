@@ -42,7 +42,9 @@ class MailController extends Controller
         $broadcast_object->message = $broadcast_details['message'];
         $broadcast_object->subject = $broadcast_details['subject'];
         $broadcast_object->year = $date->year;
+        $broadcast_object->attachments = $this->GetAttachments($request->attach_reference);
 
+        
         if(App::getLocale() == 'es'){
             $subscribers = Subscriber::where('status', 1)->where('language', 'es')->get();
         }else{
@@ -59,6 +61,14 @@ class MailController extends Controller
             'user_id' => Auth::id()
         ];
         BroadcastRecord::create($boadcast_info);
+
+        if(count($broadcast_object->attachments)){
+            foreach ($broadcast_object->attachments as $picture) {
+                unlink($picture);
+            }
+            $parent_path = base_path() . "/public/broadcastImages/" . $request->attach_reference;
+            rmdir($parent_path);
+        }
     }
 
     public static function new_subscriber_notification($email_address){
@@ -90,5 +100,26 @@ class MailController extends Controller
             Mail::to($admin->email)->send(new AdminSubscriberNotification($message_object));
         }
 
+    }
+
+
+
+
+    //------------------- ATTACHMENTS ---------------------//
+    
+    public function GetAttachments($picture_path){
+        $path = base_path() . "/public/broadcastImages/" . $picture_path;
+        $attachments = [];
+
+        if(file_exists($path)){
+            $coming_files = scandir($path);
+            foreach ($coming_files as $file) {
+                if($file != "" && $file != "." && $file != ".."){
+                    $file_with_path = base_path() . "/public/broadcastImages/" . $picture_path . "/" . $file;
+                    array_push($attachments, $file_with_path);
+                }
+            }
+        }
+        return $attachments;
     }
 }

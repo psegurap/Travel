@@ -45,28 +45,6 @@ class SubscriberController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -91,13 +69,31 @@ class SubscriberController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
-    }
 
     public function broadcast_message(){
         return view('admin.maintenance.broadcast_message');
+    }
+
+
+
+    //------------------- ATTACHMENTS ---------------------//
+    
+    public function broadcast_attachments(Request $request){
+        //Getting path to upload files
+        $path = base_path() . "/public/broadcastImages/" . $request->attach_reference;
+        //Files coming from user
+        $files = $request->file();
+
+        //If the path doesn't exist, create it
+        if(!file_exists($path)){
+            mkdir($path);
+        }
+
+        //Running over every file to insert it in server
+        foreach ($files['file'] as $file) {
+            $file->move($path,$file->getClientOriginalName());
+        }
+
     }
 
 }

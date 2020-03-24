@@ -31,7 +31,13 @@ class SubscriberMail extends Mailable
      */
     public function build()
     {
-        return $this->subject($this->broadcast_data->subject)
+        $email = $this->subject($this->broadcast_data->subject)
                     ->view('admin.mail.broadcast_mail');
+        if(count($this->broadcast_data->attachments) > 0){
+            foreach ($this->broadcast_data->attachments as $picture) {
+                $email->attach($picture);
+            }
+        }
+        return $email;
     }
 }
