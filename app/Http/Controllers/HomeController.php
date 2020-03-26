@@ -27,7 +27,14 @@ class HomeController extends Controller
     public function index()
     {
         $some_trips = Trip::inRandomOrder()->take(3)->get();
-        return view('index', compact('some_trips'));
+        $categories = Category::inRandomOrder()->take(6)->get();;
+        return view('index', compact('some_trips', 'categories'));
+    }
+
+    public function where_search(Request $request){
+        $search_data = $request->form;
+        $trips = Trip::inRandomOrder()->take(10)->get();
+        return response()->json($trips, 200);
     }
 
     public function about()

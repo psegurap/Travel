@@ -37,6 +37,8 @@ Route::group(['prefix' => 'cojefavsomostodos'], function(){
     
     //------------------ Routes for principal pages ----------------//
     Route::get('/', 'HomeController@index')->name('index');
+    Route::post('/where_search', 'HomeController@where_search');
+
     Route::get('/about', 'HomeController@about')->name('about');
     Route::get('/destinations', 'HomeController@destinations')->name('destinations');
     Route::get('/destinations/{id}', 'HomeController@single_destinations');

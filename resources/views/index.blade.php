@@ -7,6 +7,11 @@
         font-size: 0.8rem !important;
     }
 
+    .modal-body {
+        overflow-y: auto;
+        max-height: calc(100vh - 150px);
+    }
+
 </style>
     
 @endsection
@@ -35,9 +40,9 @@
                                         @endif
                                     </p>
                                     @if (App::getLocale() == 'es')
-                                        <a href="#" class="boxed-btn3">Ver Más</a>
+                                        <a :href="homepath + '/destinations'" class="boxed-btn3">Ver Más</a>
                                     @else
-                                        <a href="#" class="boxed-btn3">Explorar Ahora</a>
+                                        <a :href="homepath + '/destinations'" class="boxed-btn3">Explorar Ahora</a>
                                     @endif
                                 </div>
                             </div>
@@ -61,24 +66,29 @@
                     </div>
                     <div class="col-lg-9">
                         <div class="search_wrap">
-                            <form class="search_form" action="#">
+                            <div class="search_form" action="#">
                                 <div class="input_field">
-                                    <input type="text" placeholder="{{__('Where to go?')}}">
+                                    <input v-model="where_form.free_input" type="text" placeholder="{{__('Where to go?')}}">
                                 </div>
                                 <div class="input_field">
-                                    <input id="datepicker" placeholder="{{__('Date')}}">
+                                    <input v-model="where_form.date" data-date-format="yyyy-mm" class="datepicker" data-provide="datepicker" type="text" placeholder="{{__('Date')}}">
                                 </div>
                                 <div class="input_field">
-                                    <select>
-                                        <option data-display="Travel type">Travel type</option>
-                                        <option value="1">Some option</option>
-                                        <option value="2">Another option</option>
+                                    <select class="travel_type" v-model="where_form.trip_type">
+                                        <option value="All" data-display="{{__('Travel type')}}">{{__('Travel type')}}</option>
+                                        <option v-for="category in categories" :value="category.id">
+                                            @if (App::getLocale() == 'es')
+                                                    @{{category.category_name_es}}
+                                                @else
+                                                    @{{category.category_name_en}}
+                                            @endif
+                                        </option>
                                     </select>
                                 </div>
                                 <div class="search_btn">
-                                    <button class="boxed-btn4 " type="submit" >{{__('Search')}}</button>
+                                    <button class="boxed-btn4 where_form_btn" @click="WhereForm()" >{{__('Search')}}</button>
                                 </div>
-                            </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -557,13 +567,88 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Modal -->
+        <div class="modal fade" id="whereModal" tabindex="-1" role="dialog" aria-labelledby="whereModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+            <div class="modal-content" style="border-radius:0px">
+                <div class="modal-header row mx-0">
+                        <div class="col-md-4">
+                            <span><strong style="color:#FF4A52">{{__('Where')}}:</strong> @{{where_form.free_input}}</span>
+                        </div>
+                        <div class="col-md-3">
+                            <span><strong style="color:#FF4A52">{{__('Date')}}:</strong> @{{where_form.date}}</span> 
+                        </div>
+                        <div class="col-md-4">
+                            <span><strong style="color:#FF4A52">{{__('Type')}}:</strong> 
+                                <span v-if="selected_category.length > 0">
+                                    @if (App::getLocale() == 'es')
+                                        @{{selected_category[0].category_name_es}}
+                                    @else
+                                        @{{selected_category}}
+                                    @endif
+                                </span>
+                            </span>
+                        </div>
+                </div>
+                <div class="modal-body">
+                    <div class="recent_trip_area py-0">
+                        <div class="container">
+                            <div class="row mb-3">
+                                <div class="col-12">
+                                    <span>{{__('Results Amount')}}: (@{{where_results.length}})</span>
+                                </div>
+                            </div>
+                            <div class="row" v-if="where_results.length <= 0">
+                                <div class="col-12">
+                                    <span><strong>{{__('NO RESULTS FOUND')}}</strong></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div v-if="where_results.length > 0" v-for="trip in where_results" class="col-md-12">
+                                    <div class="single_trip row">
+                                        <div class="col-4 col-lg-2">
+                                            <div class="thumb">
+                                                <img style="width:100%;" :src="homepath + '/tripsImages/' + trip.picture_path + '/' + trip.img_thumbnail" alt="">
+                                            </div>
+                                        </div>
+                                        <div class="col-8 col-lg-10">
+                                            <div class="info pt-0">
+                                                <div class="date">
+                                                    <span>@{{moment(trip.created_at).format('LL')}}</span>
+                                                </div>
+                                                <a href="#">
+                                                    <span>
+                                                        @if (App::getLocale() == 'es')
+                                                            @{{trip.title_es}}
+                                                        @else
+                                                            @{{trip.title_en}}
+                                                        @endif
+                                                    </span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default px-4" data-dismiss="modal">{{__('Close')}}</button>
+                </div>
+            </div>
+            </div>
+        </div>
     </main>
 @endsection
 
 @section('scripts')
     <script>
         Vue.use(VeeValidate);
+
         var some_trips = {!! json_encode($some_trips) !!}
+        var categories = {!! json_encode($categories) !!}
         // //------ IMAGES ---------//
         let bg0 = homepath + "/tripsImages/" + some_trips[0].picture_path + "/" + some_trips[0].img_thumbnail;
         let bg1 = homepath + "/tripsImages/" + some_trips[1].picture_path + "/" + some_trips[1].img_thumbnail;
@@ -574,12 +659,47 @@
             data : {
                 some_trips : some_trips,
                 email_account : null,
+                categories : categories,
+                where_form: {
+                    trip_type : 'All',
+                    date : null,
+                    free_input : null,
+                    lang : lang
+                },
+                where_results : [],
             },
             mounted: function(){
                 //------ Setting BG ------//
                 $('.slider0').css('background-image', 'url("' + bg0 + '")');
                 $('.slider1').css('background-image', 'url("' + bg1 + '")');
                 $('.slider2').css('background-image', 'url("' + bg2 + '")');
+
+                $('.datepicker').datepicker({
+                    format: 'yyyy-mm',
+                    viewMode: "months", 
+                    minViewMode: "months",
+                    immediateUpdates : true
+                });
+
+                $('.travel_type').on('change', function(val){
+                    main.where_form.trip_type = val.target.value;
+                })
+
+                $('.datepicker').on('change', function(val){
+                    main.where_form.date = val.target.value;
+                })
+                
+            },
+            watch : {
+                
+            },
+            computed : {
+                selected_category (){
+                    var _this = this;
+                    return this.categories.filter(function(category){
+                        return category.id == _this.where_form.trip_type; 
+                    })
+                }
             },
             methods : {
                 StoreSubscriber: function(){
@@ -599,6 +719,27 @@
                     }).catch(function(error){
                         console.log(error);
                     });
+                },
+                WhereForm: function(){
+                    var _this = this;
+                    $(".where_form_btn").LoadingOverlay("show");
+                    axios.post(homepath + '/where_search', {form : this.where_form}).then(function(response){
+                        if(response.data){
+                            _this.where_results = response.data
+                        }
+                        $(".where_form_btn").LoadingOverlay("hide");
+                        $('#whereModal').modal('show');
+                    }).catch(function(error){
+                        $.toast({
+                            heading: 'Error',
+                            text: '{{__("Unsuccessful Search")}}',
+                            showHideTransition: 'fade',
+                            icon: 'error',
+                            position : 'top-right'
+                        });
+                        $(".where_form_btn").LoadingOverlay("hide");
+                        console.log(error);
+                    })
                 },
                 validate: function(callback){
                     var _this = this;

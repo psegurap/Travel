@@ -90,6 +90,11 @@
     "Yes, send it!" : "Si, ¡enviar!",
     "Your broadcast was sent" : "¡Tu difusión fue enviada",
     "here was an error sending the broadcast" : "Hubo un error enviando la difusión",
-    "Broadcast Message" : "Mensaje De Difusión"
+    "Broadcast Message" : "Mensaje De Difusión",
+    "Travel type" : "Tipo de viaje",
+    "Where" : "Donde",
+    "Type" : "Tipo",
+    "NO RESULTS FOUND" : "NO RESULTADOS ENCONTRADOS",
+    "Results Amount" : "Cantidad de Resultados"
 
 }

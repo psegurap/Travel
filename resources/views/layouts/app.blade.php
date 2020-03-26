@@ -28,8 +28,10 @@
     <link rel="stylesheet" href="{{asset('/css/summernote.min.css')}}">
     <link rel="stylesheet" href="{{asset('/css/bootstrap-select.css')}}">
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css">
-
+    
     <link rel="stylesheet" href="{{asset('/css/style.css')}}">
+    <link rel="stylesheet" href="{{asset('/css/bootstrap-datepicker.min.css')}}">
+    
     <!-- <link rel="stylesheet" href="css/responsive.css"> -->
     @yield('styles')
 </head>
@@ -88,6 +90,7 @@
                                             <li><a href="#"> <i class="fa fa-instagram"></i> </a></li>
                                             <li><a href="#"> <i class="fa fa-facebook"></i> </a></li>
                                             <li><a href="#"> <i class="fa fa-twitter"></i> </a></li>
+                                            <li><a href="javascript:void(0)"> <i class="fa fa-language"></i> </a></li>
                                             @if(Auth::check())
                                             <li><a href="/admin/home"> <i class="fa fa-cog"></i> </a></li>
                                             @endif
@@ -96,7 +99,7 @@
                                 </div>
                             </div>
                             <div class="seach_icon">
-                                <a data-toggle="modal" data-target="#exampleModalCenter" href="#">
+                                <a data-toggle="modal" data-target="#exampleModalCenter" href="javascript:void(0)">
                                     <i class="fa fa-search"></i>
                                 </a>
                             </div>
@@ -313,8 +316,9 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
     <script src="{{asset('/js/tippy.js')}}"></script>
     <script src="{{asset('/js/summernote.min.js')}}"></script>
     <script src="{{asset('/js/vue.js')}}"></script>
-    <script src="{{asset('/js/bootstrap-select.js')}}"></script>
     <script src="{{asset('/js/moment.js')}}"></script>
+    <script src="{{asset('/js/bootstrap-select.js')}}"></script>
+    <script src="{{asset('/js/bootstrap-datepicker.min.js')}}"></script>
     <script src="{{asset('/js/vee-validate.js')}}"></script>
     <script src="{{asset('/js/axios.js')}}"></script>
     <script src="{{asset('/js/jquery.toast.js')}}"></script>
