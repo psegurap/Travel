@@ -34,7 +34,8 @@
     
     <link rel="stylesheet" href="{{asset('/css/style.css')}}">
     <link rel="stylesheet" href="{{asset('/css/bootstrap-select.css')}}">
-    <link rel="stylesheet" href="{{asset('/css/bootstrap-datetimepicker.css')}}">
+    <link rel="stylesheet" href="{{asset('/css/bootstrap-datepicker.min.css')}}">
+
     <!-- <link rel="stylesheet" href="css/responsive.css"> -->
     @yield('styles')
 </head>
@@ -349,7 +350,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
     <script src="{{asset('/js/moment.js')}}"></script>
     <script src="{{asset('/js/vee-validate.js')}}"></script>
     <script src="{{asset('/js/bootstrap-select.js')}}"></script>
-    <script src="{{asset('/js/bootstrap-datetimepicker.min.js')}}"></script>
+    <script src="{{asset('/js/bootstrap-datepicker.min.js')}}"></script>
     <script src="{{asset('/js/axios.js')}}"></script>
     <script src="{{asset('/js/jquery.toast.js')}}"></script>
     <script src="{{asset('/js/sweetalert2@9.js')}}"></script>

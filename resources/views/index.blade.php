@@ -9,7 +9,7 @@
 
     .modal-body {
         overflow-y: auto;
-        max-height: calc(100vh - 150px);
+        max-height: calc(100vh - 200px);
     }
 
 </style>
@@ -226,15 +226,31 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-4 col-md-6">
+                    <div v-for="trip in popular_trips" class="col-lg-4 col-md-6">
                         <div class="single_place">
                             <div class="thumb">
-                                <img src="img/place/1.png" alt="">
-                                <a href="#" class="prise">$500</a>
+                                <img style="width:100%" :src="homepath + '/tripsImages/' + trip.picture_path + '/' + trip.img_thumbnail" alt="">
+                                <a :href="homepath + '/destinations/' + trip.id" class="prise">$@{{trip.adult_price}}</a>
                             </div>
                             <div class="place_info">
-                                <a href="destination_details.html"><h3>California</h3></a>
-                                <p>United State of America</p>
+                                <a :href="homepath + '/destinations/' + trip.id">
+                                    <h3>
+                                        @if(App::getLocale() == 'es')
+                                            @{{trip.title_es}}
+                                        @else
+                                            @{{trip.title_en}}
+                                        @endif
+                                    </h3>
+                                </a>
+                                <p>
+                                    <span class="mr-1 text-lowercase" v-for="category in trip.categories">
+                                        @if(App::getLocale() == 'es')
+                                            #@{{category.category_name_es}}
+                                        @else
+                                            #@{{category.category_name_en}}
+                                        @endif
+                                    </span>
+                                </p>
                                 <div class="rating_days d-flex justify-content-between">
                                     <span class="d-flex justify-content-center align-items-center">
                                          <i class="fa fa-star"></i> 
@@ -246,137 +262,7 @@
                                     </span>
                                     <div class="days">
                                         <i class="fa fa-clock-o"></i>
-                                        <a href="#">5 Days</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="single_place">
-                            <div class="thumb">
-                                <img src="img/place/2.png" alt="">
-                                <a href="#" class="prise">$500</a>
-                            </div>
-                            <div class="place_info">
-                                <a href="destination_details.html"><h3>Korola Megna</h3></a>
-                                <p>United State of America</p>
-                                <div class="rating_days d-flex justify-content-between">
-                                    <span class="d-flex justify-content-center align-items-center">
-                                         <i class="fa fa-star"></i> 
-                                         <i class="fa fa-star"></i> 
-                                         <i class="fa fa-star"></i> 
-                                         <i class="fa fa-star"></i> 
-                                         <i class="fa fa-star"></i>
-                                         <a href="#">(20 Review)</a>
-                                    </span>
-                                    <div class="days">
-                                        <i class="fa fa-clock-o"></i>
-                                        <a href="#">5 Days</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="single_place">
-                            <div class="thumb">
-                                <img src="img/place/3.png" alt="">
-                                <a href="#" class="prise">$500</a>
-                            </div>
-                            <div class="place_info">
-                                <a href="destination_details.html"><h3>London</h3></a>
-                                <p>United State of America</p>
-                                <div class="rating_days d-flex justify-content-between">
-                                    <span class="d-flex justify-content-center align-items-center">
-                                         <i class="fa fa-star"></i> 
-                                         <i class="fa fa-star"></i> 
-                                         <i class="fa fa-star"></i> 
-                                         <i class="fa fa-star"></i> 
-                                         <i class="fa fa-star"></i>
-                                         <a href="#">(20 Review)</a>
-                                    </span>
-                                    <div class="days">
-                                        <i class="fa fa-clock-o"></i>
-                                        <a href="#">5 Days</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="single_place">
-                            <div class="thumb">
-                                <img src="img/place/4.png" alt="">
-                                <a href="#" class="prise">$500</a>
-                            </div>
-                            <div class="place_info">
-                                <a href="destination_details.html"><h3>Miami Beach</h3></a>
-                                <p>United State of America</p>
-                                <div class="rating_days d-flex justify-content-between">
-                                    <span class="d-flex justify-content-center align-items-center">
-                                         <i class="fa fa-star"></i> 
-                                         <i class="fa fa-star"></i> 
-                                         <i class="fa fa-star"></i> 
-                                         <i class="fa fa-star"></i> 
-                                         <i class="fa fa-star"></i>
-                                         <a href="#">(20 Review)</a>
-                                    </span>
-                                    <div class="days">
-                                        <i class="fa fa-clock-o"></i>
-                                        <a href="#">5 Days</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="single_place">
-                            <div class="thumb">
-                                <img src="img/place/5.png" alt="">
-                                <a href="#" class="prise">$500</a>
-                            </div>
-                            <div class="place_info">
-                                <a href="destination_details.html"><h3>California</h3></a>
-                                <p>United State of America</p>
-                                <div class="rating_days d-flex justify-content-between">
-                                    <span class="d-flex justify-content-center align-items-center">
-                                         <i class="fa fa-star"></i> 
-                                         <i class="fa fa-star"></i> 
-                                         <i class="fa fa-star"></i> 
-                                         <i class="fa fa-star"></i> 
-                                         <i class="fa fa-star"></i>
-                                         <a href="#">(20 Review)</a>
-                                    </span>
-                                    <div class="days">
-                                        <i class="fa fa-clock-o"></i>
-                                        <a href="#">5 Days</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="single_place">
-                            <div class="thumb">
-                                <img src="img/place/6.png" alt="">
-                                <a href="#" class="prise">$500</a>
-                            </div>
-                            <div class="place_info">
-                                <a href="destination_details.html"><h3>Saintmartine Iceland</h3></a>
-                                <p>United State of America</p>
-                                <div class="rating_days d-flex justify-content-between">
-                                    <span class="d-flex justify-content-center align-items-center">
-                                         <i class="fa fa-star"></i> 
-                                         <i class="fa fa-star"></i> 
-                                         <i class="fa fa-star"></i> 
-                                         <i class="fa fa-star"></i> 
-                                         <i class="fa fa-star"></i>
-                                         <a href="#">(20 Review)</a>
-                                    </span>
-                                    <div class="days">
-                                        <i class="fa fa-clock-o"></i>
-                                        <a href="#">5 Days</a>
+                                        <a :href="homepath + '/destinations/' + trip.id">@{{moment(trip.created_at, "YYYYMMDD").fromNow()}}</a>
                                     </div>
                                 </div>
                             </div>
@@ -386,7 +272,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="more_place_btn text-center">
-                            <a class="boxed-btn4" href="#">{{__('More Places')}}</a>
+                            <a class="boxed-btn4" :href="homepath + '/destinations'">{{__('More Places')}}</a>
                         </div>
                     </div>
                 </div>
@@ -585,7 +471,7 @@
                                     @if (App::getLocale() == 'es')
                                         @{{selected_category[0].category_name_es}}
                                     @else
-                                        @{{selected_category}}
+                                        @{{selected_category[0].category_name_en}}
                                     @endif
                                 </span>
                             </span>
@@ -596,7 +482,7 @@
                         <div class="container">
                             <div class="row mb-3">
                                 <div class="col-12">
-                                    <span>{{__('Results Amount')}}: (@{{where_results.length}})</span>
+                                    <span>{{__('Results')}}: (@{{where_results.length}})</span>
                                 </div>
                             </div>
                             <div class="row" v-if="where_results.length <= 0">
@@ -617,7 +503,7 @@
                                                 <div class="date">
                                                     <span>@{{moment(trip.created_at).format('LL')}}</span>
                                                 </div>
-                                                <a href="#">
+                                                <a :href="homepath + '/destinations/' + trip.id">
                                                     <span>
                                                         @if (App::getLocale() == 'es')
                                                             @{{trip.title_es}}
@@ -649,6 +535,7 @@
 
         var some_trips = {!! json_encode($some_trips) !!}
         var categories = {!! json_encode($categories) !!}
+        var popular_trips = {!! json_encode($popular_trips) !!}
         // //------ IMAGES ---------//
         let bg0 = homepath + "/tripsImages/" + some_trips[0].picture_path + "/" + some_trips[0].img_thumbnail;
         let bg1 = homepath + "/tripsImages/" + some_trips[1].picture_path + "/" + some_trips[1].img_thumbnail;
@@ -660,11 +547,11 @@
                 some_trips : some_trips,
                 email_account : null,
                 categories : categories,
+                popular_trips : popular_trips,
                 where_form: {
                     trip_type : 'All',
                     date : null,
                     free_input : null,
-                    lang : lang
                 },
                 where_results : [],
             },

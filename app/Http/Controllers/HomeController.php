@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Trip;
 use App\Post;
 use App\Category;
+use App;
 
 class HomeController extends Controller
 {
@@ -27,12 +28,41 @@ class HomeController extends Controller
     public function index()
     {
         $some_trips = Trip::inRandomOrder()->take(3)->get();
-        $categories = Category::inRandomOrder()->take(6)->get();;
-        return view('index', compact('some_trips', 'categories'));
+        $categories = Category::inRandomOrder()->take(6)->get();
+        $popular_trips = Trip::with('categories')->inRandomOrder()->take(6)->get();
+        return view('index', compact('some_trips', 'categories', 'popular_trips'));
     }
 
     public function where_search(Request $request){
         $search_data = $request->form;
+        $trip_type =  $search_data['trip_type'];
+
+        $current_query = Trip::with('categories')->orderBy('created_at', 'desc');
+        if($trip_type != 'All'){
+            $trip_type = [$trip_type];
+            $current_query->where(function($query) use($trip_type){
+                $query->whereHas('categories',function($query) use($trip_type){
+                    $query->whereIn('categories.id', $trip_type);
+                });
+            });
+        }
+
+        if($search_data['date'] != null && $search_data['date'] != ''){
+            $date =  explode("-", $search_data['date']);
+            $current_query->whereYear('created_at', $date[0])->whereMonth('created_at', $date[1]);
+        }
+
+        if($search_data['free_input'] != null && $search_data['free_input'] != ''){
+            if(App::getLocale() == 'es'){
+                $current_query->where('title_es', 'like' , '%' . $search_data['free_input'] . '%');
+            }else{
+                $current_query->where('title_en', 'like' , '%' . $search_data['free_input'] . '%');
+            }
+        }
+
+        $trips = $current_query->get();
+        return $trips; 
+
         $trips = Trip::inRandomOrder()->take(10)->get();
         return response()->json($trips, 200);
     }
