@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="{{asset('/css/tippy.css')}}">
     <link rel="stylesheet" href="{{asset('/css/jquery.toast.css')}}">
     <link rel="stylesheet" href="{{asset('/css/summernote.min.css')}}">
+    <link rel="stylesheet" href="{{asset('/plugins/dist/dropzone.css')}}">
     <link rel="stylesheet" href="{{asset('/css/bootstrap-select.css')}}">
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css">
     
@@ -69,13 +70,18 @@
                                                 </ul>
                                             </li>
                                             <li><a class="" href="{{route('blog')}}">{{__('Blog')}}</a></li>
+                                            <li><a href="javascript:void(0)">{{__('Contact')}} <i class="ti-angle-down"></i></a>
+                                                <ul class="submenu">
+                                                    <li><a href="{{route('contact')}}">{{__('Email Us')}}</a></li>
+                                                    <li><a @click="openModal()" href="javascript:void(0)">{{__('Quick Feedback')}}</a></li>
+                                                </ul>
+                                            </li>
                                             {{-- <li><a href="#">{{__('Blog')}} <i class="ti-angle-down"></i></a>
                                                 <ul class="submenu">
                                                     <li><a href="{{route('blog')}}">{{__('Blog')}}</a></li>
                                                     <li><a href="/blog/1">{{__('Single Blog')}}</a></li>
                                                 </ul>
                                             </li> --}}
-                                            <li><a href="{{route('contact')}}">{{__('Contact')}}</a></li>
                                         </ul>
                                     </nav>
                                 </div>
@@ -109,6 +115,55 @@
                         </div>
                     </div>
 
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="feedbackModal" tabindex="-1" role="dialog" aria-labelledby="feedbackModalTitle" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content" style="border-radius: 0px;">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="feedbackModalTitle">{{__('Quick Feedback')}}</h5>
+                    </div>
+                    <div class="modal-body">
+                        <section class="form-contact contact_form">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <input v-validate="'required'"  class="form-control valid" name="name" type="text" placeholder="{{__('Enter your name')}}">
+                                                <span class="text-danger" style="font-size: 12px;" v-show="errors.has('name')">* @{{ errors.first('name') }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <textarea v-validate="'required'"  class="form-control w-100" name="message" cols="30" rows="5" placeholder="{{__('Enter feedback')}}"></textarea>
+                                                <span class="text-danger" style="font-size: 12px;" v-show="errors.has('message')">* @{{ errors.first('message') }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label for="">Optional Picture</label>
+                                                <form  class="dropzone dz-clickable" id="Dropzone">
+                                                    @csrf
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light px-4">{{__('Send')}}</button>
+                        <button type="button" class="btn btn-default px-4" data-dismiss="modal">{{__('Close')}}</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -276,17 +331,17 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
     </footer>
 
 
-  <!-- Modal -->
-  <div class="modal fade custom_search_pop" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="serch_form">
-            <input type="text" placeholder="Search" >
-            <button type="submit">search</button>
+    <!-- Modal -->
+    <div class="modal fade custom_search_pop" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="serch_form">
+                <input type="text" placeholder="Search" >
+                <button type="submit">search</button>
+            </div>
         </div>
-      </div>
+        </div>
     </div>
-  </div>
     <!-- link that opens popup -->
 <!--     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -307,14 +362,17 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
     <script src="{{asset('/js/scrollIt.js')}}"></script>
     <script src="{{asset('/js/jquery.scrollUp.min.js')}}"></script>
     <script src="{{asset('/js/wow.min.js')}}"></script>
+    <script src="{{asset('/js/jquery-ui.min.js')}}"></script>
     <script src="{{asset('/js/nice-select.min.js')}}"></script>
     <script src="{{asset('/js/jquery.slicknav.min.js')}}"></script>
     <script src="{{asset('/js/jquery.magnific-popup.min.js')}}"></script>
     <script src="{{asset('/js/plugins.js')}} "></script>
-    <script src="{{asset('/js/gijgo.min.js')}}"></script>
+    <script src="{{asset('/js/range.js')}} "></script>
+    {{-- <script src="{{asset('/js/gijgo.min.js')}}"></script> --}}
     <script src="{{asset('/js/slick.min.js')}}"></script>
     <script src="{{asset('/js/tippy.js')}}"></script>
     <script src="{{asset('/js/summernote.min.js')}}"></script>
+    <script src="{{asset('/plugins/dist/dropzone.js')}}"></script>
     <script src="{{asset('/js/vue.js')}}"></script>
     <script src="{{asset('/js/moment.js')}}"></script>
     <script src="{{asset('/js/bootstrap-select.js')}}"></script>
@@ -340,9 +398,53 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
          }
         });
 
+        Vue.use(VeeValidate);
+        Dropzone.autoDiscover = false;
+
+
         var homepath = "{{url('/')}}";
         var lang = "{{App::getlocale()}}";
 
+        var header = new Vue({
+            el: 'header',
+            data : {
+
+            },
+            mounted: function(){
+                this.initDropzone();
+            },
+            methods: {
+                openModal:function(){
+                    $('#feedbackModal').modal('show');
+                },
+                initDropzone: function(){
+                  var _this = this;
+                  this.dropzone_default = $("#Dropzone").dropzone({ 
+                     url: "/admin/trips/file/default",
+                     uploadMultiple: true,
+                     maxFiles:1,
+                     maxFilesize: 2,
+                     paramName: "file",
+                     acceptedFiles: "image/*",
+                     autoProcessQueue: false,
+                     addRemoveLinks: true,
+                     dictDefaultMessage: `<i class="fa fa-hand-o-up mb-2" aria-hidden="true" style="font-size: 1.5em"></i><br/>
+                                          <span style="font-size: 1em">{{__('Click here to add your picture')}}</span>`,
+                     init : function(){
+                        var _this_ = _this;
+                        this.on('error', function(file, error){
+                           this.removeFile(file)
+                        });
+                        this.on("success", function(file, response) {
+                           if(file){
+                              $(".single-post-area").LoadingOverlay("hide");
+                           }
+                        });
+                     },
+                  });
+               },
+            }
+        });
         
     </script>
     @yield('scripts')

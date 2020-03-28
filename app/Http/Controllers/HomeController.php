@@ -30,7 +30,8 @@ class HomeController extends Controller
         $some_trips = Trip::inRandomOrder()->take(3)->get();
         $categories = Category::inRandomOrder()->take(6)->get();
         $popular_trips = Trip::with('categories')->inRandomOrder()->take(6)->get();
-        return view('index', compact('some_trips', 'categories', 'popular_trips'));
+        $recent_trips = Trip::with('categories')->where('available_date', '<', date("Y-m-d"))->orderBy('available_date', 'desc')->take(3)->get();
+        return view('index', compact('some_trips', 'categories', 'popular_trips', 'recent_trips'));
     }
 
     public function where_search(Request $request){
@@ -74,11 +75,18 @@ class HomeController extends Controller
 
     public function destinations()
     {
-        $trips = Trip::with('categories')->orderBy('created_at', 'desc')->get();
-        $categories = Category::with('posts')->take(6)->get();
-        $recent_posts = Post::orderBy('created_at', 'desc')->take(4)->get();
+        $trips = Trip::with('categories')->orderBy('available_date', 'desc')->take(6)->get();
+        $amount_trips = count(Trip::all());
+        $categories = Category::inRandomOrder()->take(6)->get();
+        $recent_trips = Trip::with('categories')->where('available_date', '<', date("Y-m-d"))->orderBy('available_date', 'desc')->take(3)->get();
 
-        return view('destinations', compact('trips'));
+        return view('destinations', compact('trips', 'categories', 'amount_trips', 'recent_trips'));
+    }
+
+    public function load_more_destinations(Request $request){
+        $new_amount = ($request->current_amount + 3);
+        $trips = Trip::with('categories')->orderBy('available_date', 'desc')->take($new_amount)->get();
+        return response()->json($trips, 200);
     }
 
     public function single_destinations($id)
@@ -86,7 +94,7 @@ class HomeController extends Controller
         $trip = Trip::with('categories')->find($id);
         $trip['attachments'] =  $this->GetAttachments($trip['picture_path']); 
         
-        $some_trips = Trip::inRandomOrder()->where('id', '!=', $id)->take(4)->get();
+        $some_trips = Trip::inRandomOrder()->where('id', '!=', $id)->take(4)->orderBy('available_date', 'desc')->get();
 
         return view('destination_details', compact('trip', 'some_trips'));
     }

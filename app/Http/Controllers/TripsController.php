@@ -53,6 +53,7 @@ class TripsController extends Controller
             'status' => 1,
             'adult_price' => $request->trip_info['adult_price'],
             'kid_price' => $request->trip_info['kid_price'],
+            'available_date' => $request->trip_info['available_date'],
         ];
 
         //validation to set in specific language
@@ -120,6 +121,7 @@ class TripsController extends Controller
             'img_thumbnail' => $request->trip_info['img_thumbnail'],
             'adult_price' => $request->trip_info['adult_price'],
             'kid_price' => $request->trip_info['kid_price'],
+            'available_date' => $request->trip_info['available_date'],
         ];
 
         if($request->lang == 'es'){

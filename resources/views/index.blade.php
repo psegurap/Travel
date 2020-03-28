@@ -262,7 +262,7 @@
                                     </span>
                                     <div class="days">
                                         <i class="fa fa-clock-o"></i>
-                                        <a :href="homepath + '/destinations/' + trip.id">@{{moment(trip.created_at, "YYYYMMDD").fromNow()}}</a>
+                                        <a :href="homepath + '/destinations/' + trip.id">@{{moment(trip.available_date, "YYYYMMDD").fromNow()}}</a>
                                     </div>
                                 </div>
                             </div>
@@ -402,51 +402,33 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-4 col-md-6">
+                    <div v-for="trip in recent_trips" class="col-lg-4 col-md-6">
                         <div class="single_trip">
                             <div class="thumb">
-                                <img src="img/trip/1.png" alt="">
+                                <img style="width:100%" :src="homepath + '/tripsImages/' + trip.picture_path + '/' + trip.img_thumbnail" alt="">
                             </div>
                             <div class="info">
                                 <div class="date">
-                                    <span>Oct 12, 2019</span>
+                                    <span>@{{moment(trip.available_date).format('LL')}}</span>
                                 </div>
-                                <a href="#">
-                                    <h3>Journeys Are Best Measured In
-                                        New Friends</h3>
+                                <a :href="homepath + '/destinations/' + trip.id">
+                                    <h3>
+                                        @if(App::getLocale() == 'es')
+                                            @{{trip.title_es}}
+                                        @else
+                                            @{{trip.title_en}}
+                                        @endif
+                                    </h3>
                                 </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="single_trip">
-                            <div class="thumb">
-                                <img src="img/trip/2.png" alt="">
-                            </div>
-                            <div class="info">
-                                <div class="date">
-                                    <span>Oct 12, 2019</span>
-                                </div>
-                                <a href="#">
-                                    <h3>Journeys Are Best Measured In
-                                        New Friends</h3>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="single_trip">
-                            <div class="thumb">
-                                <img src="img/trip/3.png" alt="">
-                            </div>
-                            <div class="info">
-                                <div class="date">
-                                    <span>Oct 12, 2019</span>
-                                </div>
-                                <a href="#">
-                                    <h3>Journeys Are Best Measured In
-                                        New Friends</h3>
-                                </a>
+                                <p class="font-italic mt-1">
+                                    <span class="mr-1 text-capitalize" v-for="category in trip.categories">
+                                        @if(App::getLocale() == 'es')
+                                            <span><i class="fa fa-angle-right" aria-hidden="true"></i>@{{category.category_name_es}}</span>
+                                        @else
+                                            <span><i class="fa fa-angle-right" aria-hidden="true"></i>@{{category.category_name_en}}</span>
+                                        @endif
+                                    </span>
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -536,6 +518,9 @@
         var some_trips = {!! json_encode($some_trips) !!}
         var categories = {!! json_encode($categories) !!}
         var popular_trips = {!! json_encode($popular_trips) !!}
+        var recent_trips = {!! json_encode($recent_trips) !!}
+
+        
         // //------ IMAGES ---------//
         let bg0 = homepath + "/tripsImages/" + some_trips[0].picture_path + "/" + some_trips[0].img_thumbnail;
         let bg1 = homepath + "/tripsImages/" + some_trips[1].picture_path + "/" + some_trips[1].img_thumbnail;
@@ -548,6 +533,7 @@
                 email_account : null,
                 categories : categories,
                 popular_trips : popular_trips,
+                recent_trips : recent_trips,
                 where_form: {
                     trip_type : 'All',
                     date : null,

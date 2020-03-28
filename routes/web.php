@@ -42,10 +42,14 @@ Route::group(['prefix' => 'cojefavsomostodos'], function(){
     Route::get('/about', 'HomeController@about')->name('about');
     Route::get('/destinations', 'HomeController@destinations')->name('destinations');
     Route::get('/destinations/{id}', 'HomeController@single_destinations');
+
+    Route::post('/destinations/more_destinations', 'HomeController@load_more_destinations');
+
+    // load_more_destinations
+
     Route::get('/blog', 'HomeController@blog')->name('blog');
     Route::get('/blog/{id}', 'HomeController@single_blog');
     Route::get('/contact', 'HomeController@contact')->name('contact');
-    Route::get('/', 'HomeController@index')->name('index');
 
 
     //----------------- Translations -------------------------//

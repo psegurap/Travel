@@ -75,6 +75,13 @@
                         </div>
                         <span class="text-danger" style="font-size: 12px;" v-show="errors.has('kids price')">* @{{ errors.first('kids price') }}</span>
                      </aside>
+                     <aside class="single_sidebar_widget post_category_widget pb-0 mb-0">
+                        <h4 class="widget_title mb-2">{{__("Available Date")}}</h4>
+                        <div class="form-contact comment_form">
+                           <input v-validate="'required'" type="type" data-date-format="yyyy-mm-dd" class="datepicker form-control" data-provide="datepicker" name="available date" v-model="trip.available_date" class="form-control"  placeholder="{{__('Select Date')}}">
+                        </div>
+                        <span class="text-danger" style="font-size: 12px;" v-show="errors.has('available date')">* @{{ errors.first('available date') }}</span>
+                     </aside>
                      <aside class="single_sidebar_widget post_category_widget">
                         <h4 class="widget_title mb-2">{{__('Categories')}}</h4>
                         <select v-validate="'required'" v-model="trip.categories" name="category" class="selectpicker form-control" multiple>
@@ -237,7 +244,8 @@
                   attach_reference: '',
                   adult_price : null,
                   kid_price : null,    
-                  short_description : '',              
+                  short_description : '',
+                  available_date : null,              
                },
                spinner : null,
                // lang_check : '',
@@ -256,6 +264,15 @@
                      window.location.href = homepath + "/changeLanguage/es";
                   }
                });
+
+               $('.datepicker').datepicker({
+                  format: 'yyyy-mm-dd',
+                  immediateUpdates : true
+               });
+
+               $('.datepicker').on('change', function(val){
+                  main.trip.available_date = val.target.value;
+               })
                
 
                this.trip.attach_reference = this.randomString() + new Date().getTime();

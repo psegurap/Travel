@@ -297,7 +297,7 @@
                                              <h3>@{{post.title_en}}</h3>
                                           @endif
                                       </a>
-                                      <p>@{{moment(post.created_at, "YYYYMMDD").fromNow()}}</p>
+                                      <p>@{{moment(post.available_date, "YYYYMMDD").fromNow()}}</p>
                                    </div>
                                 </div>
                              </div>
