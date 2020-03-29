@@ -98,7 +98,7 @@
                                                 <ul class="submenu">
                                                     <li><a href="/admin/maintenance/categories">{{__('Categories')}}</a></li>
                                                     <li><a href="/admin/maintenance/subscribers">{{__('Subscribers')}}</a></li>
-                                                    <li><a href="#">{{__('Option #2')}}</a></li>
+                                                    <li><a href="/admin/maintenance/layouts/quick_feedbacks">{{__('Quick Feedbacks')}}</a></li>
                                                 </ul>
                                             </li>
                                         </ul>

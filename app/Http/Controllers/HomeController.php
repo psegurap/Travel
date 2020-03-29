@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Trip;
 use App\Post;
 use App\Category;
+use App\QuickFeedback;
 use App;
 
 class HomeController extends Controller
@@ -31,7 +32,8 @@ class HomeController extends Controller
         $categories = Category::inRandomOrder()->take(6)->get();
         $popular_trips = Trip::with('categories')->inRandomOrder()->take(6)->get();
         $recent_trips = Trip::with('categories')->where('available_date', '<', date("Y-m-d"))->orderBy('available_date', 'desc')->take(3)->get();
-        return view('index', compact('some_trips', 'categories', 'popular_trips', 'recent_trips'));
+        $feedbacks = QuickFeedback::where('language', App::getLocale())->where('status', 1)->inRandomOrder()->take(3)->get();
+        return view('index', compact('some_trips', 'categories', 'popular_trips', 'recent_trips', 'feedbacks'));
     }
 
     public function where_search(Request $request){
@@ -70,7 +72,11 @@ class HomeController extends Controller
 
     public function about()
     {
-        return view('about');
+        $some_trips = Trip::inRandomOrder()->take(2)->get();
+        $recent_trips = Trip::with('categories')->where('available_date', '<', date("Y-m-d"))->orderBy('available_date', 'desc')->take(3)->get();
+        $feedbacks = QuickFeedback::where('language', App::getLocale())->where('status', 1)->inRandomOrder()->take(3)->get();
+        
+        return view('about', compact('some_trips', 'recent_trips', 'feedbacks'));
     }
 
     public function destinations()
@@ -93,10 +99,20 @@ class HomeController extends Controller
     {
         $trip = Trip::with('categories')->find($id);
         $trip['attachments'] =  $this->GetAttachments($trip['picture_path']); 
+
+        if($trip['available_date'] > date("Y-m-d")){
+            $trip['available_to_book'] = true;
+        }else{
+            $trip['available_to_book'] = false;
+        }
         
         $some_trips = Trip::inRandomOrder()->where('id', '!=', $id)->take(4)->orderBy('available_date', 'desc')->get();
 
         return view('destination_details', compact('trip', 'some_trips'));
+    }
+
+    public function booking($id){
+        echo $id;
     }
 
     public function blog()

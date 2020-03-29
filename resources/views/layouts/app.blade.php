@@ -63,17 +63,16 @@
                                             <li><a class="active" href="{{route('index')}}">{{__('Home')}}</a></li>
                                             <li><a href="{{route('about')}}">{{__('About')}}</a></li>
                                             <li><a class="" href="{{route('destinations')}}">{{__('Destination')}}</a></li>
-                                            <li><a href="javascript:void(0)">{{__('Pages')}} <i class="ti-angle-down"></i></a>
+                                            {{-- <li><a href="javascript:void(0)">{{__('Pages')}} <i class="ti-angle-down"></i></a>
                                                 <ul class="submenu">
                                                         <li><a href="/destinations/2">{{__('Destinations Details')}}</a></li>
-                                                        {{-- <li><a href="elements.html">elements</a></li> --}}
                                                 </ul>
-                                            </li>
+                                            </li> --}}
                                             <li><a class="" href="{{route('blog')}}">{{__('Blog')}}</a></li>
                                             <li><a href="javascript:void(0)">{{__('Contact')}} <i class="ti-angle-down"></i></a>
                                                 <ul class="submenu">
                                                     <li><a href="{{route('contact')}}">{{__('Email Us')}}</a></li>
-                                                    <li><a @click="openModal()" href="javascript:void(0)">{{__('Quick Feedback')}}</a></li>
+                                                    <li><a @click="openModal()" href="javascript:void(0)" class="feedback_menu_option">{{__('Quick Feedback')}}</a></li>
                                                 </ul>
                                             </li>
                                             {{-- <li><a href="#">{{__('Blog')}} <i class="ti-angle-down"></i></a>
@@ -122,7 +121,7 @@
         <!-- Modal -->
         <div class="modal fade" id="feedbackModal" tabindex="-1" role="dialog" aria-labelledby="feedbackModalTitle" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                <div class="modal-content" style="border-radius: 0px;">
+                <div class="modal-content quick_feedback_content" style="border-radius: 0px;">
                     <div class="modal-header">
                         <h5 class="modal-title" id="feedbackModalTitle">{{__('Quick Feedback')}}</h5>
                     </div>
@@ -133,14 +132,14 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <input v-validate="'required'"  class="form-control valid" name="name" type="text" placeholder="{{__('Enter your name')}}">
+                                                <input v-validate="'required|max:50'" v-model="feedback_info.name" class="form-control valid" name="name" type="text" placeholder="{{__('Enter your name')}}">
                                                 <span class="text-danger" style="font-size: 12px;" v-show="errors.has('name')">* @{{ errors.first('name') }}</span>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <textarea v-validate="'required'"  class="form-control w-100" name="message" cols="30" rows="5" placeholder="{{__('Enter feedback')}}"></textarea>
-                                                <span class="text-danger" style="font-size: 12px;" v-show="errors.has('message')">* @{{ errors.first('message') }}</span>
+                                                <textarea v-validate="'required|max:120'" v-model="feedback_info.feedback" class="form-control w-100" name="feedback" cols="30" rows="5" placeholder="{{__('Enter feedback')}}"></textarea>
+                                                <span class="text-danger" style="font-size: 12px;" v-show="errors.has('feedback')">* @{{ errors.first('feedback') }}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -149,7 +148,7 @@
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="form-group">
-                                                <label for="">Optional Picture</label>
+                                                <label for="">{{__('Optional Picture')}} [2MB]</label>
                                                 <form  class="dropzone dz-clickable" id="Dropzone">
                                                     @csrf
                                                 </form>
@@ -161,7 +160,7 @@
                         </section>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-light px-4">{{__('Send')}}</button>
+                        <button type="button" @click="validate(PrepareFeedback)" class="btn btn-light px-4">{{__('Send')}}</button>
                         <button type="button" class="btn btn-default px-4" data-dismiss="modal">{{__('Close')}}</button>
                     </div>
                 </div>
@@ -408,19 +407,69 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
         var header = new Vue({
             el: 'header',
             data : {
-
+                feedback_info : {
+                    name: null,
+                    feedback : null,
+                    img_thumbnail : null,
+                    lang : lang,
+                },
+                dropzone : null,
             },
             mounted: function(){
                 this.initDropzone();
+                setTimeout(() => {
+                    $('.mobile_menu .feedback_menu_option').on('click', function(){
+                        header.openModal();
+                    })
+                }, 1000);
             },
             methods: {
                 openModal:function(){
                     $('#feedbackModal').modal('show');
+
+                },
+                PrepareFeedback: function(){
+                    if(this.dropzone[0].dropzone.files.length == 0){
+                        $(".quick_feedback_content").LoadingOverlay("show");
+                        this.feedback_info.img_thumbnail = '---';
+                        this.SendFeedback()
+                    }else{
+                        $(".quick_feedback_content").LoadingOverlay("show");
+                        this.feedback_info.img_thumbnail = this.dropzone[0].dropzone.files[0].name;
+                        this.dropzone[0].dropzone.processQueue();
+                    }
+                },
+                SendFeedback: function(){
+                    var _this = this;
+                    axios.post(homepath + '/store_quick_feedback', {feedback_info : this.feedback_info}).then(function(response){
+                        $(".quick_feedback_content").LoadingOverlay("hide");
+                        _this.feedback_info.name = '';
+                        _this.feedback_info.feedback = '';
+                        Swal.fire({
+                            icon: 'success',
+                            title: "{{__('Your feedback was sent')}}!",
+                            showConfirmButton: false,
+                            timer: 2000
+                        }).then(function(){
+                            _this.errors.clear();
+                            $('#feedbackModal').modal('hide');
+                        })
+                     }).catch(function(error){
+                        $(".quick_feedback_content").LoadingOverlay("hide");
+                        $.toast({
+                            heading: 'Error',
+                            text: '{{__("There was an error sending your feedback")}}',
+                            showHideTransition: 'fade',
+                            icon: 'error',
+                            position : 'top-right'
+                        });
+                        console.log(error);
+                     });
                 },
                 initDropzone: function(){
                   var _this = this;
-                  this.dropzone_default = $("#Dropzone").dropzone({ 
-                     url: "/admin/trips/file/default",
+                  this.dropzone = $("#Dropzone").dropzone({ 
+                     url: "/file/quick_feedback_attachment",
                      uploadMultiple: true,
                      maxFiles:1,
                      maxFilesize: 2,
@@ -437,12 +486,29 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
                         });
                         this.on("success", function(file, response) {
                            if(file){
-                              $(".single-post-area").LoadingOverlay("hide");
+                               _this_.SendFeedback();
+                               header.dropzone[0].dropzone.removeAllFiles();
                            }
                         });
                      },
                   });
                },
+               validate: function(callback){
+                  var _this = this;
+                  this.$validator.validateAll().then(function(result){
+                     if(result){
+                        callback();
+                     }else{
+                        $.toast({
+                           heading: 'Error',
+                           text: '{{__("You need to fix the errors")}}',
+                           showHideTransition: 'fade',
+                           icon: 'error',
+                           position : 'top-right'
+                        })
+                     }
+                  })
+               }
             }
         });
         

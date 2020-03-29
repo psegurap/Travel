@@ -287,7 +287,7 @@
                         <div class="video_wrap text-center">
                             <h3>{{__('Enjoy Video')}}</h3>
                             <div class="video_icon">
-                                <a class="popup-video video_play_button" href="https://www.youtube.com/watch?v=f59dDEk57i0">
+                                <a class="popup-video video_play_button" href="https://www.youtube.com/watch?v=F-uPHbfznlM">
                                     <i class="fa fa-play"></i>
                                 </a>
                             </div>
@@ -339,46 +339,17 @@
                 <div class="row">
                     <div class="col-xl-12">
                         <div class="testmonial_active owl-carousel">
-                            <div class="single_carousel">
+                            <div v-for="feedback in feedbacks" class="single_carousel">
                                 <div class="row justify-content-center">
                                     <div class="col-lg-8">
                                         <div class="single_testmonial text-center">
                                             <div class="author_thumb">
-                                                <img src="img/testmonial/author.png" alt="">
+                                                <img v-if="feedback.img_thumbnail != '---'" style="width:100%; border-radius: 20px;" :src="homepath + '/QuickFeedbackUsers/' + feedback.img_thumbnail" alt="">
+                                                <img v-else style="width:100%; border-radius: 100%;" :src="homepath + '/img/feedback_picture.jpg'" alt="">
                                             </div>
-                                            <p>"Working in conjunction with humanitarian aid agencies, we have supported programmes to help alleviate human suffering.</p>
+                                            <p>"@{{feedback.visitor_feedback}}"</p>
                                             <div class="testmonial_author">
-                                                <h3>- Micky Mouse</h3>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="single_carousel">
-                                <div class="row justify-content-center">
-                                    <div class="col-lg-8">
-                                        <div class="single_testmonial text-center">
-                                            <div class="author_thumb">
-                                                <img src="img/testmonial/author.png" alt="">
-                                            </div>
-                                            <p>"Working in conjunction with humanitarian aid agencies, we have supported programmes to help alleviate human suffering.</p>
-                                            <div class="testmonial_author">
-                                                <h3>- Tom Mouse</h3>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="single_carousel">
-                                <div class="row justify-content-center">
-                                    <div class="col-lg-8">
-                                        <div class="single_testmonial text-center">
-                                            <div class="author_thumb">
-                                                <img src="img/testmonial/author.png" alt="">
-                                            </div>
-                                            <p>"Working in conjunction with humanitarian aid agencies, we have supported programmes to help alleviate human suffering.</p>
-                                            <div class="testmonial_author">
-                                                <h3>- Jerry Mouse</h3>
+                                                <h3>- @{{feedback.visitor_name}}</h3>
                                             </div>
                                         </div>
                                     </div>
@@ -519,6 +490,7 @@
         var categories = {!! json_encode($categories) !!}
         var popular_trips = {!! json_encode($popular_trips) !!}
         var recent_trips = {!! json_encode($recent_trips) !!}
+        var feedbacks = {!! json_encode($feedbacks) !!}
 
         
         // //------ IMAGES ---------//
@@ -534,6 +506,7 @@
                 categories : categories,
                 popular_trips : popular_trips,
                 recent_trips : recent_trips,
+                feedbacks : feedbacks,
                 where_form: {
                     trip_type : 'All',
                     date : null,

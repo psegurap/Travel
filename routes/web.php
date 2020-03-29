@@ -38,18 +38,19 @@ Route::group(['prefix' => 'cojefavsomostodos'], function(){
     //------------------ Routes for principal pages ----------------//
     Route::get('/', 'HomeController@index')->name('index');
     Route::post('/where_search', 'HomeController@where_search');
-
     Route::get('/about', 'HomeController@about')->name('about');
     Route::get('/destinations', 'HomeController@destinations')->name('destinations');
     Route::get('/destinations/{id}', 'HomeController@single_destinations');
-
     Route::post('/destinations/more_destinations', 'HomeController@load_more_destinations');
-
-    // load_more_destinations
-
     Route::get('/blog', 'HomeController@blog')->name('blog');
     Route::get('/blog/{id}', 'HomeController@single_blog');
     Route::get('/contact', 'HomeController@contact')->name('contact');
+    Route::get('/destinations/booking/{id}', 'HomeController@booking');
+
+    Route::post('/store_quick_feedback', 'LayoutsController@store_quick_feedback');
+    Route::group(['prefix' => 'file'], function(){
+        Route::post('/quick_feedback_attachment', 'LayoutsController@quick_feedback_store_attachment');
+    });
 
 
     //----------------- Translations -------------------------//
@@ -114,6 +115,11 @@ Route::group(['prefix' => 'cojefavsomostodos'], function(){
                 Route::group(['prefix' => 'file'], function(){
                     Route::post('/broadcast_attachments', 'SubscriberController@broadcast_attachments');
                 });
+            });
+
+            Route::group(['prefix' => 'layouts'], function(){
+                Route::get('/quick_feedbacks', 'LayoutsController@all_quick_feedbacks');
+                Route::post('/update/{id}', 'LayoutsController@update_feedback');
             });
         });
     });

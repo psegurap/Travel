@@ -258,13 +258,18 @@
                  </div>
                  <div class="col-lg-4">
                     <div class="blog_right_sidebar">
-                       {{-- <aside class="single_sidebar_widget search_widget">
-                          {{__('Prices')}}: 
-                          <ul class="unordered-list">
-                            <li>{{__('Adults')}}: $@{{trip.price}}</li>
-                            <li>{{__('Kids')}}: $@{{trip.price}}</li>
-                        </ul>
-                       </aside> --}}
+                     <aside v-if="trip.available_to_book" class="single_sidebar_widget newsletter_widget">
+                           <button @click="BookNow(trip.id)" class="button rounded primary-bg text-white w-100 btn_1 boxed-btn" type="submit">
+                              {{__('Book Now')}}
+                           </button>
+                           <p class="mt-3"><i class="fa fa-check-circle-o text-success" aria-hidden="true"></i> {{__('Available Date')}}: <span style="color:#FF4A52;" class="font-weight-bold">@{{moment(trip.available_date).format('YYYY/MM/DD')}}</span></p>
+                     </aside>
+                     <aside v-else class="single_sidebar_widget newsletter_widget">
+                        <button disabled style="cursor: not-allowed;" class="button rounded btn btn-default text-white w-100 btn_1 boxed-btn" type="submit">
+                           {{__('Currently unavailable')}}
+                        </button>
+                        <p class="mt-3"><i class="fa fa fa-times-circle-o text-danger" aria-hidden="true"></i> {{__('Available Date')}}: <span style="color:#FF4A52;" class="font-weight-bold">{{__('Undefined')}}</span></p>
+                     </aside>
                        <aside class="single_sidebar_widget post_category_widget">
                         <h4 class="widget_title">{{__('Prices')}}</h4>
                             <ul class="list cat-list">
@@ -392,9 +397,12 @@
       },
       mounted: function(){
          this.initSummernote();
-
       },
       methods: {
+         BookNow: function(id){
+            window.location.href = homepath + '/destinations/booking/' + id;
+            console.log(id);
+         },
          initSummernote: function(){
             var _this = this;
             this.summernote = $('#summernote').summernote({
