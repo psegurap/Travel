@@ -22,9 +22,9 @@
                   <div class="col-xl-12">
                         <div class="bradcam_text text-center">
                            @if(App::getlocale() == 'es')
-                           <h3>@{{trip.title_es}}</h3>
+                           <h3>{{$trip->title_es}}</h3>
                            @else
-                           <h3>@{{trip.title_en}}</h3>
+                           <h3>{{$trip->title_en}}</h3>
                            @endif
                         </div>
                   </div>
@@ -37,7 +37,7 @@
         <section class="blog_area single-post-area section-padding">
            <div class="container">
               <div class="row">
-                 <div class="col-lg-8 posts-list">
+                 <div class="left-side col-lg-8 posts-list">
                     <div class="single-post">
                        <div class="feature-img">
                            <div id="carouselGallery" class="carousel slide" data-ride="carousel">
@@ -256,7 +256,7 @@
                        </form>
                     </div>
                  </div>
-                 <div class="col-lg-4">
+                 <div class="right-side col-lg-4">
                     <div class="blog_right_sidebar">
                      <aside v-if="trip.available_to_book" class="single_sidebar_widget newsletter_widget">
                            <button @click="BookNow(trip.id)" class="button rounded primary-bg text-white w-100 btn_1 boxed-btn" type="submit">
@@ -359,14 +359,13 @@
                        </aside>
                        <aside class="single_sidebar_widget newsletter_widget">
                           <h4 class="widget_title">Newsletter</h4>
-                          <form action="#">
+                          <div>
                              <div class="form-group">
-                                <input type="email" class="form-control" onfocus="this.placeholder = ''"
-                                   onblur="this.placeholder = 'Enter email'" placeholder='Enter email' required>
-                             </div>
-                             <button class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn"
-                                type="submit">Subscribe</button>
-                          </form>
+                                <input v-validate="'required|email'" type="email" autocomplete="off" v-model="email_account" name="email" class="form-control" placeholder="{{__('Your mail')}}">
+                                <span class="text-danger" style="font-size: 12px;" v-show="errors.has('email')">* @{{ errors.first('email') }}</span>
+                              </div>
+                             <button class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn newsletter-btn" @click="validate(StoreSubscriber)" type="submit">{{__('Subscribe')}}</button>
+                          </div>
                        </aside>
                     </div>
                  </div>
@@ -385,24 +384,16 @@
    let current_background = homepath + "/tripsImages/" + trip.picture_path + "/" + trip.img_thumbnail;
    $(".bradcam_area").css('background-image', 'url("' + current_background + '")');
 
-   var main = new Vue({
-      el : '.detail_container',
+   var left_side = new Vue({
+      el : '.left-side',
       data : {
          trip : trip,
-         some_trips : some_trips,
-        //  categories : categories,
-        //  previous_trip : previous_trip,
-        //  next_trip : next_trip,
          summernote : null,
       },
       mounted: function(){
          this.initSummernote();
       },
       methods: {
-         BookNow: function(id){
-            window.location.href = homepath + '/destinations/booking/' + id;
-            console.log(id);
-         },
          initSummernote: function(){
             var _this = this;
             this.summernote = $('#summernote').summernote({
@@ -413,9 +404,59 @@
             }else{
                $('#summernote').summernote('code', this.trip.content_en );
             }
+            $('#summernote').summernote('disable')
          },
       }
    });
+
+   var right_side = new Vue({
+      el : '.right-side',
+      data : { 
+         some_trips : some_trips,
+         email_account : null,
+      },
+      methods: {
+         BookNow: function(id){
+            window.location.href = homepath + '/destinations/booking/' + id;
+            console.log(id);
+         },
+         StoreSubscriber: function(){
+            $(".newsletter-btn").LoadingOverlay("show");
+            var _this = this;
+            axios.post(homepath + "/admin/maintenance/subscribers/new", {email : this.email_account, lang : lang}).then(function(response){
+               _this.email_account = ""
+               $(".newsletter-btn").LoadingOverlay("hide");
+               Swal.fire({
+                     icon: 'success',
+                     title: "{{__('Your subscription was added')}}!",
+                     showConfirmButton: false,
+                     timer: 2000
+               }).then(function(){
+                     _this.errors.clear();
+               })
+            }).catch(function(error){
+               console.log(error);
+               $(".newsletter-btn").LoadingOverlay("hide");
+            });
+         },
+         validate: function(callback){
+            var _this = this;
+            this.$validator.validateAll().then(function(result){
+               if(result){
+                     callback();
+               }else{
+                     $.toast({
+                        heading: 'Error',
+                        text: '{{__("You need to fix the errors")}}',
+                        showHideTransition: 'fade',
+                        icon: 'error',
+                        position : 'top-right'
+                     })
+               }
+            })
+         }
+      }
+   })
 
 </script>
     

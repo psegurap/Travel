@@ -34,6 +34,11 @@
     <link rel="stylesheet" href="{{asset('/css/bootstrap-datepicker.min.css')}}">
     
     <!-- <link rel="stylesheet" href="css/responsive.css"> -->
+    <style>
+        .note-editable{
+            background-color:  #ffffff00;
+        }
+    </style>
     @yield('styles')
 </head>
 

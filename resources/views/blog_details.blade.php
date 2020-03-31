@@ -22,9 +22,9 @@
                   <div class="col-xl-12">
                         <div class="bradcam_text text-center">
                            @if(App::getlocale() == 'es')
-                           <h3>@{{post.title_es}}</h3>
+                           <h3>{{$post->title_es}}</h3>
                            @else
-                           <h3>@{{post.title_en}}</h3>
+                           <h3>{{$post->title_en}}</h3>
                            @endif
                         </div>
                   </div>
@@ -37,7 +37,7 @@
         <section class="blog_area single-post-area section-padding">
            <div class="container">
               <div class="row">
-                 <div class="col-lg-8 posts-list">
+                 <div class="left-side col-lg-8 posts-list">
                     <div class="single-post">
                        <div class="feature-img">
                            <div id="carouselGallery" class="carousel slide" data-ride="carousel">
@@ -256,7 +256,7 @@
                        </form>
                     </div>
                  </div>
-                 <div class="col-lg-4">
+                 <div class="right-side col-lg-4">
                     <div class="blog_right_sidebar">
                        <aside class="single_sidebar_widget search_widget">
                           <form action="#">
@@ -375,16 +375,15 @@
                           </ul>
                        </aside>
                        <aside class="single_sidebar_widget newsletter_widget">
-                          <h4 class="widget_title">Newsletter</h4>
-                          <form action="#">
-                             <div class="form-group">
-                                <input type="email" class="form-control" onfocus="this.placeholder = ''"
-                                   onblur="this.placeholder = 'Enter email'" placeholder='Enter email' required>
-                             </div>
-                             <button class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn"
-                                type="submit">Subscribe</button>
-                          </form>
-                       </aside>
+                        <h4 class="widget_title">Newsletter</h4>
+                        <div>
+                           <div class="form-group">
+                              <input v-validate="'required|email'" type="email" autocomplete="off" v-model="email_account" name="email" class="form-control" placeholder="{{__('Your mail')}}">
+                              <span class="text-danger" style="font-size: 12px;" v-show="errors.has('email')">* @{{ errors.first('email') }}</span>
+                            </div>
+                           <button class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn newsletter-btn" @click="validate(StoreSubscriber)" type="submit">{{__('Subscribe')}}</button>
+                        </div>
+                     </aside>
                     </div>
                  </div>
               </div>
@@ -405,19 +404,16 @@
    let current_background = homepath + "/blogImages/" + post.picture_path + "/" + post.img_thumbnail;
    $(".bradcam_area").css('background-image', 'url("' + current_background + '")');
 
-   var main = new Vue({
-      el : '.detail_container',
+   var left_side = new Vue({
+      el : '.left-side',
       data : {
-         post : post,
-         recent_posts : recent_posts,
-         categories : categories,
-         previous_post : previous_post,
          next_post : next_post,
+         previous_post : previous_post,
+         post : post,
          summernote : null,
       },
       mounted: function(){
          this.initSummernote();
-
       },
       methods: {
          initSummernote: function(){
@@ -430,9 +426,60 @@
             }else{
                $('#summernote').summernote('code', this.post.content_en );
             }
+            $('#summernote').summernote('disable')
          },
       }
    });
+
+   var right_side = new Vue({
+      el : '.right-side',
+      data : { 
+         recent_posts : recent_posts,
+         email_account : null,
+         categories : categories,
+      },
+      methods: {
+         BookNow: function(id){
+            window.location.href = homepath + '/destinations/booking/' + id;
+            console.log(id);
+         },
+         StoreSubscriber: function(){
+            $(".newsletter-btn").LoadingOverlay("show");
+            var _this = this;
+            axios.post(homepath + "/admin/maintenance/subscribers/new", {email : this.email_account, lang : lang}).then(function(response){
+               _this.email_account = ""
+               $(".newsletter-btn").LoadingOverlay("hide");
+               Swal.fire({
+                     icon: 'success',
+                     title: "{{__('Your subscription was added')}}!",
+                     showConfirmButton: false,
+                     timer: 2000
+               }).then(function(){
+                     _this.errors.clear();
+               })
+            }).catch(function(error){
+               console.log(error);
+               $(".newsletter-btn").LoadingOverlay("hide");
+            });
+         },
+         validate: function(callback){
+            var _this = this;
+            this.$validator.validateAll().then(function(result){
+               if(result){
+                     callback();
+               }else{
+                     $.toast({
+                        heading: 'Error',
+                        text: '{{__("You need to fix the errors")}}',
+                        showHideTransition: 'fade',
+                        icon: 'error',
+                        position : 'top-right'
+                     })
+               }
+            })
+         }
+      }
+   })
 
 </script>
     
