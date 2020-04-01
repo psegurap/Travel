@@ -5,6 +5,7 @@
 /public/blogImages
 /public/tripsImages
 /public/QuickFeedbackUsers
+/public/UsersPictures
 /vendor
 .env
 .env.backup

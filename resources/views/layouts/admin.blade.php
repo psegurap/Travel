@@ -110,6 +110,8 @@
                                     <div class="social_links d-none d-xl-block">
                                         <ul>
                                         <li><a href="{{route('index')}}"> <i class="fa fa-home"></i> </a></li>
+                                        <li><a href="{{route('user_panel')}}"> <i class="fa fa-user"></i> </a></li>
+                                        
                                             <li>
                                                 <a href="{{ route('logout') }}"
                                                 onclick="event.preventDefault();

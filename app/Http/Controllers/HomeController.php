@@ -7,6 +7,8 @@ use App\Trip;
 use App\Post;
 use App\Category;
 use App\QuickFeedback;
+use App\TripsCommentsReplies;
+use App\TripsComments;
 use App;
 
 class HomeController extends Controller
@@ -97,7 +99,7 @@ class HomeController extends Controller
 
     public function single_destinations($id)
     {
-        $trip = Trip::with('categories')->find($id);
+        $trip = Trip::with('categories', 'comments.replies', 'user:id,name,img_thumbnail,slogan_es,slogan_en,attach_reference')->find($id);
         $trip['attachments'] =  $this->GetAttachments($trip['picture_path']); 
 
         if($trip['available_date'] > date("Y-m-d")){
@@ -146,6 +148,10 @@ class HomeController extends Controller
         return view('contact');
     }
 
+    
+
+
+    //----------------- ATTACHMENTS ----------------//
 
     public function GetAttachments($picture_path){
         $path = base_path() . "/public/tripsImages/" . $picture_path;

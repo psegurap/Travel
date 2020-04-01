@@ -52,6 +52,18 @@ Route::group(['prefix' => 'cojefavsomostodos'], function(){
         Route::post('/quick_feedback_attachment', 'LayoutsController@quick_feedback_store_attachment');
     });
 
+    Route::group(['prefix' => 'file'], function(){
+        Route::post('/quick_feedback_attachment', 'LayoutsController@quick_feedback_store_attachment');
+    });
+
+    //---------------- All comments route ---------------------//
+    Route::group(['prefix' => 'comments'], function(){
+        Route::group(['prefix' => 'trips'], function(){
+            Route::post('/store', 'CommentsController@store_comment');
+        });
+        Route::post('/quick_feedback_attachment', 'LayoutsController@quick_feedback_store_attachment');
+    });
+
 
     //----------------- Translations -------------------------//
     Route::get('/changeLanguage/{locale}', function($locale){
@@ -74,6 +86,16 @@ Route::group(['prefix' => 'cojefavsomostodos'], function(){
         Route::get('home', function(){
             return view('admin.home_admin');
         })->middleware('auth')->name('admin');
+
+        Route::group(['prefix' => 'user'], function(){
+            Route::get('/', 'UserController@index')->name('user_panel');
+            Route::post('/update_profile', 'UserController@update_profile');
+
+            Route::group(['prefix' => 'file'], function(){
+                Route::post('/store_picture', 'UserController@store_picture');
+            });
+        });
+
 
         Route::group(['prefix' => 'trips'], function(){
             Route::get('all', 'TripsController@all_trips');
@@ -106,20 +128,20 @@ Route::group(['prefix' => 'cojefavsomostodos'], function(){
             });
 
             Route::group(['prefix' => 'subscribers'], function(){
-                Route::get('/', 'SubscriberController@index');
+                Route::get('/', 'SubscriberController@index')->middleware('auth');
                 Route::post('/new', 'SubscriberController@store');
-                Route::post('/update/{id}', 'SubscriberController@update');
-                Route::get('/broadcast_message', 'SubscriberController@broadcast_message');
-                Route::post('/send_broadcast', 'MailController@send_broadcast');
+                Route::post('/update/{id}', 'SubscriberController@update')->middleware('auth');
+                Route::get('/broadcast_message', 'SubscriberController@broadcast_message')->middleware('auth');
+                Route::post('/send_broadcast', 'MailController@send_broadcast')->middleware('auth');
 
                 Route::group(['prefix' => 'file'], function(){
-                    Route::post('/broadcast_attachments', 'SubscriberController@broadcast_attachments');
+                    Route::post('/broadcast_attachments', 'SubscriberController@broadcast_attachments')->middleware('auth');
                 });
             });
 
             Route::group(['prefix' => 'layouts'], function(){
                 Route::get('/quick_feedbacks', 'LayoutsController@all_quick_feedbacks');
-                Route::post('/update/{id}', 'LayoutsController@update_feedback');
+                Route::post('/update/{id}', 'LayoutsController@update_feedback')->middleware('auth');
             });
         });
     });

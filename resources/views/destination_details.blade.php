@@ -98,125 +98,46 @@
                              <li><a href="#"><i class="fa fa-behance"></i></a></li>
                           </ul>
                        </div>
-                       {{-- <div class="navigation-area d-none d-md-block">
-                          <div class="row">
-                             <div class="col-lg-6 col-md-6 col-12 nav-left flex-row d-flex justify-content-start align-items-center">
-                                <div class="d-flex" v-if="previous_trip != null">
-                                   <div class="detials">
-                                      <p>Prev Post</p>
-                                      <a :href="homepath + '/blog/' + previous_trip.id">
-                                       @if (App::getLocale() == 'es')
-                                           <h4>@{{previous_trip.title_es}}</h4>
-                                       @else
-                                        <h4>@{{previous_trip.title_en}}</h4>
-                                       @endif
-                                    </a>
-                                   </div>
-                                </div>
-                             </div>
-                             <div class="col-lg-6 col-md-6 col-12 nav-right flex-row d-flex justify-content-end align-items-center">
-                                <div class="d-flex" v-if="next_trip != null">
-                                   <div class="detials">
-                                      <p>Next Post</p>
-                                      <a :href="homepath + '/blog/' + next_trip.id">
-                                         @if (App::getLocale() == 'es')
-                                             <h4>@{{next_trip.title_es}}</h4>
-                                         @else
-                                          <h4>@{{next_trip.title_en}}</h4>
-                                         @endif
-                                      </a>
-                                   </div>
-                                </div>
-                             </div>
-                          </div>
-                       </div> --}}
                     </div>
                     <div class="blog-author">
                        <div class="media align-items-center">
-                          <img src="{{asset('/img/blog/author.png')}}" alt="">
+                          <img v-if="trip.user.img_thumbnail != null" :src="homepath + '/UsersPictures/' + trip.user.attach_reference + '/' + trip.user.img_thumbnail" alt="">
+                          <img v-else :src="homepath + '/img/feedback_picture.jpg'" alt="">
                           <div class="media-body">
-                             <a href="#">
-                                <h4>Harvard milan</h4>
+                             <a href="javascript:void(0)">
+                                <h4>@{{trip.user.name}}</h4>
                              </a>
-                             <p>Second divided from form fish beast made. Every of seas all gathered use saying you're, he
-                                our dominion twon Second divided from</p>
+                             <p>
+                                @if (App::getLocale() == 'es')
+                                    @{{trip.user.slogan_es}}
+                                @else
+                                    @{{trip.user.slogan_en}}
+                                @endif
+                             </p>
                           </div>
                        </div>
                     </div>
                     <div class="comments-area">
-                       <h4>05 Comments</h4>
-                       <div class="comment-list">
+                       <h4>@{{trip.comments.length}} Comments</h4>
+                       <div class="comment-list" v-for="comment in trip.comments">
                           <div class="single-comment justify-content-between d-flex">
                              <div class="user justify-content-between d-flex">
                                 <div class="thumb">
-                                   <img src="{{asset('/img/comment/comment_1.png')}}" alt="">
+                                   <img :src="homepath + '/img/feedback_picture.jpg'" alt="">
                                 </div>
                                 <div class="desc">
                                    <p class="comment">
-                                      Multiply sea night grass fourth day sea lesser rule open subdue female fill which them
-                                      Blessed, give fill lesser bearing multiply sea night grass fourth day sea lesser
+                                      @{{comment.comment}}
                                    </p>
                                    <div class="d-flex justify-content-between">
                                       <div class="d-flex align-items-center">
                                          <h5>
-                                            <a href="#">Emilly Blunt</a>
+                                            <a href="javascript:void(0)">@{{comment.user_name}}</a>
                                          </h5>
-                                         <p class="date">December 4, 2017 at 3:12 pm </p>
+                                          <p class="date">@{{moment(comment.created_at).format('LLL')}}</p>
                                       </div>
                                       <div class="reply-btn">
-                                         <a href="#" class="btn-reply text-uppercase">reply</a>
-                                      </div>
-                                   </div>
-                                </div>
-                             </div>
-                          </div>
-                       </div>
-                       <div class="comment-list">
-                          <div class="single-comment justify-content-between d-flex">
-                             <div class="user justify-content-between d-flex">
-                                <div class="thumb">
-                                   <img src="{{asset('/img/comment/comment_2.png')}}" alt="">
-                                </div>
-                                <div class="desc">
-                                   <p class="comment">
-                                      Multiply sea night grass fourth day sea lesser rule open subdue female fill which them
-                                      Blessed, give fill lesser bearing multiply sea night grass fourth day sea lesser
-                                   </p>
-                                   <div class="d-flex justify-content-between">
-                                      <div class="d-flex align-items-center">
-                                         <h5>
-                                            <a href="#">Emilly Blunt</a>
-                                         </h5>
-                                         <p class="date">December 4, 2017 at 3:12 pm </p>
-                                      </div>
-                                      <div class="reply-btn">
-                                         <a href="#" class="btn-reply text-uppercase">reply</a>
-                                      </div>
-                                   </div>
-                                </div>
-                             </div>
-                          </div>
-                       </div>
-                       <div class="comment-list">
-                          <div class="single-comment justify-content-between d-flex">
-                             <div class="user justify-content-between d-flex">
-                                <div class="thumb">
-                                   <img src="{{asset('/img/comment/comment_3.png')}}" alt="">
-                                </div>
-                                <div class="desc">
-                                   <p class="comment">
-                                      Multiply sea night grass fourth day sea lesser rule open subdue female fill which them
-                                      Blessed, give fill lesser bearing multiply sea night grass fourth day sea lesser
-                                   </p>
-                                   <div class="d-flex justify-content-between">
-                                      <div class="d-flex align-items-center">
-                                         <h5>
-                                            <a href="#">Emilly Blunt</a>
-                                         </h5>
-                                         <p class="date">December 4, 2017 at 3:12 pm </p>
-                                      </div>
-                                      <div class="reply-btn">
-                                         <a href="#" class="btn-reply text-uppercase">reply</a>
+                                         <a href="javascript:void(0)" @click="add_reply(comment.id)" class="btn-reply text-uppercase">reply</a>
                                       </div>
                                    </div>
                                 </div>
@@ -225,35 +146,54 @@
                        </div>
                     </div>
                     <div class="comment-form">
-                       <h4>Leave a Reply</h4>
-                       <form class="form-contact comment_form" action="#" id="commentForm">
+                       <h4 v-if="!replying">{{__('Leave a Reply')}}</h4>
+                       <div v-if="replying" class="border-0 comments-area mt-0 pt-0">
+                           <h4 class="d-flex justify-content-between">{{('Replying to')}}: <a @click="replying = false" href="javascript:void(0)" class="btn-link small"><u>Cancel</u></a></h4>
+                           <div class="comment-list">
+                              <div class="single-comment justify-content-between d-flex">
+                                 <div class="user justify-content-between d-flex">
+                                    <div class="desc">
+                                       <p class="comment">
+                                          @{{CurrentComment[0].comment}}
+                                       </p>
+                                       <div class="d-flex justify-content-between">
+                                          <div class="d-flex align-items-center">
+                                             <h5>
+                                                <a href="javascript:void(0)">@{{CurrentComment[0].user_name}}</a>
+                                             </h5>
+                                             <p class="date">@{{moment(CurrentComment[0].created_at).format('LLL')}}</p>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                       <div class="form-contact comment_form" id="commentForm">
                           <div class="row">
                              <div class="col-12">
                                 <div class="form-group">
-                                   <textarea class="form-control w-100" name="comment" id="comment" cols="30" rows="9"
-                                      placeholder="Write Comment"></textarea>
+                                   <textarea v-validate="'required|max:600'" v-model="comment_details.comment" class="form-control w-100" name="comment" id="comment" cols="30" rows="9"placeholder="Write Comment *"></textarea>
+                                   <span class="text-danger" style="font-size: 12px;" v-show="errors.has('comment')">* @{{ errors.first('comment') }}</span>
+                                 </div>
+                             </div>
+                             <div class="col-sm-6">
+                                <div class="form-group">
+                                   <input v-validate="'required|max:30'" v-model="comment_details.name" class="form-control" name="name" id="name" type="text" placeholder="Name *">
+                                   <span class="text-danger" style="font-size: 12px;" v-show="errors.has('name')">* @{{ errors.first('name') }}</span>
                                 </div>
                              </div>
                              <div class="col-sm-6">
                                 <div class="form-group">
-                                   <input class="form-control" name="name" id="name" type="text" placeholder="Name">
-                                </div>
-                             </div>
-                             <div class="col-sm-6">
-                                <div class="form-group">
-                                   <input class="form-control" name="email" id="email" type="email" placeholder="Email">
-                                </div>
-                             </div>
-                             <div class="col-12">
-                                <div class="form-group">
-                                   <input class="form-control" name="website" id="website" type="text" placeholder="Website">
-                                </div>
+                                   <input v-validate="'required|email'" class="form-control" v-model="comment_details.email" name="email" id="email" type="email" placeholder="Email *">
+                                   <span class="text-danger" style="font-size: 12px;" v-show="errors.has('email')">* @{{ errors.first('email') }}</span>
+                                 </div>
                              </div>
                           </div>
                           <div class="form-group">
-                             <button type="submit" class="button button-contactForm btn_1 boxed-btn">Send Message</button>
+                             <button type="submit" @click="validate(SendComment)" class="button button-contactForm btn_1 boxed-btn">Send Message</button>
                           </div>
-                       </form>
+                       </div>
                     </div>
                  </div>
                  <div class="right-side col-lg-4">
@@ -358,7 +298,7 @@
                           </ul>
                        </aside>
                        <aside class="single_sidebar_widget newsletter_widget">
-                          <h4 class="widget_title">Newsletter</h4>
+                          <h4 class="widget_title">{{__('Newsletter')}}</h4>
                           <div>
                              <div class="form-group">
                                 <input v-validate="'required|email'" type="email" autocomplete="off" v-model="email_account" name="email" class="form-control" placeholder="{{__('Your mail')}}">
@@ -388,12 +328,57 @@
       el : '.left-side',
       data : {
          trip : trip,
+         comments: trip.comments,
          summernote : null,
+         replying : false,
+         comment_details : {
+            comment : '',
+            name : '',
+            email : '',
+            trip_id : trip.id,
+            comment_id : null,
+         },
+         current_comment_id : null, 
       },
       mounted: function(){
          this.initSummernote();
       },
+      computed: {
+         CurrentComment: function(){
+            var _this = this;
+            return this.comments.filter(function(comment){
+               return comment.id == _this.current_comment_id;
+            })
+         }
+      },
       methods: {
+         add_reply: function(id){
+            this.current_comment_id = id;
+            this.comment_details.comment_id = id;
+            this.replying = true;
+         },
+         SendComment: function(){
+            var _this = this;
+            $(".commentForm").LoadingOverlay("show");
+            this.comment_details['replying'] = this.replying;
+            axios.post(homepath + "/comments/trips/store", {comment_details : this.comment_details, lang : lang}).then(function(response){
+               $(".commentForm").LoadingOverlay("hide");
+               _this.comment_details.comment = '';
+               _this.comment_details.name = '';
+               _this.comment_details.email = '';
+               Swal.fire({
+                     icon: 'success',
+                     title: "{{__('Your comment was added')}}!",
+                     showConfirmButton: false,
+                     timer: 2000
+               }).then(function(){
+                     _this.errors.clear();
+               })
+            }).catch(function(error){
+               console.log(error);
+               $(".commentForm").LoadingOverlay("hide");
+            });
+         },
          initSummernote: function(){
             var _this = this;
             this.summernote = $('#summernote').summernote({
@@ -406,6 +391,22 @@
             }
             $('#summernote').summernote('disable')
          },
+         validate: function(callback){
+            var _this = this;
+            this.$validator.validateAll().then(function(result){
+               if(result){
+                     callback();
+               }else{
+                     $.toast({
+                        heading: 'Error',
+                        text: '{{__("You need to fix the errors")}}',
+                        showHideTransition: 'fade',
+                        icon: 'error',
+                        position : 'top-right'
+                     })
+               }
+            })
+         }
       }
    });
 

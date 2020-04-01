@@ -375,7 +375,7 @@
                           </ul>
                        </aside>
                        <aside class="single_sidebar_widget newsletter_widget">
-                        <h4 class="widget_title">Newsletter</h4>
+                        <h4 class="widget_title">{{__('Newsletter')}}</h4>
                         <div>
                            <div class="form-group">
                               <input v-validate="'required|email'" type="email" autocomplete="off" v-model="email_account" name="email" class="form-control" placeholder="{{__('Your mail')}}">
@@ -439,10 +439,6 @@
          categories : categories,
       },
       methods: {
-         BookNow: function(id){
-            window.location.href = homepath + '/destinations/booking/' + id;
-            console.log(id);
-         },
          StoreSubscriber: function(){
             $(".newsletter-btn").LoadingOverlay("show");
             var _this = this;

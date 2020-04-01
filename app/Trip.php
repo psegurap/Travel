@@ -18,4 +18,11 @@ class Trip extends Model
         return $this->belongsToMany('App\Category', 'categories_trips', 'trip_id', 'category_id')->withTimestamps();
     }
 
+    public function user(){
+        return $this->belongsTo('App\User', 'user_id', 'id');
+    }
+
+    public function comments(){
+        return $this->hasMany('App\TripsComments', 'trip_id', 'id');
+    }
 }
