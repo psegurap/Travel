@@ -529,11 +529,11 @@
 
                 $('.travel_type').on('change', function(val){
                     main.where_form.trip_type = val.target.value;
-                })
+                });
 
                 $('.datepicker').on('change', function(val){
                     main.where_form.date = val.target.value;
-                })
+                });
                 
             },
             watch : {

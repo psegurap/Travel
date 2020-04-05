@@ -9,6 +9,7 @@ use App\Category;
 use App\QuickFeedback;
 use App\TripsCommentsReplies;
 use App\TripsComments;
+use App\WorldCountries;
 use App;
 
 class HomeController extends Controller
@@ -68,8 +69,6 @@ class HomeController extends Controller
         $trips = $current_query->get();
         return $trips; 
 
-        $trips = Trip::inRandomOrder()->take(10)->get();
-        return response()->json($trips, 200);
     }
 
     public function about()
@@ -114,7 +113,15 @@ class HomeController extends Controller
     }
 
     public function booking($id){
-        echo $id;
+        $trip = Trip::with('categories', 'comments.replies', 'user:id,name,img_thumbnail,slogan_es,slogan_en,attach_reference')->find($id);
+        $trip['attachments'] =  $this->GetAttachments($trip['picture_path']); 
+        if(App::getLocale() == 'es'){
+            $countries = WorldCountries::orderBy('country_es', 'asc')->get();
+        }else{
+            $countries = WorldCountries::orderBy('country_en', 'asc')->get();
+        }
+        
+        return view('create_booking', compact('trip', 'countries'));
     }
 
     public function blog()

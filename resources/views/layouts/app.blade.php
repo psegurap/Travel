@@ -404,7 +404,8 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 
         Vue.use(VeeValidate);
         Dropzone.autoDiscover = false;
-
+        
+        $.fn.selectpicker.Constructor.BootstrapVersion = '4';
 
         var homepath = "{{url('/')}}";
         var lang = "{{App::getlocale()}}";

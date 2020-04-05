@@ -85,19 +85,6 @@
                        </div>
                     </div>
                     <div class="navigation-top">
-                       <div class="d-sm-flex justify-content-between text-center">
-                          <p class="like-info"><span class="align-middle"><i class="fa fa-heart"></i></span> Lily and 4
-                             people like this</p>
-                          <div class="col-sm-4 text-center my-2 my-sm-0">
-                             <!-- <p class="comment-count"><span class="align-middle"><i class="fa fa-comment"></i></span> 06 Comments</p> -->
-                          </div>
-                          <ul class="social-icons">
-                             <li><a href="#"><i class="fa fa-facebook-f"></i></a></li>
-                             <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                             <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
-                             <li><a href="#"><i class="fa fa-behance"></i></a></li>
-                          </ul>
-                       </div>
                     </div>
                     <div class="blog-author">
                        <div class="media align-items-center">
@@ -118,26 +105,45 @@
                        </div>
                     </div>
                     <div class="comments-area">
-                       <h4>@{{trip.comments.length}} Comments</h4>
+                       <h4>@{{trip.comments.length}} {{__('Comment(s)')}}</h4>
                        <div class="comment-list" v-for="comment in trip.comments">
                           <div class="single-comment justify-content-between d-flex">
                              <div class="user justify-content-between d-flex">
-                                <div class="thumb">
+                                <div class="thumb d-none d-sm-block">
                                    <img :src="homepath + '/img/feedback_picture.jpg'" alt="">
                                 </div>
-                                <div class="desc">
-                                   <p class="comment">
-                                      @{{comment.comment}}
-                                   </p>
-                                   <div class="d-flex justify-content-between">
-                                      <div class="d-flex align-items-center">
-                                         <h5>
-                                            <a href="javascript:void(0)">@{{comment.user_name}}</a>
-                                         </h5>
-                                          <p class="date">@{{moment(comment.created_at).format('LLL')}}</p>
+                                <div class="row justify-content-end">
+                                   <div class="col-12">
+                                      <div class="desc border-bottom">
+                                         <p class="comment">
+                                            @{{comment.comment}}
+                                         </p>
+                                         <div class="d-flex justify-content-between">
+                                            <div class="d-flex align-items-center">
+                                               <h5>
+                                                  <a href="javascript:void(0)">@{{comment.user_name}}</a>
+                                               </h5>
+                                                <p class="date">@{{moment(comment.created_at).format('LLL')}}</p>
+                                            </div>
+                                            <div class="reply-btn">
+                                               <a href="javascript:void(0)" @click="add_reply(comment.id)" class="btn-reply text-uppercase">reply</a>
+                                            </div>
+                                         </div>
                                       </div>
-                                      <div class="reply-btn">
-                                         <a href="javascript:void(0)" @click="add_reply(comment.id)" class="btn-reply text-uppercase">reply</a>
+                                   </div>
+                                   <div class="col-11">
+                                      <div v-for="reply in comment.replies" class="desc border-left mt-3 pl-3">
+                                         <p class="comment">
+                                            @{{reply.comment}}
+                                         </p>
+                                         <div class="d-flex justify-content-between">
+                                            <div class="d-flex align-items-center">
+                                               <h5>
+                                                  <a href="javascript:void(0)">@{{reply.user_name}}</a>
+                                               </h5>
+                                                <p class="date">@{{moment(reply.created_at).format('LLL')}}</p>
+                                            </div>
+                                         </div>
                                       </div>
                                    </div>
                                 </div>
