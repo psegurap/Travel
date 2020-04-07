@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App;
 use App\Trip;
 use App\Post;
 use App\Category;
@@ -10,7 +11,8 @@ use App\QuickFeedback;
 use App\TripsCommentsReplies;
 use App\TripsComments;
 use App\WorldCountries;
-use App;
+use App\BuyingCustomer;
+use App\ReservationDetail;
 
 class HomeController extends Controller
 {
@@ -120,8 +122,44 @@ class HomeController extends Controller
         }else{
             $countries = WorldCountries::orderBy('country_en', 'asc')->get();
         }
-        
+
         return view('create_booking', compact('trip', 'countries'));
+    }
+
+    public function save_booking(Request $request){
+        $customer_info = $request->customer_info;
+        $totals = $request->totals;
+        $costumer_data = [
+            'customer_name' =>  $customer_info['user_name'],
+            'customer_email' =>  $customer_info['user_email'],
+            'customer_adddress' =>  $customer_info['user_street'],
+            'customer_city' =>  $customer_info['user_city'],
+            'customer_zipCode' =>  $customer_info['user_zipCode'],
+            'customer_country' =>  $customer_info['user_country'],
+            'customer_cellphone' =>  $customer_info['user_mainPhone'],
+            'customer_homephone' =>  $customer_info['user_secondPhone'],
+            'customer_notes' =>  $customer_info['user_notes'],
+            'language' =>  $customer_info['lang'],
+            'status' =>  1
+        ];
+
+        $buying_customer = BuyingCustomer::create($costumer_data);
+
+        $reservation_data = [
+            'adults_amount' =>  $customer_info['adults_amount'],
+            'kids_amount' =>  $customer_info['kids_amount'],
+            'adults_total' =>  $totals['adults_total'],
+            'kids_total' =>  $totals['kids_total'],
+            'total_amount' =>  $totals['adults_kids_total'],
+            'customer_id' =>  $buying_customer->id,
+            'trip_id' =>  $request->trip,
+            'reservation_status' =>  1,
+            'status' =>  1,
+        ];
+
+        ReservationDetail::create($reservation_data);
+        
+        return response()->json('DONE', 200);
     }
 
     public function blog()

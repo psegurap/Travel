@@ -104,7 +104,7 @@
                                 </div>
                             </div>
                             <div class="form-group d-none d-md-block mt-3">
-                                <button @click="validate(ConfirmBooking)" class="button button-contactForm boxed-btn px-5">{{__('Send')}}</button>
+                                <button @click="validate(ConfirmBooking)" class="button button-contactForm btn-save-booking boxed-btn px-5">{{__('Save Booking')}}</button>
                             </div>
                         </section>
                     </div>
@@ -171,7 +171,7 @@
                                     </div>
                                     <div class="col-12">
                                         <div class="form-group d-block d-md-none mt-3">
-                                            <button @click="validate(ConfirmBooking)" class="button btn-block button-contactForm boxed-btn">{{__('Save Booking')}}</button>
+                                            <button @click="validate(ConfirmBooking)" class="button btn-save-booking btn-block button-contactForm boxed-btn">{{__('Save Booking')}}</button>
                                         </div>
                                     </div>
                                 </div>
@@ -309,8 +309,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn d-none d-sm-block btn-danger px-4">{{__('Confirm Reservation')}}</button>
-                    <button type="button" class="btn d-block d-sm-none btn-danger px-4">{{__('Confirm')}}</button>
+                    <button type="button" @click="SaveBooking()" class="btn d-none d-sm-block btn-confirm-booking btn-danger px-4">{{__('Confirm Reservation')}}</button>
+                    <button type="button" @click="SaveBooking()" class="btn d-block d-sm-none btn-confirm-booking btn-danger px-4">{{__('Confirm')}}</button>
                     <button type="button" class="btn btn-default px-4" data-dismiss="modal">{{__('Close')}}</button>
                 </div>
             </div>
@@ -350,6 +350,7 @@
              user_notes: null,
              adults_amount : 0,
              kids_amount : 0,
+             lang: lang,
          },
          totals: {
             adults_total : 0,
@@ -370,13 +371,13 @@
       },
       watch: {
         'book_details.adults_amount': function(val){
-            if(val >= 0){
+            if(val >= 0 && val != ''){
                 this.totals.adults_total = parseFloat(parseFloat(this.trip.adult_price) * parseInt(val)).toFixed(2);
                 this.totals.adults_kids_total = parseFloat(parseFloat(this.totals.adults_total) + parseFloat(this.totals.kids_total)).toFixed(2);
             }
         },
         'book_details.kids_amount': function(val){
-            if(val >= 0){
+            if(val >= 0 && val != ''){
                 this.totals.kids_total = parseFloat(parseFloat(this.trip.kid_price) * parseInt(val)).toFixed(2);
                 this.totals.adults_kids_total = parseFloat(parseFloat(this.totals.adults_total) + parseFloat(this.totals.kids_total)).toFixed(2);
             }
@@ -392,8 +393,28 @@
       },
       methods: {
         ConfirmBooking: function(){
+            $(".btn-save-booking").LoadingOverlay("show");
             $('#ConfirmModal').modal('show');
-            console.log('saving')
+            $(".btn-save-booking").LoadingOverlay("hide");
+        },
+        SaveBooking: function(){
+            $(".btn-confirm-booking").LoadingOverlay("show");
+            axios.post(homepath + '/destinations/booking/save_booking', {customer_info : this.book_details, totals : this.totals, trip: this.trip.id}).then(function(response){
+                console.log(response.data);
+                $(".btn-confirm-booking").LoadingOverlay("hide");
+                Swal.fire({
+                    icon: 'success',
+                    title: "{{__('Thank You')}}!",
+                    text: "{{__('We have sent you an email with the reservation details')}}.",
+                    showConfirmButton: true,
+                    // timer: 2000
+                }).then(function(){
+                    $('#ConfirmModal').modal('hide');
+                })
+            }).catch(function(error){
+                $(".btn-confirm-booking").LoadingOverlay("hide");
+                console.log(error);
+            })
         },
         validate: function(callback){
             var _this = this;
