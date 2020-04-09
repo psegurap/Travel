@@ -13,6 +13,8 @@ use App\TripsComments;
 use App\WorldCountries;
 use App\BuyingCustomer;
 use App\ReservationDetail;
+use App\Http\Controllers\MailController;
+
 
 class HomeController extends Controller
 {
@@ -157,9 +159,15 @@ class HomeController extends Controller
             'status' =>  1,
         ];
 
-        ReservationDetail::create($reservation_data);
-        
-        return response()->json('DONE', 200);
+        $reservation_details = ReservationDetail::create($reservation_data);
+
+        $reservation_details = ReservationDetail::with('customer', 'trip')->find($reservation_details->id);
+        $trip = $reservation_details['trip'];
+        $customer = $reservation_details['customer'];
+        $country = WorldCountries::find($customer['customer_country']);
+
+        MailController::SendBookingDetails($reservation_details, $trip, $customer, $country);
+
     }
 
     public function blog()

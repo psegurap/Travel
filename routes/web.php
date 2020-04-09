@@ -92,6 +92,10 @@ Route::group(['prefix' => 'cojefavsomostodos'], function(){
             return view('admin.home_admin');
         })->middleware('auth')->name('admin');
 
+        Route::group(['prefix' => 'reservations'], function(){
+            Route::get('/', 'ReservationController@all_reservations')->name('reservations');
+        });
+
         Route::group(['prefix' => 'user'], function(){
             Route::get('/', 'UserController@index')->name('user_panel');
             Route::post('/update_profile', 'UserController@update_profile');

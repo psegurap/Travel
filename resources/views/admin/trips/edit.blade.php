@@ -213,8 +213,8 @@
                });
 
                $(".summernote_link").click(function (e){
-                        e.preventDefault(); 
-                        return false;  
+                     e.preventDefault(); 
+                     return false;  
                 });
                
                this.trip.id = this.current_trip.id;

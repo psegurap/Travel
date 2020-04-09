@@ -23,7 +23,7 @@ class CreateBuyingCustomerDetailsTable extends Migration
             $table->integer('customer_country');
             $table->string('customer_cellphone', 50);
             $table->string('customer_homephone', 50)->nullable();
-            $table->string('customer_notes', 300)->nullable();
+            $table->text('customer_notes')->nullable();
             $table->string('language', 10);
             $table->integer('status');
             $table->timestamp('deleted_at')->nullable();

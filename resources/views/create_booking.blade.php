@@ -35,35 +35,35 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="font-weight-bold" for="">{{__('Full Name')}}:</label>
-                                        <input v-validate="'required'" v-model="book_details.user_name"  class="form-control valid rounded-0" name="name" type="text" placeholder="{{__('Enter your full name')}} *">
+                                        <input v-validate="'required'" v-model="book_details.user_name"  class="form-control valid rounded-0" name="name" type="text" placeholder="{{__('Enter your full name')}} *" autocomplete="off">
                                         <span class="text-danger" style="font-size: 12px;" v-show="errors.has('name')">* @{{ errors.first('name') }}</span>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="font-weight-bold" for="">{{__('Email Address')}}:</label>
-                                        <input v-validate="'required|email'" v-model="book_details.user_email" class="form-control valid rounded-0" name="email" type="email" placeholder="{{__('Email')}} *">
+                                        <input autocomplete="off" v-validate="'required|email'" v-model="book_details.user_email" class="form-control valid rounded-0" name="email" type="email" placeholder="{{__('Email')}} *">
                                         <span class="text-danger" style="font-size: 12px;" v-show="errors.has('email')">* @{{ errors.first('email') }}</span>
                                     </div>
                                 </div>
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <label class="font-weight-bold" for="">{{__('Address')}}:</label>
-                                        <input v-validate="'required'" v-model="book_details.user_street" class="form-control valid rounded-0" name="address" type="text" placeholder="{{__('Enter your address')}} *">
+                                        <input autocomplete="off" v-validate="'required'" v-model="book_details.user_street" class="form-control valid rounded-0" name="address" type="text" placeholder="{{__('Enter your address')}} *">
                                         <span class="text-danger" style="font-size: 12px;" v-show="errors.has('address')">* @{{ errors.first('address') }}</span>
                                     </div>
                                 </div>
                                 <div class="col-sm-8">
                                     <div class="form-group">
                                         <label class="font-weight-bold" for="">{{__('City')}}:</label>
-                                        <input v-validate="'required'" v-model="book_details.user_city" class="form-control valid rounded-0" name="city" type="text" placeholder="{{__('Enter your city')}} *">
+                                        <input autocomplete="off" v-validate="'required'" v-model="book_details.user_city" class="form-control valid rounded-0" name="city" type="text" placeholder="{{__('Enter your city')}} *">
                                         <span class="text-danger" style="font-size: 12px;" v-show="errors.has('city')">* @{{ errors.first('city') }}</span>
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <label class="font-weight-bold" for="">{{__('Zip Code')}}:</label>
-                                        <input v-validate="'required|numeric'" v-model="book_details.user_zipCode" class="form-control numeric_value valid rounded-0" name="zip code" type="text" placeholder="{{__('Zip Code')}} *">
+                                        <input autocomplete="off" v-validate="'required|numeric'" v-model="book_details.user_zipCode" class="form-control numeric_value valid rounded-0" name="zip code" type="text" placeholder="{{__('Zip Code')}} *">
                                         <span class="text-danger" style="font-size: 12px;" v-show="errors.has('zip code')">* @{{ errors.first('zip code') }}</span>
                                     </div>
                                 </div>
@@ -86,20 +86,20 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="font-weight-bold" for="">{{__('Cell Phone')}}:</label>
-                                        <input v-validate="'required'" v-model="book_details.user_mainPhone" class="form-control numeric_value valid rounded-0" name="cell phone" type="text" placeholder="{{__('Enter your cell phone')}} *">
+                                        <input autocomplete="off" v-validate="'required'" v-model="book_details.user_mainPhone" class="form-control numeric_value valid rounded-0" name="cell phone" type="text" placeholder="{{__('Enter your cell phone')}} *">
                                         <span class="text-danger" style="font-size: 12px;" v-show="errors.has('cell phone')">* @{{ errors.first('cell phone') }}</span>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="font-weight-bold" for="">{{__('Home Phone')}}:</label>
-                                        <input class="form-control valid rounded-0 numeric_value" v-model="book_details.user_secondPhone" name="phone" type="text" placeholder="{{__('Enter your home phone')}}">
+                                        <input autocomplete="off" class="form-control valid rounded-0 numeric_value" v-model="book_details.user_secondPhone" name="phone" type="text" placeholder="{{__('Enter your home phone')}}">
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group">
                                         <label class="font-weight-bold" for="">{{__('Additional Notes')}}:</label>
-                                        <textarea class="form-control w-100 rounded-0" v-model="book_details.user_notes" name="notes" cols="30" rows="5" placeholder="{{__('Enter your notes')}}"></textarea>
+                                        <textarea autocomplete="off" class="form-control w-100 rounded-0" v-model="book_details.user_notes" name="notes" cols="30" rows="5" placeholder="{{__('Enter your notes')}}"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -147,7 +147,7 @@
                                     <div class="col-6">
                                         <div class="form-group">
                                             <label class="font-weight-bold" for="">{{__('Adults')}}:</label>
-                                            <input v-validate="'min_value:0'" v-model="book_details.adults_amount" class="form-control numeric_value valid rounded-0" name="adults" type="number" placeholder="{{__('0')}}">
+                                            <input autocomplete="off" v-validate="'min_value:0'" v-model="book_details.adults_amount" class="form-control numeric_value valid rounded-0" name="adults" type="number" placeholder="{{__('0')}}">
                                             <span class="text-danger" style="font-size: 12px;" v-show="errors.has('adults')">* @{{ errors.first('adults') }}</span>
                                         </div>
                                         <div class="mb-3">
@@ -157,7 +157,7 @@
                                     <div class="col-6">
                                         <div class="form-group">
                                             <label class="font-weight-bold" for="">{{__('Kids')}}(2-8):</label>
-                                            <input v-validate="'min_value:0'"  v-model="book_details.kids_amount" class="form-control numeric_value valid rounded-0" name="kids" type="number" placeholder="{{__('0')}}">
+                                            <input autocomplete="off" v-validate="'min_value:0'"  v-model="book_details.kids_amount" class="form-control numeric_value valid rounded-0" name="kids" type="number" placeholder="{{__('0')}}">
                                             <span class="text-danger" style="font-size: 12px;" v-show="errors.has('kids')">* @{{ errors.first('kids') }}</span>
                                         </div>
                                         <div class="mb-3">
@@ -283,18 +283,18 @@
                                 <thead class="table-header bg-danger text-white">
                                     <tr>
                                         <th></th>
-                                        <th>Quantity</th>
+                                        <th>{{__('Quantity')}}</th>
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td class="font-weight-bold">Adults</td>
+                                        <td class="font-weight-bold">{{__('Adults')}}</td>
                                         <td>@{{book_details.adults_amount}}</td>
                                         <td>US$ @{{totals.adults_total}}</td>
                                     </tr>
                                     <tr>
-                                        <td class="font-weight-bold">Kids</td>
+                                        <td class="font-weight-bold">{{__('Kids')}}</td>
                                         <td>@{{book_details.kids_amount}}</td>
                                         <td>US$ @{{totals.kids_total}}</td>
                                     </tr>
@@ -404,24 +404,31 @@
                 $(".btn-confirm-booking").LoadingOverlay("hide");
                 Swal.fire({
                     icon: 'success',
-                    title: "{{__('Thank You')}}!",
+                    title: "{{__('Thank You!')}}",
                     text: "{{__('We have sent you an email with the reservation details')}}.",
                     showConfirmButton: true,
                     // timer: 2000
                 }).then(function(){
                     $('#ConfirmModal').modal('hide');
+                    window.location.href = homepath + "/destinations/" + trip.id;
                 })
             }).catch(function(error){
                 $(".btn-confirm-booking").LoadingOverlay("hide");
-                console.log(error);
+                $.toast({
+                    heading: 'Error',
+                    text: '{{__("There was an error saving the reservation")}}',
+                    showHideTransition: 'fade',
+                    icon: 'error',
+                    position : 'top-right'
+                })
             })
         },
         validate: function(callback){
             var _this = this;
             this.$validator.validateAll().then(function(result){
-            if(result){
-                    callback();
-            }else{
+                if(result){
+                        callback();
+                }else{
                     $.toast({
                         heading: 'Error',
                         text: '{{__("You need to fix the errors")}}',

@@ -70,6 +70,7 @@
                                                     <li><a href="/admin/trips/all">{{__('All Trips')}}</a></li>
                                                 </ul>
                                             </li>
+                                            <li><a href="{{route('reservations')}}">{{__('Reservations')}}</a></li>
                                             <li><a href="javascript:void(0)">{{__('Blog')}} <i class="ti-angle-down"></i></a>
                                                 <ul class="submenu">
                                                     <li><a href="/admin/blog/create">{{__('New Post')}}</a></li>
@@ -80,12 +81,6 @@
                                                             <li><a href="#">{{__('Option #2')}}</a></li>
                                                         </ul>
                                                     </li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="javascript:void(0)">{{__('Dropdown')}} <i class="ti-angle-down"></i></a>
-                                                <ul class="submenu">
-                                                    <li><a href="#">{{__('Option #1')}}</a></li>
-                                                    <li><a href="#">{{__('Option #2')}}</a></li>
                                                 </ul>
                                             </li>
                                             <li><a href="javascript:void(0)">{{__('Dropdown')}} <i class="ti-angle-down"></i></a>

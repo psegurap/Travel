@@ -16,7 +16,7 @@
                                         <tbody>
                                             <tr>
                                                 <td id="m_3867218520512858963header_wrapper" style="padding:36px 48px;display:block">
-                                                    <h1 style="font-family:&quot;Helvetica Neue&quot;,Helvetica,Roboto,Arial,sans-serif;font-size:30px;font-weight:300;line-height:150%;margin:0;text-align:left;color:white">{{__('Thank you for booking with us!')}}</h1>
+                                                    <h1 style="font-family:&quot;Helvetica Neue&quot;,Helvetica,Roboto,Arial,sans-serif;font-size:30px;font-weight:300;line-height:150%;margin:0;text-align:left;color:white">New reservation created!</h1>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -40,14 +40,14 @@
                                                             <tr>
                                                                 <td valign="top" style="padding:30px 48px 32px">
                                                                     <div id="m_3867218520512858963body_content_inner" style="color:#636363;font-family:&quot;Helvetica Neue&quot;,Helvetica,Roboto,Arial,sans-serif;font-size:14px;line-height:150%;text-align:left">
-                                                                        <p style="margin:0 0 16px">{{__('Your reservation details are as follows')}}:</p>
+                                                                        <p style="margin:0 0 16px">'The reservation details are as follows:</p>
                                                                         <h2 style="color:#ef2831;display:block;font-family:&quot;Helvetica Neue&quot;,Helvetica,Roboto,Arial,sans-serif;font-size:18px;font-weight:bold;line-height:130%;margin:0 0 18px;text-align:left">Ticket #: {{$data->ticket_number}}</h2>
-                                                                        <h2 style="color:#ef2831;display:block;font-family:&quot;Helvetica Neue&quot;,Helvetica,Roboto,Arial,sans-serif;font-size:18px;font-weight:bold;line-height:130%;margin:0 0 18px;text-align:left">{{__('Status')}}: {{$data->reservation_status}}</h2>
+                                                                        <h2 style="color:#ef2831;display:block;font-family:&quot;Helvetica Neue&quot;,Helvetica,Roboto,Arial,sans-serif;font-size:18px;font-weight:bold;line-height:130%;margin:0 0 18px;text-align:left">Status: {{$data->reservation_status}}</h2>
                                                                         <div style="margin-bottom:40px">
                                                                             <table cellspacing="0" cellpadding="6" border="1" style="color:#636363;border:1px solid #e5e5e5;vertical-align:middle;width:100%;font-family:'Helvetica Neue',Helvetica,Roboto,Arial,sans-serif">
                                                                                 <thead>
                                                                                     <tr>
-                                                                                    <th colspan="3" scope="col" style="color:#636363;border:1px solid #e5e5e5;vertical-align:middle;padding:12px;text-align:left">{{__('Trip selected')}}: <a href="{{$data->trip_url}}" style="font-weight:normal;text-decoration:none;color:#ef2831" target="_blank">{{$data->trip_selected}}</a></th>
+                                                                                    <th colspan="3" scope="col" style="color:#636363;border:1px solid #e5e5e5;vertical-align:middle;padding:12px;text-align:left">Trip selected: <a href="{{$data->trip_url}}" style="font-weight:normal;text-decoration:none;color:#ef2831" target="_blank">{{$data->trip_selected}}</a></th>
                                                                                     </tr>
                                                                                 </thead>
                                                                                 <tbody>
@@ -55,16 +55,16 @@
                                                                                 <tfoot>
                                                                                     <tr>
                                                                                         <th scope="row" style="color:#636363;border:1px solid #e5e5e5;vertical-align:middle;padding:12px;text-align:left;border-top-width:2px"></th>
-                                                                                        <th scope="row" style="color:#636363;border:1px solid #e5e5e5;vertical-align:middle;padding:12px;text-align:left;border-top-width:2px">{{__('Quantity')}}:</th>
+                                                                                        <th scope="row" style="color:#636363;border:1px solid #e5e5e5;vertical-align:middle;padding:12px;text-align:left;border-top-width:2px">Quantity:</th>
                                                                                         <th scope="row" style="color:#636363;border:1px solid #e5e5e5;vertical-align:middle;padding:12px;text-align:left;border-top-width:2px"></th>
                                                                                     </tr>
                                                                                     <tr>
-                                                                                        <th scope="row" style="color:#636363;border:1px solid #e5e5e5;vertical-align:middle;padding:12px;text-align:left">{{__('Adults')}}:</th>
+                                                                                        <th scope="row" style="color:#636363;border:1px solid #e5e5e5;vertical-align:middle;padding:12px;text-align:left">Adults:</th>
                                                                                         <td style="color:#636363;border:1px solid #e5e5e5;vertical-align:middle;padding:12px;text-align:left"><span>{{$data->adults_quantity}}</span></td>
                                                                                         <td style="color:#636363;border:1px solid #e5e5e5;vertical-align:middle;padding:12px;text-align:left"><span><span>$</span>{{$data->adults_total}}</span></td>
                                                                                     </tr>
                                                                                     <tr>
-                                                                                        <th scope="row" style="color:#636363;border:1px solid #e5e5e5;vertical-align:middle;padding:12px;text-align:left">{{__('Kids')}}:</th>
+                                                                                        <th scope="row" style="color:#636363;border:1px solid #e5e5e5;vertical-align:middle;padding:12px;text-align:left">Kids:</th>
                                                                                         <td style="color:#636363;border:1px solid #e5e5e5;vertical-align:middle;padding:12px;text-align:left"><span>{{$data->kids_quantity}}</span></td>
                                                                                         <td style="color:#636363;border:1px solid #e5e5e5;vertical-align:middle;padding:12px;text-align:left"><span><span>$</span>{{$data->kids_total}}</span></td>
                                                                                     </tr>
@@ -75,28 +75,25 @@
                                                                                 </tfoot>
                                                                             </table>
                                                                         </div>
-                                                                        <table id="m_3867218520512858963addresses" cellspacing="0" cellpadding="0" border="0" style="width:100%;vertical-align:top;margin-bottom:40px;padding:0">
+                                                                        <table id="m_3867218520512858963addresses" cellspacing="0" cellpadding="0" border="0" style="width:100%;vertical-align:top;margin-bottom:10px;padding:0">
                                                                             <tbody>
                                                                                 <tr>
                                                                                     <td valign="top" width="50%" style="text-align:left;font-family:'Helvetica Neue',Helvetica,Roboto,Arial,sans-serif;border:0;padding:0">
-                                                                                        <h2 style="color:#ef2831;display:block;font-family:&quot;Helvetica Neue&quot;,Helvetica,Roboto,Arial,sans-serif;font-size:18px;font-weight:bold;line-height:130%;margin:0 0 18px;text-align:left">{{__('Information provided')}}:</h2>
+                                                                                        <h2 style="color:#ef2831;display:block;font-family:&quot;Helvetica Neue&quot;,Helvetica,Roboto,Arial,sans-serif;font-size:18px;font-weight:bold;line-height:130%;margin:0 0 18px;text-align:left">Information Provided:</h2>
 
                                                                                         <address style="padding:12px;color:#636363;border:1px solid #e5e5e5">
-                                                                                            <strong>{{__('Name')}}:</strong> {{$data->customer_name}}<br>
-                                                                                            <strong>{{__('Email')}}:</strong> {{$data->customer_email}}<br>
-                                                                                            <strong>{{__('Address')}}:</strong> {{$data->customer_address}}<br>
-                                                                                            <strong>{{__('City')}}:</strong> {{$data->customer_city}}<br>
-                                                                                            <strong>{{__('Zip Code')}}:</strong> {{$data->customer_zipCode}}<br>
-                                                                                            <strong>{{__('Country')}}:</strong> {{$data->customer_country}}<br>
-                                                                                            <strong>{{__('Phone')}}:</strong> {{$data->customer_phone}}<br>
+                                                                                            <strong>Name:</strong> {{$data->customer_name}}<br>
+                                                                                            <strong>Email:</strong> {{$data->customer_email}}<br>
+                                                                                            <strong>Address:</strong> {{$data->customer_address}}<br>
+                                                                                            <strong>City:</strong> {{$data->customer_city}}<br>
+                                                                                            <strong>Zip Code:</strong> {{$data->customer_zipCode}}<br>
+                                                                                            <strong>Country:</strong> {{$data->customer_country}}<br>
+                                                                                            <strong>Phone:</strong> {{$data->customer_phone}}<br>
                                                                                         </address>
                                                                                     </td>
                                                                                 </tr>
                                                                             </tbody>
                                                                         </table>
-                                                                        <p style="margin:0 0 16px">
-                                                                            <strong>{{__('In the next 24 hours one of our representatives will contact you')}}.</strong>
-                                                                        </p>
                                                                         <font color="#888888">
                                                                         </font>
                                                                     </div>
