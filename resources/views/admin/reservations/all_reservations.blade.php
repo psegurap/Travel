@@ -50,7 +50,6 @@
                             <select v-model="reservation_status" name="category" class="selectpicker">
                                 <option value="1">{{__('Pending')}}</option>
                                 <option value="2">{{__('Payment made')}}</option>
-                                <option value="3">{{__('Complete')}}</option>
                             </select>
                         </div>
                     </div>
@@ -170,8 +169,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn d-none d-sm-block btn-confirm-booking btn-danger px-4">{{__('Update Status')}}</button>
-                        <button type="button" class="btn d-block d-sm-none btn-confirm-booking btn-danger px-4">{{__('Update')}}</button>
+                        <button type="button" @click="updateReservation()" class="btn d-none d-sm-block btn-confirm-booking btn-danger px-4">{{__('Update Status')}}</button>
+                        <button type="button" @click="updateReservation()" class="btn d-block d-sm-none btn-confirm-booking btn-danger px-4">{{__('Update')}}</button>
                         <button type="button" class="btn btn-default px-4" data-dismiss="modal">{{__('Close')}}</button>
                     </div>
                 </div>
@@ -231,9 +230,9 @@
                 this.dt.draw();
             },
             reservation_status: function(val){
-                console.log(this.reservation_status)
-                $('.selectpicker').selectpicker('refresh');
-                console.log(this.reservation_status)
+                setTimeout(function(){
+                    $('.selectpicker').selectpicker('refresh');
+                }, 100);
             },
             'CurrentReservation': function(val){
                 let reservation = val[0];
@@ -291,28 +290,28 @@
                 this.current_reservation = id;
                 this.openModal('DetailsModal');
             },
-            // updateCategory: function(){
-            //     var _this = this;
-            //     axios.post( homepath + '/admin/maintenance/categories/update/' + this.current_category, this.category).then(function(response){
-            //         _this.categories = response.data;
-            //         _this.closeModal('FeedbackModal');
-            //         $.toast({
-            //             heading: 'Success',
-            //             text: '{{__("The category was updated")}}',
-            //             showHideTransition: 'fade',
-            //             icon: 'success',
-            //             position : 'top-right'
-            //         })
-            //     }).catch(function(error){
-            //         $.toast({
-            //             heading: 'Error',
-            //             text: '{{__("There was an error updating the category")}}',
-            //             showHideTransition: 'fade',
-            //             icon: 'error',
-            //             position : 'top-right'
-            //         })
-            //     });
-            // },
+            updateReservation: function(){
+                var _this = this;
+                axios.post(homepath + '/admin/reservations/update/' + this.current_reservation + '/' + this.reservation_status).then(function(response){
+                    _this.reservations = response.data;
+                    _this.closeModal('DetailsModal');
+                    $.toast({
+                        heading: 'Success',
+                        text: '{{__("The reservation was updated")}}',
+                        showHideTransition: 'fade',
+                        icon: 'success',
+                        position : 'top-right'
+                    })
+                }).catch(function(error){
+                    $.toast({
+                        heading: 'Error',
+                        text: '{{__("There was an error updating the reservation")}}',
+                        showHideTransition: 'fade',
+                        icon: 'error',
+                        position : 'top-right'
+                    })
+                });
+            },
             // deleteCategory: function(id){
             //     var _this = this;
             //     Swal.fire({
@@ -371,12 +370,9 @@
                             data : 'reservation_status',
                             render: function(data){
                                 if(data == 1){
-                                    return "<div class='d-flex justify-content-around'><div class='text-danger' style='font-size: 1.5em;'><i class='fa fa-square' aria-hidden='true'></i></div>"
-                                }
-                                if(data == 2){
                                     return "<div class='d-flex justify-content-around'><div class='text-warning' style='font-size: 1.5em;'><i class='fa fa-square' aria-hidden='true'></i></div>"
                                 }
-                                if(data == 3){
+                                if(data == 2){
                                     return "<div class='d-flex justify-content-around'><div class='text-success' style='font-size: 1.5em;'><i class='fa fa-square' aria-hidden='true'></i></div>"
                                 }
                             }

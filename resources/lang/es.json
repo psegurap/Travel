@@ -110,7 +110,7 @@
     "Update Feedback" : "Actualizar Reseña",
     "The feedback was updated" : "La reseña fue actualizada",
     "There was an error updating the feedback" : "Hubo un error actualizando la reseña",
-    "Average Annual Trips" : "Promedio Viajes Anuales",
+    "Completed Trips" : "Viajes Completados",
     "Reservations Arranged" : "Reservas Efectuadas",
     "Happy Clients" : "Clientes Felices",
     "About Us" : "Sobre Nosotros",
@@ -156,6 +156,13 @@
     "Information provided" : "Información provista",
     "Name" : "Nombre",
     "Phone" : "Telefono",
-    "In the next 24 hours one of our representatives will contact you" : "En las próximas 24 horas uno de nuestros representantes le estará contactando"
-    
+    "In the next 24 hours one of our representatives will contact you" : "En las próximas 24 horas uno de nuestros representantes le estará contactando",
+    "Reservation Update" : "Actualización de reservación",
+    "Your payment has been processed" : "Tu pago ha sido procesado",
+    "There was an error updating the reservation" : "Ha ocurrido un error actualizando la reservación",
+    "The reservation was updated" : "La reservación fue actualizada",
+    "Customer Name" : "Nombre Del Cliente",
+    "Booking Date" : "Fecha Del Reservación",
+    "Trip Name" : "Nombre Del Viaje",
+    "Trip Date" : "Fecha Del Viaje"
 }

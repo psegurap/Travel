@@ -47,19 +47,19 @@
                                     <div class="row">
                                         <div class="col-lg-4 col-md-4">
                                             <div class="single_counter text-center">
-                                                <h3 class="counter">378</h3>
+                                                <h3 class="counter">@{{reservations_metrics.reservation_count}}</h3>
                                                 <p>{{__('Reservations Arranged')}}</p>
                                             </div>
                                         </div>
                                         <div class="col-lg-4 col-md-4">
                                             <div class="single_counter text-center">
-                                                <h3 class="counter">30</h3>
-                                                <p>{{__('Average Annual Trips')}}</p>
+                                                <h3 class="counter">@{{reservations_metrics.completed_trips}}</h3>
+                                                <p>{{__('Completed Trips')}}</p>
                                             </div>
                                         </div>
                                         <div class="col-lg-4 col-md-4">
                                             <div class="single_counter text-center">
-                                                <h3 class="counter">2263</h3>
+                                                <h3 class="counter">@{{reservations_metrics.clients_count}}</h3>
                                                 <p>{{__('Happy Clients')}}</p>
                                             </div>
                                         </div>
@@ -208,11 +208,14 @@
         var some_trips = {!! json_encode($some_trips) !!}
         var recent_trips = {!! json_encode($recent_trips) !!}
         var feedbacks = {!! json_encode($feedbacks) !!}
+        var reservations_metrics = {!! json_encode($reservations_metrics) !!}
+        
         
         var main = new Vue({
             el : 'main',
             data : {
                 some_trips : some_trips,
+                reservations_metrics: reservations_metrics,
             }
         });
     </script>

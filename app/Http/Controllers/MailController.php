@@ -10,6 +10,7 @@ use App\Mail\NewSubscriberNotification;
 use App\Mail\AdminSubscriberNotification;
 use App\Mail\ReservationCreatedMail;
 use App\Mail\ReservationCreatedAdminMail;
+use App\Mail\ReservationPaymentMade;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use App\Subscriber;
@@ -145,6 +146,53 @@ class MailController extends Controller
         foreach ($admins as $admin) {
             Mail::to($admin->email)->send(new ReservationCreatedAdminMail($data));
         }
+
+    }
+
+    public static function PaymentMade($reservation, $trip, $customer, $country){
+        $current_lang = App::getLocale();
+
+        if($customer['language'] == 'es'){
+            App::setlocale('es');
+        }else{
+            App::setlocale('en');
+        }
+
+        if(App::getLocale() == 'es'){
+            $reservation_status = "Pago realizado"; 
+            $trip_name = $trip['title_es'];
+            $country_name = $country['country_es'];
+            $subject = env('APP_NAME') . " - Actualizacion de reservación";
+        }else{
+            $reservation_status = "Payment Made"; 
+            $trip_name = $trip['title_en'];
+            $country_name = $country['country_en'];
+            $subject = env('APP_NAME') . " - Reservation Update";
+        }
+
+
+        $data = new \stdClass;
+        $data->ticket_number = $reservation['id'];
+        $data->reservation_status = $reservation_status;
+        $data->trip_selected = $trip_name;
+        $data->trip_url = $trip['id'];
+        $data->adults_quantity = $reservation['adults_amount'];
+        $data->kids_quantity = $reservation['kids_amount'];
+        $data->adults_total = $reservation['adults_total'];
+        $data->kids_total = $reservation['kids_total'];
+        $data->adults_kids_total = $reservation['total_amount'];
+        $data->customer_name = $customer['customer_name'];
+        $data->customer_email = $customer['customer_email'];
+        $data->customer_address = $customer['customer_adddress'];
+        $data->customer_city = $customer['customer_city'];
+        $data->customer_zipCode = $customer['customer_zipCode'];
+        $data->customer_country = $country_name;
+        $data->customer_phone = $customer['customer_cellphone'];
+        $data->subject = $subject;
+
+        Mail::to($data->customer_email)->send(new ReservationPaymentMade($data));
+
+        App::setlocale($current_lang);
 
     }
 

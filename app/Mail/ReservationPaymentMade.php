@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class ReservationCreatedAdminMail extends Mailable
+class ReservationPaymentMade extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -30,7 +30,7 @@ class ReservationCreatedAdminMail extends Mailable
      */
     public function build()
     {
-        return $this->subject('New reservation created')
-                    ->view('admin.mail.reservations.reservation_created');
+        return $this->subject($this->data->subject)
+                    ->view('admin.mail.reservations.payment_made');
     }
 }

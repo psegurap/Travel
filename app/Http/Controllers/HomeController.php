@@ -81,7 +81,14 @@ class HomeController extends Controller
         $recent_trips = Trip::with('categories')->where('available_date', '<', date("Y-m-d"))->orderBy('available_date', 'desc')->take(3)->get();
         $feedbacks = QuickFeedback::where('language', App::getLocale())->where('status', 1)->inRandomOrder()->take(3)->get();
         
-        return view('about', compact('some_trips', 'recent_trips', 'feedbacks'));
+        $reservation_count = ReservationDetail::where('status', 1)->count();
+        $completed_trips = ReservationDetail::where('status', 1)->where('reservation_status', 2)->count();
+        $clients_count = (ReservationDetail::where('status', 1)->where('reservation_status', 2)->sum('adults_amount') + $kids_count = ReservationDetail::where('status', 1)->where('reservation_status', 2)->sum('kids_amount'));
+        $reservations_metrics['reservation_count'] = $reservation_count;
+        $reservations_metrics['completed_trips'] = $completed_trips;
+        $reservations_metrics['clients_count'] = $clients_count;
+        
+        return view('about', compact('some_trips', 'recent_trips', 'feedbacks', 'reservations_metrics'));
     }
 
     public function destinations()

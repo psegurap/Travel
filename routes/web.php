@@ -46,11 +46,12 @@ Route::group(['prefix' => 'cojefavsomostodos'], function(){
     Route::get('/blog/{id}', 'HomeController@single_blog');
     Route::get('/contact', 'HomeController@contact')->name('contact');
     
+    //--------------- BOOKING ROUTES --------------------------//
     Route::get('/destinations/booking/{id}', 'HomeController@booking');
     Route::post('/destinations/booking/save_booking', 'HomeController@save_booking');
-    Route::get('/bookingmail', function(){
-        return view('mail.reservation_created');
-    });
+    // Route::get('/bookingmail', function(){
+    //     return view('mail.reservation_created');
+    // });
 
     Route::post('/store_quick_feedback', 'LayoutsController@store_quick_feedback');
     Route::group(['prefix' => 'file'], function(){
@@ -94,6 +95,7 @@ Route::group(['prefix' => 'cojefavsomostodos'], function(){
 
         Route::group(['prefix' => 'reservations'], function(){
             Route::get('/', 'ReservationController@all_reservations')->name('reservations');
+            Route::post('/update/{id}/{status}', 'ReservationController@update_reservations');
         });
 
         Route::group(['prefix' => 'user'], function(){
