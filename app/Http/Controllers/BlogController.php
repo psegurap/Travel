@@ -50,7 +50,7 @@ class BlogController extends Controller
             'img_thumbnail' => $request->post_info['img_thumbnail'],
             'picture_path' => $request->post_info['attach_reference'],
             'user_id' => Auth::user()->id,
-            'status' => 1,
+            'status' => $request->post_info['status'],
         ];
 
         //validation to set in specific language
@@ -116,6 +116,7 @@ class BlogController extends Controller
     {
         $data = [
             'img_thumbnail' => $request->post_info['img_thumbnail'],
+            'status' => $request->post_info['status'],
         ];
 
         if($request->lang == 'es'){

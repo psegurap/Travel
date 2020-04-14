@@ -21,7 +21,7 @@
         <!-- ================ contact section start ================= -->
         <section class="contact-section">
             <div class="container">
-                <div class="d-none d-sm-block mb-5 pb-4">
+                {{-- <div class="d-none d-sm-block mb-5 pb-4">
                     <div id="map" style="height: 480px; position: relative; overflow: hidden;"> </div>
                     <script>
                         function initMap() {
@@ -60,7 +60,7 @@
                     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpfS1oRGreGSBU5HHjMmQ3o5NLw7VdJ6I&amp;callback=initMap">
                     </script>
         
-                </div>
+                </div> --}}
         
         
                 <div class="row">
@@ -134,6 +134,11 @@
 @section('scripts')
     <script>
         Vue.use(VeeValidate);
+
+        var some_trips = {!! json_encode($some_trips) !!}
+
+        let current_background = homepath + "/tripsImages/" + some_trips[0].picture_path + "/" + some_trips[0].img_thumbnail;
+        $(".bradcam_area").css('background-image', 'url("' + current_background + '")');
 
         var main = new Vue({
             el : 'main',

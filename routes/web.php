@@ -38,6 +38,7 @@ Route::group(['prefix' => 'cojefavsomostodos'], function(){
     //------------------ Routes for principal pages ----------------//
     Route::get('/', 'HomeController@index')->name('index');
     Route::post('/where_search', 'HomeController@where_search');
+    Route::post('/search_keyword', 'HomeController@search_keyword');
     Route::get('/about', 'HomeController@about')->name('about');
     Route::get('/destinations', 'HomeController@destinations')->name('destinations');
     Route::get('/destinations/{id}', 'HomeController@single_destinations');
@@ -65,7 +66,11 @@ Route::group(['prefix' => 'cojefavsomostodos'], function(){
     //---------------- All comments route ---------------------//
     Route::group(['prefix' => 'comments'], function(){
         Route::group(['prefix' => 'trips'], function(){
-            Route::post('/store', 'CommentsController@store_comment');
+            Route::post('/store', 'CommentsController@store_trip_comment');
+        });
+
+        Route::group(['prefix' => 'posts'], function(){
+            Route::post('/store', 'CommentsController@store_post_comment');
         });
         Route::post('/quick_feedback_attachment', 'LayoutsController@quick_feedback_store_attachment');
     });

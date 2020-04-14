@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App;
+use Illuminate\Support\Facades\DB;
 use App\Trip;
 use App\Post;
 use App\Category;
@@ -35,11 +36,12 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $some_trips = Trip::inRandomOrder()->take(3)->get();
-        $categories = Category::inRandomOrder()->take(6)->get();
-        $popular_trips = Trip::with('categories')->inRandomOrder()->take(6)->get();
-        $recent_trips = Trip::with('categories')->where('available_date', '<', date("Y-m-d"))->orderBy('available_date', 'desc')->take(3)->get();
+        $some_trips = Trip::inRandomOrder()->where('status', 1)->take(3)->get();
+        $categories = Category::inRandomOrder()->where('status', 1)->take(6)->get();
+        $popular_trips = Trip::with('categories')->where('status', 1)->inRandomOrder()->take(6)->get();
+        $recent_trips = Trip::with('categories')->where('status', 1)->where('available_date', '<', date("Y-m-d"))->orderBy('available_date', 'desc')->take(3)->get();
         $feedbacks = QuickFeedback::where('language', App::getLocale())->where('status', 1)->inRandomOrder()->take(3)->get();
+
         return view('index', compact('some_trips', 'categories', 'popular_trips', 'recent_trips', 'feedbacks'));
     }
 
@@ -47,7 +49,7 @@ class HomeController extends Controller
         $search_data = $request->form;
         $trip_type =  $search_data['trip_type'];
 
-        $current_query = Trip::with('categories')->orderBy('created_at', 'desc');
+        $current_query = Trip::with('categories')->where('status', 1)->orderBy('available_date', 'desc');
         if($trip_type != 'All'){
             $trip_type = [$trip_type];
             $current_query->where(function($query) use($trip_type){
@@ -75,10 +77,27 @@ class HomeController extends Controller
 
     }
 
+    public function search_keyword(Request $request){
+        $word = $request->word;
+        $current_query = Post::with('categories')->where('status', 1)->orderBy('created_at', 'desc');
+
+        if($word != null && $word != ''){
+            if(App::getLocale() == 'es'){
+                $current_query->where('title_es', 'like' , '%' . $word . '%');
+            }else{
+                $current_query->where('title_en', 'like' , '%' . $word . '%');
+            }
+        }
+
+        $trips = $current_query->get();
+
+        return $trips;
+    }
+
     public function about()
     {
-        $some_trips = Trip::inRandomOrder()->take(2)->get();
-        $recent_trips = Trip::with('categories')->where('available_date', '<', date("Y-m-d"))->orderBy('available_date', 'desc')->take(3)->get();
+        $some_trips = Trip::inRandomOrder()->where('status', 1)->take(2)->get();
+        $recent_trips = Trip::with('categories')->where('status', 1)->where('available_date', '<', date("Y-m-d"))->orderBy('available_date', 'desc')->take(3)->get();
         $feedbacks = QuickFeedback::where('language', App::getLocale())->where('status', 1)->inRandomOrder()->take(3)->get();
         
         $reservation_count = ReservationDetail::where('status', 1)->count();
@@ -87,23 +106,23 @@ class HomeController extends Controller
         $reservations_metrics['reservation_count'] = $reservation_count;
         $reservations_metrics['completed_trips'] = $completed_trips;
         $reservations_metrics['clients_count'] = $clients_count;
-        
+
         return view('about', compact('some_trips', 'recent_trips', 'feedbacks', 'reservations_metrics'));
     }
 
     public function destinations()
     {
-        $trips = Trip::with('categories')->orderBy('available_date', 'desc')->take(6)->get();
+        $trips = Trip::with('categories')->where('status', 1)->orderBy('available_date', 'desc')->take(6)->get();
         $amount_trips = count(Trip::all());
-        $categories = Category::inRandomOrder()->take(6)->get();
-        $recent_trips = Trip::with('categories')->where('available_date', '<', date("Y-m-d"))->orderBy('available_date', 'desc')->take(3)->get();
+        $categories = Category::inRandomOrder()->where('status', 1)->take(6)->get();
+        $recent_trips = Trip::with('categories')->where('status', 1)->where('available_date', '<', date("Y-m-d"))->orderBy('available_date', 'desc')->take(3)->get();
 
         return view('destinations', compact('trips', 'categories', 'amount_trips', 'recent_trips'));
     }
 
     public function load_more_destinations(Request $request){
         $new_amount = ($request->current_amount + 3);
-        $trips = Trip::with('categories')->orderBy('available_date', 'desc')->take($new_amount)->get();
+        $trips = Trip::with('categories')->where('status', 1)->orderBy('available_date', 'desc')->take($new_amount)->get();
         return response()->json($trips, 200);
     }
 
@@ -118,7 +137,7 @@ class HomeController extends Controller
             $trip['available_to_book'] = false;
         }
         
-        $some_trips = Trip::inRandomOrder()->where('id', '!=', $id)->take(4)->orderBy('available_date', 'desc')->get();
+        $some_trips = Trip::inRandomOrder()->where('status', 1)->where('id', '!=', $id)->take(4)->orderBy('available_date', 'desc')->get();
 
         return view('destination_details', compact('trip', 'some_trips'));
     }
@@ -179,33 +198,33 @@ class HomeController extends Controller
 
     public function blog()
     {
-        $posts = Post::with('categories')->orderBy('created_at', 'desc')->get();
-        $categories = Category::with('posts')->take(6)->get();
-        $recent_posts = Post::orderBy('created_at', 'desc')->take(4)->get();
+        $posts = Post::with('categories', 'comments')->where('status', 1)->orderBy('created_at', 'desc')->paginate(4);
+        $categories = Category::with('posts')->where('status', 1)->take(6)->get();
+        $tags = Category::take(10)->where('status', 1)->get();
+        $recent_posts = Post::orderBy('created_at', 'desc')->where('status', 1)->take(4)->get();
 
-        return view('blog', compact('posts', 'categories', 'recent_posts'));
+        return view('blog', compact('posts', 'categories', 'recent_posts', 'tags'));
     }
 
     public function single_blog($id)
     {
-        $post = Post::with('categories')->find($id);
+        $post = Post::with('categories', 'comments.replies', 'user:id,name,img_thumbnail,slogan_es,slogan_en,attach_reference')->find($id);
         $post['attachments'] =  $this->GetAttachmentsBlog($post['picture_path']); 
+        $tags = Category::take(10)->where('status', 1)->get();
 
-        // dd($post);
-        $recent_posts = Post::orderBy('created_at', 'desc')->where('id', '!=', $id)->take(4)->get();
-        $categories = Category::with('posts')->take(6)->get();
+        $recent_posts = Post::orderBy('created_at', 'desc')->where('status', 1)->where('id', '!=', $id)->take(4)->get();
+        $categories = Category::with('posts')->where('status', 1)->take(6)->get();
 
-        $previous_post = Post::where('id', '<', $post['id'])->orderBy('id', 'desc')->first();
-        $next_post = Post::where('id', '>', $post['id'])->orderBy('id')->first();
+        $previous_post = Post::where('id', '<', $post['id'])->where('status', 1)->orderBy('id', 'desc')->first();
+        $next_post = Post::where('id', '>', $post['id'])->where('status', 1)->orderBy('id')->first();
 
-        // dd($previous_trip, $next_trip);
-
-        return view('blog_details', compact('post', 'recent_posts', 'categories', 'previous_post', 'next_post'));
+        return view('blog_details', compact('post', 'recent_posts', 'categories', 'previous_post', 'next_post', 'tags'));
     }
 
     public function contact()
     {
-        return view('contact');
+        $some_trips = Trip::inRandomOrder()->where('status', 1)->take(2)->get();
+        return view('contact', compact('some_trips'));
     }
 
     

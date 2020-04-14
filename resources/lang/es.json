@@ -164,5 +164,14 @@
     "Customer Name" : "Nombre Del Cliente",
     "Booking Date" : "Fecha Del Reservación",
     "Trip Name" : "Nombre Del Viaje",
-    "Trip Date" : "Fecha Del Viaje"
+    "Trip Date" : "Fecha Del Viaje",
+    "SEARCH" : "BUSQUEDA",
+    "Search Keyword" : "Buscar Palabra",
+    "Reservations" : "Reservaciones",
+    "Update Status" : "Actualizar Estado",
+    "HIDE" : "OCULTAR",
+    "SHOW" : "MOSTRAR",
+    "Update Trip" : "Actualizar Viaje",
+    "Trip Prices" : "Precios",
+    "Update Post" : "Actualizar Publicación"
 }

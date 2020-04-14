@@ -1,8 +1,22 @@
 @extends('layouts.app')
 @section('title') {{__('Blog')}}@endsection
+
+@section('styles')
+    <style>
+        .swal2-popup {
+            font-size: 0.8rem !important;
+        }
+
+        .modal-body {
+            overflow-y: auto;
+            max-height: calc(100vh - 200px);
+        }
+    </style>
+@endsection
+
 @section('content')
     <!-- bradcam_area  -->
-    <div class="bradcam_area bradcam_bg_4">
+    <div class="bradcam_area">
         <div class="container">
             <div class="row">
                 <div class="col-xl-12">
@@ -23,7 +37,7 @@
             <div class="row">
                 <div class="col-lg-8 mb-5 mb-lg-0">
                     <div class="blog_left_sidebar">
-                        <article v-for="post in posts" class="blog_item">
+                        <article v-for="post in posts['data']" class="blog_item">
                             <div class="blog_item_img">
                                 <img class="card-img rounded-0" :src="homepath + '/blogImages/' + post.picture_path + '/' + post.img_thumbnail" :alt="post.img_thumbnail">
                                 <a href="#" class="blog_item_date">
@@ -60,115 +74,24 @@
                                             </span>
                                         </a>
                                     </li>
-                                    <li><a href="#"><i class="fa fa-comments"></i> 03 Comments</a></li>
+                                    <li><a href="#"><i class="fa fa-comments"></i> @{{post.comments.length}} {{__('Comment(s)')}}</a></li>
                                 </ul>
                             </div>
                         </article>
-
-                        {{-- <article class="blog_item">
-                            <div class="blog_item_img">
-                                <img class="card-img rounded-0" src="img/blog/single_blog_2.png" alt="">
-                                <a href="#" class="blog_item_date">
-                                    <h3>15</h3>
-                                    <p>Jan</p>
-                                </a>
-                            </div>
-
-                            <div class="blog_details">
-                                <a class="d-inline-block" href="single-blog.html">
-                                    <h2>Google inks pact for new 35-storey office</h2>
-                                </a>
-                                <p>That dominion stars lights dominion divide years for fourth have don't stars is that
-                                    he earth it first without heaven in place seed it second morning saying.</p>
-                                <ul class="blog-info-link">
-                                    <li><a href="#"><i class="fa fa-user"></i> Travel, Lifestyle</a></li>
-                                    <li><a href="#"><i class="fa fa-comments"></i> 03 Comments</a></li>
-                                </ul>
-                            </div>
-                        </article>
-
-                        <article class="blog_item">
-                            <div class="blog_item_img">
-                                <img class="card-img rounded-0" src="img/blog/single_blog_3.png" alt="">
-                                <a href="#" class="blog_item_date">
-                                    <h3>15</h3>
-                                    <p>Jan</p>
-                                </a>
-                            </div>
-
-                            <div class="blog_details">
-                                <a class="d-inline-block" href="single-blog.html">
-                                    <h2>Google inks pact for new 35-storey office</h2>
-                                </a>
-                                <p>That dominion stars lights dominion divide years for fourth have don't stars is that
-                                    he earth it first without heaven in place seed it second morning saying.</p>
-                                <ul class="blog-info-link">
-                                    <li><a href="#"><i class="fa fa-user"></i> Travel, Lifestyle</a></li>
-                                    <li><a href="#"><i class="fa fa-comments"></i> 03 Comments</a></li>
-                                </ul>
-                            </div>
-                        </article>
-
-                        <article class="blog_item">
-                            <div class="blog_item_img">
-                                <img class="card-img rounded-0" src="img/blog/single_blog_4.png" alt="">
-                                <a href="#" class="blog_item_date">
-                                    <h3>15</h3>
-                                    <p>Jan</p>
-                                </a>
-                            </div>
-
-                            <div class="blog_details">
-                                <a class="d-inline-block" href="single-blog.html">
-                                    <h2>Google inks pact for new 35-storey office</h2>
-                                </a>
-                                <p>That dominion stars lights dominion divide years for fourth have don't stars is that
-                                    he earth it first without heaven in place seed it second morning saying.</p>
-                                <ul class="blog-info-link">
-                                    <li><a href="#"><i class="fa fa-user"></i> Travel, Lifestyle</a></li>
-                                    <li><a href="#"><i class="fa fa-comments"></i> 03 Comments</a></li>
-                                </ul>
-                            </div>
-                        </article>
-
-                        <article class="blog_item">
-                            <div class="blog_item_img">
-                                <img class="card-img rounded-0" src="img/blog/single_blog_5.png" alt="">
-                                <a href="#" class="blog_item_date">
-                                    <h3>15</h3>
-                                    <p>Jan</p>
-                                </a>
-                            </div>
-
-                            <div class="blog_details">
-                                <a class="d-inline-block" href="single-blog.html">
-                                    <h2>Google inks pact for new 35-storey office</h2>
-                                </a>
-                                <p>That dominion stars lights dominion divide years for fourth have don't stars is that
-                                    he earth it first without heaven in place seed it second morning saying.</p>
-                                <ul class="blog-info-link">
-                                    <li><a href="#"><i class="fa fa-user"></i> Travel, Lifestyle</a></li>
-                                    <li><a href="#"><i class="fa fa-comments"></i> 03 Comments</a></li>
-                                </ul>
-                            </div>
-                        </article> --}}
-
                         <nav class="blog-pagination justify-content-center d-flex">
                             <ul class="pagination">
-                                <li class="page-item">
-                                    <a href="#" class="page-link" aria-label="Previous">
-                                        <i class="ti-angle-left"></i>
+                                <li class="page-item" :class="[posts['prev_page_url'] == null ? 'd-none' : '']">
+                                    <a :class="[posts['prev_page_url'] == null ? 'disabled' : 'bg-info']" :href="posts['prev_page_url']" class="page-link" aria-label="Previous">
+                                        <i :class="[posts['prev_page_url'] == null ? 'disabled' : 'text-light']" class="ti-angle-left"></i>
                                     </a>
                                 </li>
-                                <li class="page-item">
-                                    <a href="#" class="page-link">1</a>
+                                <li v-for="page in posts['last_page']" class="page-item">
+                                    <a :class="[page == posts['current_page'] ? 'border-0' : '']" :href="homepath + '/blog?page=' + page" class="page-link">@{{page}}</a>
                                 </li>
-                                <li class="page-item active">
-                                    <a href="#" class="page-link">2</a>
-                                </li>
-                                <li class="page-item">
-                                    <a href="#" class="page-link" aria-label="Next">
-                                        <i class="ti-angle-right"></i>
+                                
+                                <li class="page-item" :class="[posts['next_page_url'] == null ? 'd-none' : '']">
+                                    <a :class="[posts['next_page_url'] == null ? 'disabled' : 'bg-info']" :href="posts['next_page_url']" class="page-link" aria-label="Next">
+                                        <i :class="[posts['next_page_url'] == null ? 'disabled' : 'text-light']" class="ti-angle-right"></i>
                                     </a>
                                 </li>
                             </ul>
@@ -178,20 +101,18 @@
                 <div class="col-lg-4">
                     <div class="blog_right_sidebar">
                         <aside class="single_sidebar_widget search_widget">
-                            <form action="#">
-                                <div class="form-group">
+                            <div>
+                                <div class="form-group search-keyword">
                                     <div class="input-group mb-3">
-                                        <input type="text" class="form-control" placeholder='Search Keyword'
-                                            onfocus="this.placeholder = ''"
-                                            onblur="this.placeholder = 'Search Keyword'">
+                                        <input v-model="search_keyword" type="text" class="form-control" placeholder="{{__('Search Keyword')}}">
                                         <div class="input-group-append">
                                             <button class="btn" type="button"><i class="ti-search"></i></button>
                                         </div>
                                     </div>
                                 </div>
-                                <button class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn"
-                                    type="submit">Search</button>
-                            </form>
+                                <button @click="SearchForm()" class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn"
+                                    type="submit">{{__('Search')}}</button>
+                            </div>
                         </aside>
 
                         <aside class="single_sidebar_widget post_category_widget">
@@ -210,7 +131,7 @@
                              </ul>
                         </aside>
                         <aside class="single_sidebar_widget popular_post_widget">
-                            <h3 class="widget_title">Recent Post</h3>
+                            <h3 class="widget_title">{{__('Recent Post')}}</h3>
                             <div class="media post_item" v-for="post in recent_posts">
                                 <div class="row">
                                    <div class="col-4 px-1">
@@ -232,36 +153,20 @@
                              </div>
                         </aside>
                         <aside class="single_sidebar_widget tag_cloud_widget">
-                            <h4 class="widget_title">Tag Clouds</h4>
+                            <h4 class="widget_title">{{__('Tags')}}</h4>
                             <ul class="list">
-                                <li>
-                                    <a href="#">project</a>
+                                <li v-for="tag in tags">
+                                    <a href="#" class="text-lowercase">
+                                        @if (App::getLocale() == 'es')
+                                            @{{tag.category_name_es}}
+                                        @else
+                                            @{{tag.category_name_en}}
+                                        @endif
+                                    </a>
                                 </li>
-                                <li>
-                                    <a href="#">love</a>
-                                </li>
-                                <li>
-                                    <a href="#">technology</a>
-                                </li>
-                                <li>
-                                    <a href="#">travel</a>
-                                </li>
-                                <li>
-                                    <a href="#">restaurant</a>
-                                </li>
-                                <li>
-                                    <a href="#">life style</a>
-                                </li>
-                                <li>
-                                    <a href="#">design</a>
-                                </li>
-                                <li>
-                                    <a href="#">illustration</a>
-                                </li>
+                                
                             </ul>
                         </aside>
-
-
                         <aside class="single_sidebar_widget instagram_feeds">
                             <h4 class="widget_title">Instagram Feeds</h4>
                             <ul class="instagram_row flex-wrap">
@@ -298,32 +203,95 @@
                             </ul>
                         </aside>
                         <aside class="single_sidebar_widget newsletter_widget">
-                            <h4 class="widget_title">Newsletter</h4>
-
-                            <form action="#">
-                                <div class="form-group">
-                                    <input type="email" class="form-control" onfocus="this.placeholder = ''"
-                                        onblur="this.placeholder = 'Enter email'" placeholder='Enter email' required>
+                            <h4 class="widget_title">{{__('Newsletter')}}</h4>
+                            <div>
+                               <div class="form-group">
+                                  <input v-validate="'required|email'" type="email" autocomplete="off" v-model="email_account" name="email" class="form-control" placeholder="{{__('Your mail')}}">
+                                  <span class="text-danger" style="font-size: 12px;" v-show="errors.has('email')">* @{{ errors.first('email') }}</span>
                                 </div>
-                                <button class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn"
-                                    type="submit">Subscribe</button>
-                            </form>
-                        </aside>
+                               <button class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn newsletter-btn" @click="validate(StoreSubscriber)" type="submit">{{__('Subscribe')}}</button>
+                            </div>
+                         </aside>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="whereModal" tabindex="-1" role="dialog" aria-labelledby="whereModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+            <div class="modal-content" style="border-radius:0px">
+                <div class="modal-header row mx-0">
+                    <div class="col-md-4">
+                        <span><strong style="color:#FF4A52">{{__('SEARCH')}}:</strong> @{{search_keyword}}</span>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="recent_trip_area py-0">
+                        <div class="container">
+                            <div class="row mb-3">
+                                <div class="col-12">
+                                    <span>{{__('Results')}}: (@{{keyword_results.length}})</span>
+                                </div>
+                            </div>
+                            <div class="row" v-if="keyword_results.length <= 0">
+                                <div class="col-12">
+                                    <span><strong>{{__('NO RESULTS FOUND')}}</strong></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div v-if="keyword_results.length > 0" v-for="trip in keyword_results" class="col-md-12">
+                                    <div class="single_trip row">
+                                        <div class="col-4 col-lg-2">
+                                            <div class="thumb">
+                                                <img style="width:100%;" :src="homepath + '/blogImages/' + trip.picture_path + '/' + trip.img_thumbnail" alt="">
+                                            </div>
+                                        </div>
+                                        <div class="col-8 col-lg-10">
+                                            <div class="info pt-0">
+                                                <div class="date">
+                                                    <span>@{{moment(trip.created_at).format('LL')}}</span>
+                                                </div>
+                                                <a :href="homepath + '/destinations/' + trip.id">
+                                                    <span>
+                                                        @if (App::getLocale() == 'es')
+                                                            @{{trip.title_es}}
+                                                        @else
+                                                            @{{trip.title_en}}
+                                                        @endif
+                                                    </span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default px-4" data-dismiss="modal">{{__('Close')}}</button>
+                </div>
+            </div>
+            </div>
+        </div>
     </section>
     <!--================Blog Area =================-->
-@endsection
-
-@section('scripts')
+    @endsection
+    
+    @section('scripts')
 <script>
-   var posts = {!! json_encode($posts)!!}
-   var categories = {!! json_encode($categories)!!}
-   var recent_posts = {!! json_encode($recent_posts)!!}
+    var posts = {!! json_encode($posts)!!}
+    var pagination = {!! json_encode($posts->links()) !!}
+    var categories = {!! json_encode($categories)!!}
+    var recent_posts = {!! json_encode($recent_posts)!!}
+    var tags = {!! json_encode($tags)!!}
 
-   let current_background = homepath + "/blogImages/" + posts[0].picture_path + "/" + posts[0].img_thumbnail;
+    if(posts['current_page'] > posts['last_page']){
+        window.location.href = homepath + '/blog?page=' + posts['last_page'];
+    }
+
+   let current_background = homepath + "/blogImages/" + posts.data[0].picture_path + "/" + posts.data[0].img_thumbnail;
    $(".bradcam_area").css('background-image', 'url("' + current_background + '")');
 
 
@@ -331,14 +299,73 @@
       el : '.blog_area',
       data : {
         posts : posts,
-         recent_posts : recent_posts,
-         categories : categories,
+        recent_posts : recent_posts,
+        categories : categories,
+        tags : tags,
+        search_keyword : '',
+        keyword_results : [],
+        email_account : '',
       },
       mounted: function(){
         
       },
       methods: {
-         
+            SearchForm: function(){
+                var _this = this;
+                $(".search-keyword").LoadingOverlay("show");
+                axios.post(homepath + '/search_keyword', {word : this.search_keyword}).then(function(response){
+                    if(response.data){
+                        _this.keyword_results = response.data
+                    }
+                    $(".search-keyword").LoadingOverlay("hide");
+                    $('#whereModal').modal('show');
+                }).catch(function(error){
+                    $.toast({
+                        heading: 'Error',
+                        text: '{{__("Unsuccessful Search")}}',
+                        showHideTransition: 'fade',
+                        icon: 'error',
+                        position : 'top-right'
+                    });
+                    $(".search-keyword").LoadingOverlay("hide");
+                    console.log(error);
+                })
+            },
+            StoreSubscriber: function(){
+                $(".newsletter-btn").LoadingOverlay("show");
+                var _this = this;
+                axios.post(homepath + "/admin/maintenance/subscribers/new", {email : this.email_account, lang : lang}).then(function(response){
+                    _this.email_account = ""
+                    $(".newsletter-btn").LoadingOverlay("hide");
+                    Swal.fire({
+                        icon: 'success',
+                        title: "{{__('Your subscription was added')}}!",
+                        showConfirmButton: false,
+                        timer: 2000
+                    }).then(function(){
+                        _this.errors.clear();
+                    })
+                }).catch(function(error){
+                    console.log(error);
+                    $(".newsletter-btn").LoadingOverlay("hide");
+                });
+            },
+            validate: function(callback){
+                var _this = this;
+                this.$validator.validateAll().then(function(result){
+                    if(result){
+                        callback();
+                    }else{
+                        $.toast({
+                            heading: 'Error',
+                            text: '{{__("You need to fix the errors")}}',
+                            showHideTransition: 'fade',
+                            icon: 'error',
+                            position : 'top-right'
+                        })
+                    }
+                })
+            }
       }
    });
 

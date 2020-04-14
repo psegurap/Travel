@@ -78,7 +78,7 @@
                                     </span>
                                  </a>
                               </li>
-                             <li><a href="#"><i class="fa fa-comments"></i> 03 Comments</a></li>
+                             <li><a href="#"><i class="fa fa-comments"></i> @{{post.comments.length}} {{__('Comment(s)')}}</a></li>
                           </ul>
                           <textarea id="summernote" data-toolbar="slim"></textarea>
                           
@@ -132,147 +132,138 @@
                        </div>
                     </div>
                     <div class="blog-author">
-                       <div class="media align-items-center">
-                          <img src="{{asset('/img/blog/author.png')}}" alt="">
-                          <div class="media-body">
-                             <a href="#">
-                                <h4>Harvard milan</h4>
-                             </a>
-                             <p>Second divided from form fish beast made. Every of seas all gathered use saying you're, he
-                                our dominion twon Second divided from</p>
-                          </div>
-                       </div>
-                    </div>
-                    <div class="comments-area">
-                       <h4>05 Comments</h4>
-                       <div class="comment-list">
-                          <div class="single-comment justify-content-between d-flex">
-                             <div class="user justify-content-between d-flex">
-                                <div class="thumb">
-                                   <img src="{{asset('/img/comment/comment_1.png')}}" alt="">
-                                </div>
-                                <div class="desc">
-                                   <p class="comment">
-                                      Multiply sea night grass fourth day sea lesser rule open subdue female fill which them
-                                      Blessed, give fill lesser bearing multiply sea night grass fourth day sea lesser
-                                   </p>
-                                   <div class="d-flex justify-content-between">
-                                      <div class="d-flex align-items-center">
-                                         <h5>
-                                            <a href="#">Emilly Blunt</a>
-                                         </h5>
-                                         <p class="date">December 4, 2017 at 3:12 pm </p>
-                                      </div>
-                                      <div class="reply-btn">
-                                         <a href="#" class="btn-reply text-uppercase">reply</a>
-                                      </div>
-                                   </div>
-                                </div>
-                             </div>
-                          </div>
-                       </div>
-                       <div class="comment-list">
-                          <div class="single-comment justify-content-between d-flex">
-                             <div class="user justify-content-between d-flex">
-                                <div class="thumb">
-                                   <img src="{{asset('/img/comment/comment_2.png')}}" alt="">
-                                </div>
-                                <div class="desc">
-                                   <p class="comment">
-                                      Multiply sea night grass fourth day sea lesser rule open subdue female fill which them
-                                      Blessed, give fill lesser bearing multiply sea night grass fourth day sea lesser
-                                   </p>
-                                   <div class="d-flex justify-content-between">
-                                      <div class="d-flex align-items-center">
-                                         <h5>
-                                            <a href="#">Emilly Blunt</a>
-                                         </h5>
-                                         <p class="date">December 4, 2017 at 3:12 pm </p>
-                                      </div>
-                                      <div class="reply-btn">
-                                         <a href="#" class="btn-reply text-uppercase">reply</a>
-                                      </div>
-                                   </div>
-                                </div>
-                             </div>
-                          </div>
-                       </div>
-                       <div class="comment-list">
-                          <div class="single-comment justify-content-between d-flex">
-                             <div class="user justify-content-between d-flex">
-                                <div class="thumb">
-                                   <img src="{{asset('/img/comment/comment_3.png')}}" alt="">
-                                </div>
-                                <div class="desc">
-                                   <p class="comment">
-                                      Multiply sea night grass fourth day sea lesser rule open subdue female fill which them
-                                      Blessed, give fill lesser bearing multiply sea night grass fourth day sea lesser
-                                   </p>
-                                   <div class="d-flex justify-content-between">
-                                      <div class="d-flex align-items-center">
-                                         <h5>
-                                            <a href="#">Emilly Blunt</a>
-                                         </h5>
-                                         <p class="date">December 4, 2017 at 3:12 pm </p>
-                                      </div>
-                                      <div class="reply-btn">
-                                         <a href="#" class="btn-reply text-uppercase">reply</a>
-                                      </div>
-                                   </div>
-                                </div>
-                             </div>
-                          </div>
-                       </div>
-                    </div>
-                    <div class="comment-form">
-                       <h4>Leave a Reply</h4>
-                       <form class="form-contact comment_form" action="#" id="commentForm">
-                          <div class="row">
-                             <div class="col-12">
-                                <div class="form-group">
-                                   <textarea class="form-control w-100" name="comment" id="comment" cols="30" rows="9"
-                                      placeholder="Write Comment"></textarea>
-                                </div>
-                             </div>
-                             <div class="col-sm-6">
-                                <div class="form-group">
-                                   <input class="form-control" name="name" id="name" type="text" placeholder="Name">
-                                </div>
-                             </div>
-                             <div class="col-sm-6">
-                                <div class="form-group">
-                                   <input class="form-control" name="email" id="email" type="email" placeholder="Email">
-                                </div>
-                             </div>
-                             <div class="col-12">
-                                <div class="form-group">
-                                   <input class="form-control" name="website" id="website" type="text" placeholder="Website">
-                                </div>
-                             </div>
-                          </div>
-                          <div class="form-group">
-                             <button type="submit" class="button button-contactForm btn_1 boxed-btn">Send Message</button>
-                          </div>
-                       </form>
-                    </div>
+                     <div class="media align-items-center">
+                           <img v-if="post.user.img_thumbnail != null" :src="homepath + '/UsersPictures/' + post.user.attach_reference + '/' + post.user.img_thumbnail" alt="">
+                           <img v-else :src="homepath + '/img/feedback_picture.jpg'" alt="">
+                           <div class="media-body">
+                              <a href="javascript:void(0)">
+                                 <h4>@{{post.user.name}}</h4>
+                              </a>
+                              <p>
+                                 @if (App::getLocale() == 'es')
+                                    @{{post.user.slogan_es}}
+                                 @else
+                                    @{{post.user.slogan_en}}
+                                 @endif
+                              </p>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="comments-area">
+                        <h4>@{{post.comments.length}} {{__('Comment(s)')}}</h4>
+                        <div class="comment-list" v-for="comment in post.comments">
+                           <div class="single-comment justify-content-between d-flex">
+                              <div class="user justify-content-between d-flex">
+                                 <div class="thumb d-none d-sm-block">
+                                    <img :src="homepath + '/img/feedback_picture.jpg'" alt="">
+                                 </div>
+                                 <div class="row justify-content-end">
+                                    <div class="col-12">
+                                       <div class="desc border-bottom">
+                                          <p class="comment">
+                                             @{{comment.comment}}
+                                          </p>
+                                          <div class="d-flex justify-content-between">
+                                             <div class="d-flex align-items-center">
+                                                <h5>
+                                                   <a href="javascript:void(0)">@{{comment.user_name}}</a>
+                                                </h5>
+                                                <p class="date">@{{moment(comment.created_at).format('LLL')}}</p>
+                                             </div>
+                                             <div class="reply-btn">
+                                                <a href="javascript:void(0)" @click="add_reply(comment.id)" class="btn-reply text-uppercase">reply</a>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="col-11">
+                                       <div v-for="reply in comment.replies" class="desc border-left mt-3 pl-3">
+                                          <p class="comment">
+                                             @{{reply.comment}}
+                                          </p>
+                                          <div class="d-flex justify-content-between">
+                                             <div class="d-flex align-items-center">
+                                                <h5>
+                                                   <a href="javascript:void(0)">@{{reply.user_name}}</a>
+                                                </h5>
+                                                <p class="date">@{{moment(reply.created_at).format('LLL')}}</p>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="comment-form">
+                        <h4 v-if="!replying">{{__('Leave a Reply')}}</h4>
+                        <div v-if="replying" class="border-0 comments-area mt-0 pt-0">
+                           <h4 class="d-flex justify-content-between">{{('Replying to')}}: <a @click="replying = false" href="javascript:void(0)" class="btn-link small"><u>Cancel</u></a></h4>
+                           <div class="comment-list">
+                              <div class="single-comment justify-content-between d-flex">
+                                 <div class="user justify-content-between d-flex">
+                                    <div class="desc">
+                                       <p class="comment">
+                                          @{{CurrentComment[0].comment}}
+                                       </p>
+                                       <div class="d-flex justify-content-between">
+                                          <div class="d-flex align-items-center">
+                                             <h5>
+                                                <a href="javascript:void(0)">@{{CurrentComment[0].user_name}}</a>
+                                             </h5>
+                                             <p class="date">@{{moment(CurrentComment[0].created_at).format('LLL')}}</p>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="form-contact comment_form" id="commentForm">
+                           <div class="row">
+                              <div class="col-12">
+                                 <div class="form-group">
+                                    <textarea v-validate="'required|max:600'" v-model="comment_details.comment" class="form-control w-100" name="comment" id="comment" cols="30" rows="9"placeholder="Write Comment *"></textarea>
+                                    <span class="text-danger" style="font-size: 12px;" v-show="errors.has('comment')">* @{{ errors.first('comment') }}</span>
+                                 </div>
+                              </div>
+                              <div class="col-sm-6">
+                                 <div class="form-group">
+                                    <input v-validate="'required|max:30'" v-model="comment_details.name" class="form-control" name="name" id="name" type="text" placeholder="Name *">
+                                    <span class="text-danger" style="font-size: 12px;" v-show="errors.has('name')">* @{{ errors.first('name') }}</span>
+                                 </div>
+                              </div>
+                              <div class="col-sm-6">
+                                 <div class="form-group">
+                                    <input v-validate="'required|email'" class="form-control" v-model="comment_details.email" name="email" id="email" type="email" placeholder="Email *">
+                                    <span class="text-danger" style="font-size: 12px;" v-show="errors.has('email')">* @{{ errors.first('email') }}</span>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="form-group">
+                              <button type="submit" @click="validate(SendComment)" class="button button-contactForm btn_1 boxed-btn">Send Message</button>
+                           </div>
+                        </div>
+                     </div>
                  </div>
                  <div class="right-side col-lg-4">
                     <div class="blog_right_sidebar">
-                       <aside class="single_sidebar_widget search_widget">
-                          <form action="#">
-                             <div class="form-group">
-                                <div class="input-group mb-3">
-                                   <input type="text" class="form-control" placeholder='Search Keyword'
-                                      onfocus="this.placeholder = ''" onblur="this.placeholder = 'Search Keyword'">
-                                   <div class="input-group-append">
-                                      <button class="btn" type="button"><i class="ti-search"></i></button>
-                                   </div>
-                                </div>
-                             </div>
-                             <button class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn"
-                                type="submit">Search</button>
-                          </form>
-                       </aside>
+                        <aside class="single_sidebar_widget search_widget">
+                           <div>
+                              <div class="form-group search-keyword">
+                                 <div class="input-group mb-3">
+                                       <input v-model="search_keyword" type="text" class="form-control" placeholder="{{__('Search Keyword')}}">
+                                       <div class="input-group-append">
+                                          <button class="btn" type="button"><i class="ti-search"></i></button>
+                                       </div>
+                                 </div>
+                              </div>
+                              <button @click="SearchForm()" class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn"
+                                 type="submit">{{__('Search')}}
+                              </button>
+                           </div>
+                        </aside>
                        <aside class="single_sidebar_widget post_category_widget">
                           <h4 class="widget_title">{{__('Categories')}}</h4>
                           <ul class="list cat-list">
@@ -311,34 +302,20 @@
                           </div>
                        </aside>
                        <aside class="single_sidebar_widget tag_cloud_widget">
-                          <h4 class="widget_title">Tag Clouds</h4>
-                          <ul class="list">
-                             <li>
-                                <a href="#">project</a>
-                             </li>
-                             <li>
-                                <a href="#">love</a>
-                             </li>
-                             <li>
-                                <a href="#">technology</a>
-                             </li>
-                             <li>
-                                <a href="#">travel</a>
-                             </li>
-                             <li>
-                                <a href="#">restaurant</a>
-                             </li>
-                             <li>
-                                <a href="#">life style</a>
-                             </li>
-                             <li>
-                                <a href="#">design</a>
-                             </li>
-                             <li>
-                                <a href="#">illustration</a>
-                             </li>
-                          </ul>
-                       </aside>
+                           <h4 class="widget_title">{{__('Tags')}}</h4>
+                           <ul class="list">
+                              <li v-for="tag in tags">
+                                 <a href="#" class="text-lowercase">
+                                       @if (App::getLocale() == 'es')
+                                          @{{tag.category_name_es}}
+                                       @else
+                                          @{{tag.category_name_en}}
+                                       @endif
+                                 </a>
+                              </li>
+                              
+                           </ul>
+                        </aside>
                        <aside class="single_sidebar_widget instagram_feeds">
                           <h4 class="widget_title">Instagram Feeds</h4>
                           <ul class="instagram_row flex-wrap">
@@ -385,6 +362,64 @@
                         </div>
                      </aside>
                     </div>
+                     <!-- Modal -->
+                     <div class="modal fade" id="whereModal" tabindex="-1" role="dialog" aria-labelledby="whereModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+                           <div class="modal-content" style="border-radius:0px">
+                              <div class="modal-header row mx-0">
+                                 <div class="col-md-4">
+                                       <span><strong style="color:#FF4A52">{{__('SEARCH')}}:</strong> @{{search_keyword}}</span>
+                                 </div>
+                              </div>
+                              <div class="modal-body">
+                                 <div class="recent_trip_area py-0">
+                                       <div class="container">
+                                          <div class="row mb-3">
+                                             <div class="col-12">
+                                                   <span>{{__('Results')}}: (@{{keyword_results.length}})</span>
+                                             </div>
+                                          </div>
+                                          <div class="row" v-if="keyword_results.length <= 0">
+                                             <div class="col-12">
+                                                   <span><strong>{{__('NO RESULTS FOUND')}}</strong></span>
+                                             </div>
+                                          </div>
+                                          <div class="row">
+                                             <div v-if="keyword_results.length > 0" v-for="trip in keyword_results" class="col-md-12">
+                                                   <div class="single_trip row">
+                                                      <div class="col-4 col-lg-2">
+                                                         <div class="thumb">
+                                                               <img style="width:100%;" :src="homepath + '/blogImages/' + trip.picture_path + '/' + trip.img_thumbnail" alt="">
+                                                         </div>
+                                                      </div>
+                                                      <div class="col-8 col-lg-10">
+                                                         <div class="info pt-0">
+                                                               <div class="date">
+                                                                  <span>@{{moment(trip.created_at).format('LL')}}</span>
+                                                               </div>
+                                                               <a :href="homepath + '/destinations/' + trip.id">
+                                                                  <span>
+                                                                     @if (App::getLocale() == 'es')
+                                                                           @{{trip.title_es}}
+                                                                     @else
+                                                                           @{{trip.title_en}}
+                                                                     @endif
+                                                                  </span>
+                                                               </a>
+                                                         </div>
+                                                      </div>
+                                                   </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                 </div>
+                              </div>
+                              <div class="modal-footer">
+                                 <button type="button" class="btn btn-default px-4" data-dismiss="modal">{{__('Close')}}</button>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
                  </div>
               </div>
            </div>
@@ -396,10 +431,12 @@
 @section('scripts')
 <script>
    var post = {!! json_encode($post)!!}
+   var tags = {!! json_encode($tags)!!}
    var recent_posts = {!! json_encode($recent_posts)!!}
    var categories = {!! json_encode($categories)!!}
    var next_post = {!! json_encode($next_post)!!}
    var previous_post = {!! json_encode($previous_post)!!}
+   
 
    let current_background = homepath + "/blogImages/" + post.picture_path + "/" + post.img_thumbnail;
    $(".bradcam_area").css('background-image', 'url("' + current_background + '")');
@@ -410,12 +447,57 @@
          next_post : next_post,
          previous_post : previous_post,
          post : post,
+         comments: post.comments,
          summernote : null,
+         replying : false,
+         comment_details : {
+            comment : '',
+            name : '',
+            email : '',
+            post_id : post.id,
+            comment_id : null,
+         },
+         current_comment_id : null,
       },
       mounted: function(){
          this.initSummernote();
       },
+      computed: {
+         CurrentComment: function(){
+            var _this = this;
+            return this.comments.filter(function(comment){
+               return comment.id == _this.current_comment_id;
+            })
+         }
+      },
       methods: {
+         add_reply: function(id){
+            this.current_comment_id = id;
+            this.comment_details.comment_id = id;
+            this.replying = true;
+         },
+         SendComment: function(){
+            var _this = this;
+            $(".commentForm").LoadingOverlay("show");
+            this.comment_details['replying'] = this.replying;
+            axios.post(homepath + "/comments/posts/store", {comment_details : this.comment_details, lang : lang}).then(function(response){
+               $(".commentForm").LoadingOverlay("hide");
+               _this.comment_details.comment = '';
+               _this.comment_details.name = '';
+               _this.comment_details.email = '';
+               Swal.fire({
+                     icon: 'success',
+                     title: "{{__('Your comment was added')}}!",
+                     showConfirmButton: false,
+                     timer: 2000
+               }).then(function(){
+                     _this.errors.clear();
+               })
+            }).catch(function(error){
+               console.log(error);
+               $(".commentForm").LoadingOverlay("hide");
+            });
+         },
          initSummernote: function(){
             var _this = this;
             this.summernote = $('#summernote').summernote({
@@ -428,6 +510,22 @@
             }
             $('#summernote').summernote('disable')
          },
+         validate: function(callback){
+            var _this = this;
+            this.$validator.validateAll().then(function(result){
+               if(result){
+                     callback();
+               }else{
+                     $.toast({
+                        heading: 'Error',
+                        text: '{{__("You need to fix the errors")}}',
+                        showHideTransition: 'fade',
+                        icon: 'error',
+                        position : 'top-right'
+                     })
+               }
+            })
+         }
       }
    });
 
@@ -437,8 +535,32 @@
          recent_posts : recent_posts,
          email_account : null,
          categories : categories,
+         search_keyword : '',
+         keyword_results : [],
+         tags : tags,
       },
       methods: {
+         SearchForm: function(){
+               var _this = this;
+               $(".search-keyword").LoadingOverlay("show");
+               axios.post(homepath + '/search_keyword', {word : this.search_keyword}).then(function(response){
+                  if(response.data){
+                     _this.keyword_results = response.data
+                  }
+                  $(".search-keyword").LoadingOverlay("hide");
+                  $('#whereModal').modal('show');
+               }).catch(function(error){
+                  $.toast({
+                     heading: 'Error',
+                     text: '{{__("Unsuccessful Search")}}',
+                     showHideTransition: 'fade',
+                     icon: 'error',
+                     position : 'top-right'
+                  });
+                  $(".search-keyword").LoadingOverlay("hide");
+                  console.log(error);
+               })
+         },
          StoreSubscriber: function(){
             $(".newsletter-btn").LoadingOverlay("show");
             var _this = this;

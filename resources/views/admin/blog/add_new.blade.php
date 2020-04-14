@@ -54,14 +54,22 @@
 
               <div class="col-lg-4">
                  <div class="blog_right_sidebar">
-                     <aside class="single_sidebar_widget post_category_widget pb-0 mb-0" style="background:none;">
+                 <aside class="single_sidebar_widget post_category_widget pb-0 mb-0" style="background:none;">
                         <div class="switch-wrap d-flex justify-content-start align-items-center">
                            <p class="mx-2">ES</p>
-                           <div class="confirm-switch">
-                              <input  type="checkbox" id="confirm-switch" :checked="lang == 'en'">
-                              <label for="confirm-switch"></label>
+                           <div class="confirm-switch language-switch">
+                              <input  type="checkbox" id="language-switch" :checked="lang == 'en'">
+                              <label for="language-switch"></label>
                            </div>
                            <p class="mx-2">EN</p>
+                        </div>
+                        <div class="switch-wrap d-flex justify-content-start align-items-center">
+                           <p class="mx-2">{{__('HIDE')}}</p>
+                           <div class="confirm-switch active-switch">
+                              <input  type="checkbox" id="active-switch">
+                              <label for="active-switch"></label>
+                           </div>
+                           <p class="mx-2">{{__('SHOW')}}</p>
                         </div>
                      </aside>
                      <!--  -->
@@ -225,7 +233,8 @@
                   img_thumbnail : null,
                   categories: [],
                   attach_reference: '',
-                  short_description : '',              
+                  short_description : '',
+                  status : 0,              
                },
                spinner : null,
                // lang_check : '',
@@ -237,14 +246,22 @@
                this.initDropzoneGalery();
                this.initDefaultDropzone();
 
-               $( "#confirm-switch" ).change(function() {
+               $( "#language-switch" ).change(function() {
                   if(lang == 'es'){
                      window.location.href = homepath + "/changeLanguage/en";
                   }else{
                      window.location.href = homepath + "/changeLanguage/es";
                   }
                });
-               
+
+               $( "#active-switch" ).change(function(val) {
+                  var _this = this;
+                  if(val.target.checked){
+                     main.post.status = 1 
+                  }else{
+                     main.post.status = 0 
+                  }
+               });
 
                this.post.attach_reference = this.randomString() + new Date().getTime();
 

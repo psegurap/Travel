@@ -50,7 +50,7 @@ class TripsController extends Controller
             'img_thumbnail' => $request->trip_info['img_thumbnail'],
             'picture_path' => $request->trip_info['attach_reference'],
             'user_id' => Auth::user()->id,
-            'status' => 1,
+            'status' => $request->trip_info['status'],
             'adult_price' => $request->trip_info['adult_price'],
             'kid_price' => $request->trip_info['kid_price'],
             'available_date' => $request->trip_info['available_date'],
@@ -122,6 +122,7 @@ class TripsController extends Controller
             'adult_price' => $request->trip_info['adult_price'],
             'kid_price' => $request->trip_info['kid_price'],
             'available_date' => $request->trip_info['available_date'],
+            'status' => $request->trip_info['status'],
         ];
 
         if($request->lang == 'es'){

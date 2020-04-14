@@ -3,7 +3,7 @@
 @section('content')
     <main>
         <!-- bradcam_area  -->
-        <div class="bradcam_area bradcam_bg_3">
+        <div class="bradcam_area">
             <div class="container">
                 <div class="row">
                     <div class="col-xl-12">
@@ -209,6 +209,9 @@
         var recent_trips = {!! json_encode($recent_trips) !!}
         var feedbacks = {!! json_encode($feedbacks) !!}
         var reservations_metrics = {!! json_encode($reservations_metrics) !!}
+
+        let current_background = homepath + "/tripsImages/" + some_trips[0].picture_path + "/" + some_trips[0].img_thumbnail;
+        $(".bradcam_area").css('background-image', 'url("' + current_background + '")');
         
         
         var main = new Vue({
